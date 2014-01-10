@@ -1,3 +1,54 @@
 <?php
+
+/**
+ * DzProject configuration
+ * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @package    DzProject
+ * @category   Config
+ * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ */
+
 return array(
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'dzproject' => __DIR__ . '/../view',
+        ),
+    ),
+    'controllers' => array(
+        'invokables' => array(
+            'dzproject' => 'DzProject\Controller\ProjectController',
+        ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'dzproject' => array(
+                'type' => 'Literal',
+                'priority' => 1000,
+                'options' => array(
+                    'route' => '/project',
+                    'defaults' => array(
+                        'controller' => 'dzproject',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'showall' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/show-all[/:type]',
+                            'constraints' => array(
+                                'type' => '(all)'
+                            ),
+                            'defaults' => array(
+                                'controller' => 'dzproject',
+                                'action' => 'showall',
+                                'type' => 'all'
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
 );
