@@ -11,8 +11,10 @@
 
 $I = new WebGuy($scenario);
 $I->wantTo('See all projects');
+
 $I->amOnPage('/project/show-all/all');
 
-$I->see('Project');
-$I->see('Description');
+$I->see('Projects');
+
+$I->see('Name');
 $I->see('Period');
