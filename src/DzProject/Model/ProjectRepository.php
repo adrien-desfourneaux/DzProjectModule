@@ -91,9 +91,10 @@ class ProjectRepository implements
      */
     public function findActiveProjects()
     {
+        $today = new \DateTime();
         return $this->getEntityManager()
-                    ->createQuery('SELECT p FROM Project p WHERE p.beginDate <= :today AND p.endDate >= :today')
-                    ->setParameter('today', new \DateTime())
+                    ->createQuery('SELECT p FROM DzProject\Model\Project p WHERE p.beginDate <= :today AND (p.endDate = :today OR p.endDate >= :today)')
+                    ->setParameter('today', $today->getTimestamp())
                     ->getResult();
     }
 }

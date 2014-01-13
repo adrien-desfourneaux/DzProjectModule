@@ -43,7 +43,7 @@ return array(
                         'options' => array(
                             'route' => '/show-all[/:type]',
                             'constraints' => array(
-                                'type' => '(all)'
+                                'type' => '(all)|(active)'
                             ),
                             'defaults' => array(
                                 'controller' => 'dzproject',

@@ -86,6 +86,39 @@ class ProjectControllerSpec extends ObjectBehavior
              ->shouldBeCalled()
              ->willReturn($coll);
 
-        $ret = $this->showallAction();
+        // TODO: 
+        // check if $this->showAllAction returns exactly
+        // an instance of Zend\View\Model\ViewModel
+        // with $coll passed as parameter.
+
+        $this->showallAction()
+             ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
+    }
+
+    /**
+     * Le ProjectController doit répondre à 
+     * l'action showall avec le paramètre de route active.
+     *
+     * @param Zend\Mvc\Controller\Plugin\Params           $params Objet mock de Params.
+     * @param DzProject\Model\ProjectRepository           $repo   Objet mock de ProjectRepository.
+     * @param Doctrine\Common\Collections\ArrayCollection $coll   Objet mock de ArrayCollection.
+     */
+    function it_returns_all_projects_on_showall_action_with_route_parameter_active($params, $repo, $coll)
+    {
+        $params->fromRoute('type')
+               ->shouldBeCalled()
+               ->willReturn('active');
+
+        $repo->findActiveProjects()
+             ->shouldBeCalled()
+             ->willReturn($coll);
+        
+        // TODO: 
+        // check if $this->showAllAction returns exactly
+        // an instance of Zend\View\Model\ViewModel
+        // with $coll passed as parameter.
+
+        $this->showallAction()
+             ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
     }
 }

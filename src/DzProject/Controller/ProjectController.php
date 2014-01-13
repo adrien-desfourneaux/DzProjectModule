@@ -52,6 +52,13 @@ class ProjectController extends AbstractActionController
                              ->findAllProjects();
         }
 
+        else if($type == 'active') {
+            $projects = $this->getServiceLocator()
+                             ->get('dzproject_service')
+                             ->getRepository()
+                             ->findActiveProjects();
+        }
+
         return new ViewModel(array(
             'projects' => $projects
         ));
