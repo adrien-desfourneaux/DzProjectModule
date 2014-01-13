@@ -14,6 +14,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Stdlib\Exception;
 
+use DzProject\Service\ProjectService;
+
 /**
  * Classe contrôleur de projet.
  *
@@ -41,8 +43,17 @@ class ProjectController extends AbstractActionController
         $type = $this->params()
                      ->fromRoute('type');
 
+        $projects = array();
+
         if($type == 'all') {
-            return new ViewModel();
+            $projects = $this->getServiceLocator()
+                             ->get('dzproject_service')
+                             ->getRepository()
+                             ->findAllProjects();
         }
+
+        return new ViewModel(array(
+            'projects' => $projects
+        ));
     }
 }

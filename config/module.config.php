@@ -19,6 +19,11 @@ return array(
             'dzproject' => 'DzProject\Controller\ProjectController',
         ),
     ),
+    'service_manager' => array(
+        'invokables' => array(
+            'dzproject_service' => 'DzProject\Service\ProjectService',
+        ),
+    ),
     'router' => array(
         'routes' => array(
             'dzproject' => array(
@@ -50,5 +55,29 @@ return array(
                 ),
             ),
         ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            'dzproject_model' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'paths' => __DIR__ . '/../src/DzProject/Model'
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'DzProject\Model' => 'dzproject_model'
+                )
+            )
+        ),
+        'connection' => array(
+            // Connection for acceptance tests
+            'orm_default' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOSqlite\Driver',
+                'params' => array(
+                    'user' => '',
+                    'password' => '',
+                    'path' => __DIR__.'/../tests/_data/dzproject.sqlite',
+                )
+            )
+        )
     ),
 );

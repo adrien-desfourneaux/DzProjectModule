@@ -46,7 +46,7 @@ $I->see('01/01/2000');
 
 $I->see('My great ZF2 application');
 $I->see('25/12/2000');
-$I->see('31/21/2000');
+$I->see('31/12/2000');
 
 $I->see('My great Symfony2 application');
 $I->see('12/12/2012');

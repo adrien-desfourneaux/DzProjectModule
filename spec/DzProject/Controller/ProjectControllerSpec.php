@@ -25,8 +25,11 @@ class ProjectControllerSpec extends ObjectBehavior
      * 
      * @param Zend\Mvc\Controller\PluginManager  $plugins Objet mock de PluginManager.
      * @param Zend\Mvc\Controller\Plugin\Params  $params  Objet mock de Params.
+     * @param Zend\ServiceManager\ServiceManager $sl      Objet mock de ServiceManager.
+     * @param DzProject\Service\ProjectService   $service Objet mock de ProjectService.
+     * @param DzProject\Model\ProjectRepository  $repo    Objet mock de ProjectRepository.
      */
-    public function let($plugins, $params)
+    public function let($plugins, $params, $sl, $service, $repo)
     {
         $this->setPluginManager($plugins);
 
@@ -35,6 +38,14 @@ class ProjectControllerSpec extends ObjectBehavior
 
         $plugins->get('params', Argument::cetera())
                 ->willReturn($params);
+
+        $this->setServiceLocator($sl);
+
+        $sl->get('dzproject_service')
+           ->willReturn($service);
+        
+        $service->getRepository()
+                ->willReturn($repo);
     }
 
     /**
@@ -61,15 +72,20 @@ class ProjectControllerSpec extends ObjectBehavior
      * Le ProjectController doit répondre à 
      * l'action showall avec le paramètre de route all.
      *
-     * @param Zend\Mvc\Controller\Plugin\Params $params Objet mock de Params.
+     * @param Zend\Mvc\Controller\Plugin\Params           $params Objet mock de Params.
+     * @param DzProject\Model\ProjectRepository           $repo   Objet mock de ProjectRepository.
+     * @param Doctrine\Common\Collections\ArrayCollection $coll   Objet mock de ArrayCollection.
      */
-    function it_responds_to_showall_action_with_route_parameter_all($params)
+    function it_returns_all_projects_on_showall_action_with_route_parameter_all($params, $repo, $coll)
     {
         $params->fromRoute('type')
                ->shouldBeCalled()
                ->willReturn('all');
 
-        $this->showallAction()
-             ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
+        $repo->findAllProjects()
+             ->shouldBeCalled()
+             ->willReturn($coll);
+
+        $ret = $this->showallAction();
     }
 }

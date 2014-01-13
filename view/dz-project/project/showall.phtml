@@ -8,5 +8,11 @@
     </tr>
   </thead>
   <tbody>
+    <?php foreach($projects as $p) { ?>
+    <tr>
+      <td><?php echo $p->getDisplayName(); ?></td>
+      <td><?php echo strftime("%d/%m/%Y", $p->getBeginDate()) . " - " . strftime("%d/%m/%Y", $p->getEndDate()); ?></td>
+    </tr>
+    <?php } ?>
   </tbody>
 </table>

@@ -14,6 +14,7 @@ modules:
         - PhpBrowser
         - WebHelper
         - Db
+        - ZF2
     config:
         PhpBrowser:
             url: 'http://localhost/'
