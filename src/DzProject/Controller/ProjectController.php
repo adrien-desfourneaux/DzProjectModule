@@ -43,8 +43,24 @@ class ProjectController extends AbstractActionController
         $type = $this->params()
                      ->fromRoute('type');
 
+        $projects = array();
+
         if($type == 'all') {
-            return new ViewModel();
+            $projects = $this->getServiceLocator()
+                             ->get('dzproject_service')
+                             ->getRepository()
+                             ->findAllProjects();
         }
+
+        else if($type == 'active') {
+            $projects = $this->getServiceLocator()
+                             ->get('dzproject_service')
+                             ->getRepository()
+                             ->findActiveProjects();
+        }
+
+        return new ViewModel(array(
+            'projects' => $projects
+        ));
     }
 }
