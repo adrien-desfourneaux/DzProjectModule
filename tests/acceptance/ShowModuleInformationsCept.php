@@ -2,11 +2,15 @@
 
 /**
  * ShowModuleInformations acceptance test
- * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ *
+ * PHP version 5.3.3
+ *
+ * @category   Test
  * @package    DzProject
  * @subpackage Acceptance
- * @category   Test
+ * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link       https://github.com/dieze/DzProject/blob/master/tests/acceptance/ShowModuleInformationsCept.php
  */
 
 $I = new WebGuy($scenario);

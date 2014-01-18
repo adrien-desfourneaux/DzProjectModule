@@ -2,10 +2,14 @@
 
 /**
  * ProjectController specification
- * @author     Adrien Desfourneaux
- * @package    DzProject\Controller
- * @category   Spec
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ *
+ * PHP version 5.3.3
+ *
+ * @category Spec
+ * @package  DzProject\Controller
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/spec/DzProject/Controller/ProjectController.php
  */
 
 namespace spec\DzProject\Controller;
@@ -17,6 +21,11 @@ use Prophecy\Argument;
  * Classe de spécification du
  * contrôleur de projet ProjectController.
  * 
+ * @category Spec
+ * @package  DzProject\Controller
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/spec/DzProject/Controller/ProjectController.php
  */
 class ProjectControllerSpec extends ObjectBehavior
 {
@@ -28,29 +37,32 @@ class ProjectControllerSpec extends ObjectBehavior
      * @param Zend\ServiceManager\ServiceManager $sl      Objet mock de ServiceManager.
      * @param DzProject\Service\ProjectService   $service Objet mock de ProjectService.
      * @param DzProject\Model\ProjectRepository  $repo    Objet mock de ProjectRepository.
+     *
+     * @return null
      */
     public function let($plugins, $params, $sl, $service, $repo)
     {
         $this->setPluginManager($plugins);
 
         $plugins->setController(Argument::any())
-                ->willReturn($plugins);
+            ->willReturn($plugins);
 
         $plugins->get('params', Argument::cetera())
-                ->willReturn($params);
+            ->willReturn($params);
 
         $this->setServiceLocator($sl);
 
         $sl->get('dzproject_service')
-           ->willReturn($service);
+            ->willReturn($service);
         
         $service->getRepository()
-                ->willReturn($repo);
+            ->willReturn($repo);
     }
 
     /**
      * Le ProjectController doit être initialisable.
      *
+     * @return null
      */
     function it_is_initializable()
     {
@@ -61,11 +73,12 @@ class ProjectControllerSpec extends ObjectBehavior
      * Le ProjectController doit répondre à
      * l'action index.
      *
+     * @return null
      */
     function it_responds_to_index_action()
     {
         $this->indexAction()
-             ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
+            ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
     }
 
     /**
@@ -75,16 +88,18 @@ class ProjectControllerSpec extends ObjectBehavior
      * @param Zend\Mvc\Controller\Plugin\Params           $params Objet mock de Params.
      * @param DzProject\Model\ProjectRepository           $repo   Objet mock de ProjectRepository.
      * @param Doctrine\Common\Collections\ArrayCollection $coll   Objet mock de ArrayCollection.
+     *
+     * @return null
      */
     function it_returns_all_projects_on_showall_action_with_route_parameter_all($params, $repo, $coll)
     {
         $params->fromRoute('type')
-               ->shouldBeCalled()
-               ->willReturn('all');
+            ->shouldBeCalled()
+            ->willReturn('all');
 
         $repo->findAllProjects()
-             ->shouldBeCalled()
-             ->willReturn($coll);
+            ->shouldBeCalled()
+            ->willReturn($coll);
 
         // TODO: 
         // check if $this->showAllAction returns exactly
@@ -92,7 +107,7 @@ class ProjectControllerSpec extends ObjectBehavior
         // with $coll passed as parameter.
 
         $this->showallAction()
-             ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
+            ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
     }
 
     /**
@@ -102,16 +117,18 @@ class ProjectControllerSpec extends ObjectBehavior
      * @param Zend\Mvc\Controller\Plugin\Params           $params Objet mock de Params.
      * @param DzProject\Model\ProjectRepository           $repo   Objet mock de ProjectRepository.
      * @param Doctrine\Common\Collections\ArrayCollection $coll   Objet mock de ArrayCollection.
+     *
+     * @return null
      */
     function it_returns_all_projects_on_showall_action_with_route_parameter_active($params, $repo, $coll)
     {
         $params->fromRoute('type')
-               ->shouldBeCalled()
-               ->willReturn('active');
+            ->shouldBeCalled()
+            ->willReturn('active');
 
         $repo->findActiveProjects()
-             ->shouldBeCalled()
-             ->willReturn($coll);
+            ->shouldBeCalled()
+            ->willReturn($coll);
         
         // TODO: 
         // check if $this->showAllAction returns exactly
@@ -119,6 +136,6 @@ class ProjectControllerSpec extends ObjectBehavior
         // with $coll passed as parameter.
 
         $this->showallAction()
-             ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
+            ->shouldReturnAnInstanceOf('Zend\View\Model\ViewModel');
     }
 }

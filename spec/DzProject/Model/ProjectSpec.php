@@ -2,10 +2,14 @@
 
 /**
  * Project specification
- * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @package    DzProject\Model
- * @category   Spec
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ *
+ * PHP version 5.3.3
+ *
+ * @category Spec
+ * @package  DzProject\Model
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     https://github.com/dieze/DzProject/blob/master/spec/DzProject/Model/ProjectSpec.php
  */
 
 namespace spec\DzProject\Model;
@@ -18,13 +22,19 @@ use Zend\Stdlib\Exception;
  * Classe de spécification du comportement
  * du repository pour les projets.
  *
- * @see ObjectBehavior
+ * @category Spec
+ * @package  DzProject\Model
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     https://github.com/dieze/DzProject/blob/master/spec/DzProject/Model/ProjectSpec.php
+ * @see      ObjectBehavior
  */
 class ProjectSpec extends ObjectBehavior
 {
     /**
      * Le Project doit être initialisable.
      *
+     * @return null
      */
     function it_is_initializable()
     {
@@ -35,6 +45,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project doit avoir un attribut displayName
      * disponible en lecture et en écriture.
      *
+     * @return null
      */
     function it_has_a_rw_display_name()
     {
@@ -47,6 +58,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project retourne son instance 
      * quand on définit son attribut displayName.
      *
+     * @return null
      */
     function it_returns_itself_when_setting_display_name()
     {
@@ -58,6 +70,7 @@ class ProjectSpec extends ObjectBehavior
      * une chaine de caractère en
      * valeur d'attribut displayName.
      *
+     * @return null
      */
     function it_only_accepts_string_as_display_name()
     {
@@ -94,6 +107,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project doit avoir un attribut beginDate
      * disponible en lecture et en écriture.
      *
+     * @return null
      */
     function it_has_a_rw_begin_date()
     {
@@ -106,6 +120,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project doit retourner son instance
      * quand on définit son attribut beginDate.
      *
+     * @return null
      */
     function it_returns_itself_when_setting_begin_date()
     {
@@ -116,6 +131,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project accepte uniquement un entier
      * en valeur d'attribut beginDate.
      *
+     * @return null
      */
     function it_only_accepts_int_as_begin_date()
     {
@@ -153,6 +169,7 @@ class ProjectSpec extends ObjectBehavior
      * une date de début qui est
      * antérieure à la date de fin.
      *
+     * @return null
      */
     function it_only_accepts_begin_date_that_is_before_end_date()
     {
@@ -167,6 +184,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project doit avoir un attribut endDate
      * disponible en lecture et en écriture.
      *
+     * @return null
      */
     function it_has_a_rw_end_date()
     {
@@ -179,6 +197,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project retourne son instance quand
      * on définit la valeur de l'attribut endDate.
      *
+     * @return null
      */
     function it_returns_itself_when_setting_end_date()
     {
@@ -190,6 +209,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project accepte uniquement un entier
      * en valeur d'attribut endDate.
      *
+     * @return null
      */
     function it_only_accepts_int_as_end_date()
     {
@@ -226,6 +246,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project accepte uniquement une date de fin
      * qui est postérieure à la date de début.
      *
+     * @return null
      */
     function it_only_accepts_end_date_that_is_after_begin_date()
     {

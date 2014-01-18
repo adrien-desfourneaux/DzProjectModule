@@ -2,10 +2,14 @@
 
 /**
  * ProjectManager source
- * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @package    DzProject
- * @subpackage Model
- * @category   Source
+ *
+ * PHP version 5.3.3
+ *
+ * @category Source
+ * @package  DzProject\Model
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Model/ProjectManager.php
  */
 
 namespace DzProject\Model;
@@ -15,12 +19,14 @@ use Doctrine\ORM\EntityManager;
 /**
  * Manager pour les projets.
  *
- * @see EntityManagerAwareInterface
+ * @category Source
+ * @package  DzProject\Model
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Model/ProjectManager.php
  */
-class ProjectManager implements
-    EntityManagerAwareInterface
+class ProjectManager
 {
-    // EntityManager {{{
     /**
      * Doctrine ORM EntityManager.
      * @var EntityManager
@@ -28,24 +34,12 @@ class ProjectManager implements
     protected $em;
 
     /**
-     * Définit l'EntityManager.
+     * Construct a new instance of ProjectManager
      *
-     * @param EntityManager $em
-     * @return $this
-     */ 
-    public function setEntityManager(EntityManager $em)
+     * @param EntityManager $em Instance of EntityManager
+     */
+    public function __construct($em)
     {
         $this->em = $em;
-        return $this;
     }
-
-    /**
-     * Obtient l'EntityManager.
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->em;
-    }
-    // }}}
 }

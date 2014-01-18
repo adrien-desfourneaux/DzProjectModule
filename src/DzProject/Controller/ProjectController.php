@@ -1,11 +1,14 @@
 <?php
-
 /**
  * ProjectController source
- * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @package    DzProject\Controller
- * @category   Source
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ *
+ * PHP version 5.3.3
+ *
+ * @category Source
+ * @package  DzProject\Controller
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Controller/ProjectController.php
  */
 
 namespace DzProject\Controller;
@@ -19,7 +22,12 @@ use DzProject\Service\ProjectService;
 /**
  * Classe contrôleur de projet.
  *
- * @see AbstractActionController Contrôleur d'actions abstrait.
+ * @category Source
+ * @package  DzProject\Controller
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Controller/ProjectController.php
+ * @see      AbstractActionController Contrôleur d'actions abstrait.
  */
 class ProjectController extends AbstractActionController
 {
@@ -41,26 +49,26 @@ class ProjectController extends AbstractActionController
     public function showallAction()
     {
         $type = $this->params()
-                     ->fromRoute('type');
+            ->fromRoute('type');
 
         $projects = array();
 
-        if($type == 'all') {
+        if ($type == 'all') {
             $projects = $this->getServiceLocator()
-                             ->get('dzproject_service')
-                             ->getRepository()
-                             ->findAllProjects();
+                ->get('dzproject_service')
+                ->getRepository()
+                ->findAllProjects();
+        } else if ($type == 'active') {
+            $projects = $this->getServiceLocator()
+                ->get('dzproject_service')
+                ->getRepository()
+                ->findActiveProjects();
         }
 
-        else if($type == 'active') {
-            $projects = $this->getServiceLocator()
-                             ->get('dzproject_service')
-                             ->getRepository()
-                             ->findActiveProjects();
-        }
-
-        return new ViewModel(array(
-            'projects' => $projects
-        ));
+        return new ViewModel(
+            array(
+                'projects' => $projects
+            )
+        );
     }
 }

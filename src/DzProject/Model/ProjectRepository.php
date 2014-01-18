@@ -1,11 +1,15 @@
 <?php
 
 /**
-* ProjectRepository source
- * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @package    DzProject\Model
- * @category   Source
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * ProjectRepository source
+ *
+ * PHP version 5.3.3
+ *
+ * @category Source
+ * @package  DzProject\Model
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Model/ProjectRepository.php
  */
 
 namespace DzProject\Model;
@@ -15,10 +19,13 @@ use Doctrine\ORM\EntityManager;
 /**
  * Repository pour les projets.
  *
- * @see EntityManagerAwareInterface
+ * @category Source
+ * @package  DzProject\Model
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Model/ProjectRepository.php
  */
-class ProjectRepository implements
-    EntityManagerAwareInterface
+class ProjectRepository
 {
     /**
      * Entity class.
@@ -27,60 +34,42 @@ class ProjectRepository implements
     protected $entity;
 
     /**
-     * Constructeur de ProjectRepository.
-     * @var string
-     */
-    public function __construct()
-    {
-        $this->entity = 'DzProject\Model\Project';
-    }
-
-    // EntityManager {{{
-    /**
      * Doctrine ORM EntityManager.
      * @var EntityManager
      */
     protected $em;
 
     /**
-     * Définit l'EntityManager.
-     * @param EntityManager $em
-     * @return $this
-     */ 
-    public function setEntityManager(EntityManager $em)
-    {
-        $this->em = $em;
-        return $this;
-    }
-
-    /**
-     * Obtient l'EntityManager.
-     * @return EntityManager
+     * Constructeur de ProjectRepository.
+     *
+     * @param EntityManager $em Instance of EntityManager
      */
-    public function getEntityManager()
+    public function __construct($em)
     {
-        return $this->em;
+        $this->entity = 'DzProject\Model\Project';
+        $this->em     = $em;
     }
-    // }}}
 
     /**
      * Obtient le Repository.
+     *
      * @return EntityRepository
      */
     public function getRepository()
     {
-        return $this->getEntityManager()
-                    ->getRepository($this->entity);
+        return $this->em
+            ->getRepository($this->entity);
     }
 
     /**
      * Trouve tous les projets.
      *
+     * @return ArrayCollection
      */
     public function findAllProjects()
     {
         return $this->getRepository()
-                    ->findAll();
+            ->findAll();
     }
 
     /**
@@ -88,12 +77,16 @@ class ProjectRepository implements
      * Un projet est actif quand la date du jour se trouve
      * entre la date de début et la date de fin du projet.
      *
+     * @return ArrayCollection
      */
     public function findActiveProjects()
     {
-        return $this->getEntityManager()
-                    ->createQuery('SELECT p FROM DzProject\Model\Project p WHERE p.beginDate <= :today AND p.endDate >= :today')
-                    ->setParameter('today', strtotime(date("y-m-d")))
-                    ->getResult();
+        return $this->em
+            ->createQuery(
+                'SELECT p FROM DzProject\Model\Project p ' .
+                'WHERE p.beginDate <= :today AND p.endDate >= :today'
+            )
+            ->setParameter('today', strtotime(date("y-m-d")))
+            ->getResult();
     }
 }

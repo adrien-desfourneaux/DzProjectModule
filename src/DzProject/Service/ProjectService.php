@@ -1,11 +1,15 @@
 <?php
 
 /**
- * ProjectService specification
- * @author     Adrien Desfourneaux
- * @package    DzProject\Service
- * @category   Spec
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * ProjectService source
+ *
+ * PHP version 5.3.3
+ *
+ * @category Source
+ * @package  DzProject\Service
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Service/ProjectService.php
  */
 
 namespace DzProject\Service;
@@ -19,7 +23,12 @@ use DzProject\Model\ProjectRepository;
 /**
  * Service pour les projets.
  *
- * @see ServiceLocatorInterface
+ * @category Source
+ * @package  DzProject\Service
+ * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Service/ProjectService.php
+ * @see      ServiceLocatorInterface
  */
 class ProjectService implements
     ServiceLocatorAwareInterface
@@ -27,13 +36,17 @@ class ProjectService implements
     // ServiceLocator {{{
     /**
      * Instance de Service Locator.
-     * @var ServiceLocatorInterface
+     *
+     * @var ServiceLocatorInterface ServiceLocator used by the ProjectService
      */
     protected $sl;
 
     /**
      * Définit le Service Locator.
      *
+     * @param ServiceLocatorInterface $serviceLocator The ServiceLocator to inject
+     *
+     * @return null
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
@@ -65,9 +78,8 @@ class ProjectService implements
      */
     public function getManager()
     {
-        if(!$this->manager) {
-            $this->manager = new ProjectManager();
-            $this->manager->setEntityManager(
+        if (!$this->manager) {
+            $this->manager = new ProjectManager(
                 $this->getServiceLocator()->get('doctrine.entitymanager.orm_default')
             );
         }
@@ -89,13 +101,24 @@ class ProjectService implements
      */
     public function getRepository()
     {
-        if(!$this->repository) {
-            $this->repository = new ProjectRepository();
-            $this->repository->setEntityManager(
+        if (!$this->repository) {
+            $this->repository = new ProjectRepository(
                 $this->getServiceLocator()->get('doctrine.entitymanager.orm_default')
             );
         }
         return $this->repository;
     }
     // }}}
+    
+    /**
+     * Construct a new instance of ProjectService
+     *
+     * @param ProjectManager    $projectManager    The ProjectManager to inject
+     * @param ProjectRepository $projectRepository The ProjectRepository to inject
+     */
+    public function __construct($projectManager, $projectRepository)
+    {
+        $this->_manager    = $projectManager;
+        $this->_repository = $projectRepository;
+    }
 }
