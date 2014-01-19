@@ -5,6 +5,7 @@
 #     @author Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
 #  */
 
+# SCRIPTPATH = zf2_app/module/DzProject/script
 SCRIPTPATH=$( cd "$(dirname "$0")" ; pwd -P )
-cd $SCRIPTPATH
+cd $SCRIPTPATH/..
 ../../vendor/bin/phpdoc.php run -d . -t doc
