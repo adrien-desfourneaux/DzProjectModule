@@ -37,17 +37,17 @@ class ProjectRepository
      * Doctrine ORM EntityManager.
      * @var EntityManager
      */
-    protected $em;
+    protected $entityManager;
 
     /**
      * Constructeur de ProjectRepository.
      *
-     * @param EntityManager $em Instance of EntityManager
+     * @param EntityManager $entityManager Instance of EntityManager
      */
-    public function __construct($em)
+    public function __construct($entityManager)
     {
-        $this->entity = 'DzProject\Model\Project';
-        $this->em     = $em;
+        $this->entity        = 'DzProject\Model\Project';
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -57,7 +57,7 @@ class ProjectRepository
      */
     public function getRepository()
     {
-        return $this->em
+        return $this->entityManager
             ->getRepository($this->entity);
     }
 
@@ -81,10 +81,10 @@ class ProjectRepository
      */
     public function findActiveProjects()
     {
-        return $this->em
+        return $this->entityManager
             ->createQuery(
                 'SELECT p FROM DzProject\Model\Project p ' .
-                'WHERE p.beginDate <= :today AND p.endDate >= :today'
+                'WHERE p._beginDate <= :today AND p._endDate >= :today'
             )
             ->setParameter('today', strtotime(date("y-m-d")))
             ->getResult();

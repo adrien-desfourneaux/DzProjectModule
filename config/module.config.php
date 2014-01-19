@@ -24,8 +24,8 @@ return array(
         ),
     ),
     'service_manager' => array(
-        'invokables' => array(
-            'dzproject_service' => 'DzProject\Service\ProjectService',
+        'factories' => array(
+            'dzproject_service' => 'DzProject\Service\ProjectServiceFactory',
         ),
     ),
     'router' => array(
