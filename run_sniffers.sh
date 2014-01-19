@@ -7,5 +7,5 @@
 
 SCRIPTPATH=$( cd "$(dirname "$0")" ; pwd -P )
 cd $SCRIPTPATH
-../../vendor/bin/phpcs --standard="./phpcs.xml" --ignore="doc,public" .
-../../vendor/bin/phpmd . text ./phpmd.xml --exclude "doc,tests*Guy.php"
+../../vendor/bin/phpcs --standard="./phpcs.xml" --ignore="/doc/" --extensions="php,phtml" .
+../../vendor/bin/phpmd . text ./phpmd.xml --exclude "doc,tests*Guy.php" --suffixes "php,phtml"

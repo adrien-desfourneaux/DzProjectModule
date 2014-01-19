@@ -2,11 +2,15 @@
 
 /**
  * ProjectController::showallAction() view source
- * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ *
+ * PHP version 5
+ *
+ * @category   Source
  * @package    DzProject
  * @subpackage View
- * @category   Source
+ * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link       https://github.com/dieze/DzProject/blob/master/view/dz-project/project/showall.phtml
  */
 
 ?>
@@ -21,11 +25,15 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach($projects as $p) { ?>
+<?php
+foreach ($projects as $p) {
+    ?>
     <tr>
       <td><?php echo $p->getDisplayName(); ?></td>
       <td><?php echo strftime("%d/%m/%Y", $p->getBeginDate()) . ' - ' . strftime("%d/%m/%Y", $p->getEndDate()); ?></td>
     </tr>
-    <?php } ?>
+    <?php
+}
+?>
   </tbody>
 </table>
