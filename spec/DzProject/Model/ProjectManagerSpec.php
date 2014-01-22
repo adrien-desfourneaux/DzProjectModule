@@ -9,7 +9,7 @@
  * @package  DzProject\Model
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     http://github.com/dieze/DzProject/blob/master/spec/DzProject/Model/ProjectManagerSpec.php
+ * @link     https://github.com/dieze/DzProject/blob/master/spec/DzProject/Model/ProjectManagerSpec.php
  */
 
 namespace spec\DzProject\Model;

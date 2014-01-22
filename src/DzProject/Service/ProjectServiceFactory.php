@@ -9,7 +9,7 @@
  * @package  DzProject\Service
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Service/ProjectServiceFactory.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Service/ProjectServiceFactory.php
  */
 
 namespace DzProject\Service;
@@ -28,8 +28,8 @@ use DzProject\Model\ProjectRepository;
  * @package  DzProject\Service
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Service/ProjectService.php
- * @see      ServiceLocatorInterface
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Service/ProjectServiceFactory.php
+ * @see      FactoryInterface
  */
 class ProjectServiceFactory implements
     FactoryInterface
