@@ -14,7 +14,6 @@ return array(
     'modules' => array(
         'DoctrineModule',
         'DoctrineORMModule',
-        'Application',
         'DzProject'
     ),
     'module_listener_options' => array(
