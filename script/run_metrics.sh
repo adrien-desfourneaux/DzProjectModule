@@ -8,6 +8,7 @@
 # SCRIPTPATH = zf2_app/module/DzProject/script
 SCRIPTPATH=$( cd "$(dirname "$0")" ; pwd -P )
 cd $SCRIPTPATH/..
+mkdir -p metrics
 ../../vendor/bin/pdepend --summary-xml="metrics/summary.xml" \
                          --jdepend-chart="metrics/jdepend.svg" \
                          --overview-pyramid="metrics/pyramid.svg" \
