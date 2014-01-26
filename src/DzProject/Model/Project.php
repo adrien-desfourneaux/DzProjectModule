@@ -39,7 +39,7 @@ class Project
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $_projectId;
+    protected $projectId;
 
     /**
      * Nom d'affichage du projet.
@@ -47,7 +47,7 @@ class Project
      *
      * @ORM\Column(name="display_name", type="string", length=50, unique=true, nullable=false)
      */
-    private $_displayName;
+    protected $displayName;
 
     /**
      * Date de début du projet.
@@ -55,7 +55,7 @@ class Project
      *
      * @ORM\Column(name="begin_date", type="integer", nullable=false)
      */
-    private $_beginDate;
+    protected $beginDate;
 
     /**
      * Date de fin du projet.
@@ -63,7 +63,7 @@ class Project
      *
      * @ORM\Column(name="end_date", type="integer", nullable=false)
      */
-    private $_endDate;
+    protected $endDate;
 
 
 
@@ -74,7 +74,7 @@ class Project
      */
     public function getProjectId()
     {
-        return $this->_projectId;
+        return $this->projectId;
     }
 
     /**
@@ -90,7 +90,7 @@ class Project
             throw new Exception\InvalidArgumentException();
         }
 
-        $this->_displayName = $displayName;
+        $this->displayName = $displayName;
 
         return $this;
     }
@@ -102,7 +102,7 @@ class Project
      */
     public function getDisplayName()
     {
-        return $this->_displayName;
+        return $this->displayName;
     }
 
     /**
@@ -116,11 +116,11 @@ class Project
     {
         if (!is_int($beginDate)) {
             throw new Exception\InvalidArgumentException();
-        } else if (!is_null($this->_endDate) && $beginDate > $this->_endDate) {
+        } else if (!is_null($this->endDate) && $beginDate > $this->endDate) {
             throw new Exception\LogicException();
         }
 
-        $this->_beginDate = $beginDate;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
@@ -132,7 +132,7 @@ class Project
      */
     public function getBeginDate()
     {
-        return $this->_beginDate;
+        return $this->beginDate;
     }
 
     /**
@@ -146,11 +146,11 @@ class Project
     {
         if (!is_int($endDate)) {
             throw new Exception\InvalidArgumentException();
-        } else if (!is_null($this->_beginDate) && $endDate < $this->_beginDate) {
+        } else if (!is_null($this->beginDate) && $endDate < $this->beginDate) {
             throw new Exception\LogicException();
         }
         
-        $this->_endDate = $endDate;
+        $this->endDate = $endDate;
 
         return $this;
     }
@@ -162,6 +162,6 @@ class Project
      */
     public function getEndDate()
     {
-        return $this->_endDate;
+        return $this->endDate;
     }
 }

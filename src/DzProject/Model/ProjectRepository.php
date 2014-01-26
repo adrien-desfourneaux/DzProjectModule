@@ -84,7 +84,7 @@ class ProjectRepository
         return $this->entityManager
             ->createQuery(
                 'SELECT p FROM DzProject\Model\Project p ' .
-                'WHERE p._beginDate <= :today AND p._endDate >= :today'
+                'WHERE p.beginDate <= :today AND p.endDate >= :today'
             )
             ->setParameter('today', strtotime(date("y-m-d")))
             ->getResult();
