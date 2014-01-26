@@ -11,10 +11,10 @@
 class_name: WebGuy
 modules:
     enabled:
-        - PhpBrowser
-        - WebHelper
         - Db
-        - ZF2
+        - WebDriver
     config:
-        PhpBrowser:
-            url: 'http://localhost/'
+        WebDriver:
+            url: 'http://192.168.56.101/dzproject.php'
+            browser: firefox
+            host: 192.168.56.1
