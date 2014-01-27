@@ -12,8 +12,19 @@
  * @link     https://github.com/dieze/DzProject/blob/master/config/module.config.php
  */
 
+/**
+ * Use different bdd for test or development environments
+ */
+if (defined('DZPROJECT_ENV') && DZPROJECT_ENV == 'test') {
+    $db_path = __DIR__ . '/../tests/_data/dz-project.sqlite';
+} else {
+    $db_path = __DIR__ . '/../data/dz-project.sqlite';
+}
+
 return array(
     'view_manager' => array(
+        // The module handles errors
+        // in case it is used alone
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
@@ -25,28 +36,28 @@ return array(
             'error/index'   => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
-            'dzproject' => __DIR__ . '/../view',
+            'dz-project' => __DIR__ . '/../view',
         ),
     ),
     'controllers' => array(
         'invokables' => array(
-            'dzproject' => 'DzProject\Controller\ProjectController',
+            'dz-project' => 'DzProject\Controller\ProjectController',
         ),
     ),
     'service_manager' => array(
         'factories' => array(
-            'dzproject_service' => 'DzProject\Service\ProjectServiceFactory',
+            'dz-project_service' => 'DzProject\Service\ProjectServiceFactory',
         ),
     ),
     'router' => array(
         'routes' => array(
-            'dzproject' => array(
-                'type' => 'Literal',
+            'dz-project' => array(
+                'type' => 'Segment',
                 'priority' => 1000,
                 'options' => array(
-                    'route' => '/project',
+                    'route' => '/project[/]',
                     'defaults' => array(
-                        'controller' => 'dzproject',
+                        'controller' => 'dz-project',
                         'action' => 'index',
                     ),
                 ),
@@ -55,12 +66,12 @@ return array(
                     'showall' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/show-all[/:type]',
+                            'route' => '/show-all[/[:type[/]]]',
                             'constraints' => array(
                                 'type' => '(all)|(active)'
                             ),
                             'defaults' => array(
-                                'controller' => 'dzproject',
+                                'controller' => 'dz-project',
                                 'action' => 'showall',
                                 'type' => 'all'
                             ),
@@ -72,13 +83,13 @@ return array(
     ),
     'doctrine' => array(
         'driver' => array(
-            'dzproject_model' => array(
+            'dz-project_model' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'paths' => __DIR__ . '/../src/DzProject/Model'
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'DzProject\Model' => 'dzproject_model'
+                    'DzProject\Model' => 'dz-project_model'
                 )
             )
         ),
@@ -89,7 +100,7 @@ return array(
                 'params' => array(
                     'user' => '',
                     'password' => '',
-                    'path' => __DIR__.'/../tests/_data/dzproject.sqlite',
+                    'path' => $db_path,
                 )
             )
         )

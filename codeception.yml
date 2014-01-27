@@ -12,7 +12,7 @@ settings:
 modules:
     config:
         Db:
-            dsn: 'sqlite:tests/_data/dzproject.sqlite'
+            dsn: 'sqlite:tests/_data/dz-project.sqlite'
             user: ''
             password: ''
             dump: tests/_data/dump.sql
