@@ -66,7 +66,7 @@ return array(
                     'showall' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/show-all[/[:type[/]]]',
+                            'route' => 'show-all[/:type][/]',
                             'constraints' => array(
                                 'type' => '(all)|(active)'
                             ),
