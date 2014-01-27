@@ -15,6 +15,6 @@ modules:
         - WebDriver
     config:
         WebDriver:
-            url: 'http://192.168.56.101/dzproject.php'
+            url: 'http://192.168.56.101/dz-project.test.php'
             browser: firefox
             host: 192.168.56.1
