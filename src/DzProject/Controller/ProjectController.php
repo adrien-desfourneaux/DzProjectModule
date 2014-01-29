@@ -1,6 +1,6 @@
 <?php
 /**
- * ProjectController source
+ * Fichier de source du ProjectController
  *
  * PHP version 5.3.3
  *
@@ -13,11 +13,11 @@
 
 namespace DzProject\Controller;
 
+use Zend\Form\Form;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use DzProject\Service\Project as ProjectService;
 use Zend\Stdlib\Exception;
-
-use DzProject\Service\ProjectService;
 
 /**
  * Classe contrôleur de projet.
@@ -31,10 +31,40 @@ use DzProject\Service\ProjectService;
  */
 class ProjectController extends AbstractActionController
 {
+    const ROUTE_SHOWMODULE = 'dzproject';
+    const ROUTE_ADD        = 'dzproject/add';
+    const ROUTE_DELETE     = 'dzproject/delete';
+    const ROUTE_SHOWALL    = 'dzproject/showall';
+    const ROUTE_SHOWACTIVE = 'dzproject/showall/active';
+
+    const CONTROLLER_NAME  = 'dzproject';
+    
     /**
-     * Action par défaut du ProjectController.
+     * Service pour les projets
      *
-     * @return ViewModel Les données à retourner à la vue.
+     * @var ProjectService
+     */
+    protected $projectService;
+
+    /**
+     * Formulaire d'ajout de projet
+     * 
+     * @var Form
+     */
+    protected $addForm;
+
+    /**
+     * Formulaire de suppression de projet
+     *
+     * @var Form
+     */
+    protected $deleteForm;
+
+    /**
+     * Action par défaut du ProjectController
+     * Affiche les informations du module.
+     *
+     * @return ViewModel
      */
     public function indexAction()
     {
@@ -42,9 +72,36 @@ class ProjectController extends AbstractActionController
     }
 
     /**
-     * Affichage d'un ensemble de projets.
+     * Traite les données du formulaire d'ajout de projet
      *
-     * @return ViewModel Les données à retourner à la vue.
+     * @return null
+     */
+    public function addAction()
+    {
+    }
+
+    /**
+     * Traite les données du formulaire de suppression de projet
+     *
+     * @return null
+     */
+    public function deleteAction()
+    {
+    }
+
+    /**
+     * Affiche un projet particulier
+     *
+     * @return null
+     */
+    public function showAction()
+    {
+    }
+
+    /**
+     * Affiche un ensemble de projets
+     *
+     * @return ViewModel
      */
     public function showallAction()
     {
@@ -54,15 +111,13 @@ class ProjectController extends AbstractActionController
         $projects = array();
 
         if ($type == 'all') {
-            $projects = $this->getServiceLocator()
-                ->get('dzproject_service')
-                ->getRepository()
-                ->findAllProjects();
+            $projects = $this->getProjectService()
+                ->getProjectMapper()
+                ->findAll();
         } else if ($type == 'active') {
-            $projects = $this->getServiceLocator()
-                ->get('dzproject_service')
-                ->getRepository()
-                ->findActiveProjects();
+            $projects = $this->getProjectService()
+                ->getProjectMapper()
+                ->findActive();
         }
 
         return new ViewModel(
@@ -70,5 +125,31 @@ class ProjectController extends AbstractActionController
                 'projects' => $projects
             )
         );
+    }
+
+    /**
+     * Obtient le service pour le projet
+     *
+     * @return ProjectService
+     */
+    public function getProjectService()
+    {
+        if (!$this->projectService) {
+            $this->projectService = $this->getServiceLocator()->get('dzproject_project_service');
+        }
+        return $this->projectService;
+    }
+
+    /**
+     * Définit le service pour le projet
+     * 
+     * @param ProjectService $projectService Service pour le projet
+     *
+     * @return ProjectController
+     */
+    public function setProjectService(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+        return $this;
     }
 }

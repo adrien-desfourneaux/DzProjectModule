@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # /*!
-#     Run metrics generation for the DzProject module.
+#     Lance la génération des métriques pour le module DzProject
 #     @author Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
 #  */
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DzProject configuration
+ * Configuration du module DzProject
  *
  * PHP version 5.3.3
  *
@@ -13,18 +13,18 @@
  */
 
 /**
- * Use different bdd for test or development environments
+ * Utiliser différentes base de données selon l'environnement (development ou test)
  */
 if (defined('DZPROJECT_ENV') && DZPROJECT_ENV == 'test') {
-    $db_path = __DIR__ . '/../tests/_data/dz-project.sqlite';
+    $db_path = __DIR__ . '/../tests/_data/dzproject.sqlite';
 } else {
-    $db_path = __DIR__ . '/../data/dz-project.sqlite';
+    $db_path = __DIR__ . '/../data/dzproject.sqlite';
 }
 
 return array(
     'view_manager' => array(
-        // The module handles errors
-        // in case it is used alone
+        // Le module doit traiter les erreurs
+        // afin d'être utilisé seul en développement et test.
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
@@ -36,28 +36,23 @@ return array(
             'error/index'   => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
-            'dz-project' => __DIR__ . '/../view',
+            'dzproject' => __DIR__ . '/../view',
         ),
     ),
     'controllers' => array(
         'invokables' => array(
-            'dz-project' => 'DzProject\Controller\ProjectController',
-        ),
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'dz-project_service' => 'DzProject\Service\ProjectServiceFactory',
+            'dzproject' => 'DzProject\Controller\ProjectController',
         ),
     ),
     'router' => array(
         'routes' => array(
-            'dz-project' => array(
+            'dzproject' => array(
                 'type' => 'Segment',
                 'priority' => 1000,
                 'options' => array(
-                    'route' => '/project[/]',
+                    'route' => '/dzproject[/]',
                     'defaults' => array(
-                        'controller' => 'dz-project',
+                        'controller' => 'dzproject',
                         'action' => 'index',
                     ),
                 ),
@@ -71,7 +66,7 @@ return array(
                                 'type' => '(all)|(active)'
                             ),
                             'defaults' => array(
-                                'controller' => 'dz-project',
+                                'controller' => 'dzproject',
                                 'action' => 'showall',
                                 'type' => 'all'
                             ),
@@ -83,18 +78,17 @@ return array(
     ),
     'doctrine' => array(
         'driver' => array(
-            'dz-project_model' => array(
+            'dzproject_entity' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'paths' => __DIR__ . '/../src/DzProject/Model'
+                'paths' => __DIR__ . '/../src/DzProject/Entity'
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'DzProject\Model' => 'dz-project_model'
+                    'DzProject\Entity' => 'dzproject_entity'
                 )
             )
         ),
         'connection' => array(
-            // Connection for acceptance tests
             'orm_default' => array(
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOSqlite\Driver',
                 'params' => array(

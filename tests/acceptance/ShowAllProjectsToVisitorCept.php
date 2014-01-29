@@ -1,7 +1,8 @@
 <?php
 
 /**
- * ShowAllProjectsToVisitor acceptance test
+ * Test d'acceptation ShowAllProjectsToVisitor
+ * Afficher tous les projets au visiteur.
  *
  * PHP version 5.3.3
  *
@@ -14,50 +15,50 @@
  */
 
 $I = new WebGuy($scenario);
-$I->wantTo('See all projects');
+$I->wantTo('Voir tous les projets');
 
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '1',
-        'display_name' => 'My great module',
-        'begin_date'   => '0',        // January, 1st 1970
-        'end_date'     => '946684800' // January, 1st 2000
+        'display_name' => 'Mon super module',
+        'begin_date'   => '0',        // 1er Janvier 1970
+        'end_date'     => '946684800' // 1er Janvier 2000
     )
 );
 
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '2',
-        'display_name' => 'My great ZF2 application',
-        'begin_date'   => '977702400', // December, 25th 2000
-        'end_date'     => '978220800'  // December, 31th 2000
+        'display_name' => 'Ma super application ZF2',
+        'begin_date'   => '977702400', // 25 Décembre 2000
+        'end_date'     => '978220800'  // 31 Décembre 2000
     )
 );
 
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '3',
-        'display_name' => 'My great Symfony2 application',
-        'begin_date'   => '1355266800', // December, 12th 2012
-        'end_date'     => '1356044400'  // December, 21th 2012 <= end of world
+        'display_name' => 'Ma super application Symfony2',
+        'begin_date'   => '1355266800', // 12 Décembre 2012
+        'end_date'     => '1356044400'  // 21 Décembre 2012 <= fin du monde
     )
 );
 
-$I->amOnPage('/project/show-all/all');
+$I->amOnPage('/dzproject/show-all/all');
 
-$I->see('Projects');
+$I->see('Projets');
 
-$I->see('Name');
-$I->see('Period');
+$I->see('Nom');
+$I->see('Période');
 
-$I->see('My great module');
+$I->see('Mon super module');
 $I->see('01/01/1970');
 $I->see('01/01/2000');
 
-$I->see('My great ZF2 application');
+$I->see('Ma super application ZF2');
 $I->see('25/12/2000');
 $I->see('31/12/2000');
 
-$I->see('My great Symfony2 application');
+$I->see('Ma super application Symfony2');
 $I->see('12/12/2012');
 $I->see('21/12/2012');

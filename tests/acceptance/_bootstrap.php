@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Bootstrap file for acceptance tests
+ * Fichier de Bootstrap pour les tests d'acceptation
  * 
  * PHP version 5.3.3
  *

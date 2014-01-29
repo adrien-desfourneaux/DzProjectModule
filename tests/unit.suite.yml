@@ -1,7 +1,7 @@
-# Codeception Test Suite Configuration
+# Configuration de la suite de tests Codeception
 
-# suite for unit (internal) tests.
-# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+# Suite de tests pour les tests unitaires.
+# LANCER LA COMMANDE `build` APRES L'AJOUT/LA SUPPRESSION DE MODULES.
 
 class_name: CodeGuy
 modules:

@@ -1,7 +1,8 @@
 <?php
 
 /**
- * ShowActiveProjectsToVisitor acceptance test
+ * Test d'acceptation ShowActiveProjectsToVisitor
+ * Afficher les projets actifs au visiteur.
  *
  * PHP version 5.3.3
  *
@@ -14,7 +15,7 @@
  */
 
 $I = new WebGuy($scenario);
-$I->wantTo('See active projects');
+$I->wantTo('Voir les projets actifs');
 
 $time          = new \DateTime();
 $twoDaysBefore = strtotime(date('y-m-d', $time->modify('-2 days')->getTimestamp()));
@@ -34,7 +35,7 @@ $twoDaysAfter  = strtotime(date('y-m-d', $time->modify('+2 days')->getTimestamp(
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '1',
-        'display_name' => 'Finished project',
+        'display_name' => 'Projet terminé',
         'begin_date'   => $twoDaysBefore,
         'end_date'     => $oneDayBefore
     )
@@ -43,7 +44,7 @@ $I->haveInDatabase(
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '2',
-        'display_name' => 'Project that finish today',
+        'display_name' => "Projet qui se termine aujourd'hui",
         'begin_date'   => $oneDayBefore,
         'end_date'     => $today
     )
@@ -52,7 +53,7 @@ $I->haveInDatabase(
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '3',
-        'display_name' => 'Project that start today',
+        'display_name' => "Projet qui débute aujourd'hui",
         'begin_date'   => $today,
         'end_date'     => $oneDayAfter
     )
@@ -61,7 +62,7 @@ $I->haveInDatabase(
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '4',
-        'display_name' => 'Active project #1',
+        'display_name' => 'Projet actif #1',
         'begin_date'   => $twoDaysBefore,
         'end_date'     => $twoDaysAfter
     )
@@ -70,7 +71,7 @@ $I->haveInDatabase(
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '5',
-        'display_name' => 'Active project #2',
+        'display_name' => 'Projet actif #2',
         'begin_date'   => $oneDayBefore,
         'end_date'     => $oneDayAfter
     )
@@ -79,34 +80,34 @@ $I->haveInDatabase(
 $I->haveInDatabase(
     'project', array(
         'project_id'   => '6',
-        'display_name' => 'Non started project',
+        'display_name' => 'Projet non débuté',
         'begin_date'   => $oneDayAfter,
         'end_date'     => $twoDaysAfter
     )
 );
 
-$I->amOnPage('/project/show-all/active');
+$I->amOnPage('/dzproject/show-all/active');
 
-$I->see('Projects');
+$I->see('Projets');
 
-$I->see('Name');
-$I->see('Period');
+$I->see('Nom');
+$I->see('Période');
 
-$I->dontSee('Finished project');
-$I->dontSee('Non started project');
+$I->dontSee('Projet terminé');
+$I->dontSee('Projet non débuté');
 
-$I->see('Project that finish today');
+$I->see("Projet qui se termine aujourd'hui");
 $I->see(strftime("%d/%m/%Y", $oneDayBefore));
 $I->see(strftime("%d/%m/%Y", $today));
 
-$I->see('Project that start today');
+$I->see("Projet qui débute aujourd'hui");
 $I->see(strftime("%d/%m/%Y", $today));
 $I->see(strftime("%d/%m/%Y", $oneDayAfter));
 
-$I->see('Active project #1');
+$I->see('Projet actif #1');
 $I->see(strftime("%d/%m/%Y", $twoDaysBefore));
 $I->see(strftime("%d/%m/%Y", $twoDaysAfter));
 
-$I->see('Active project #2');
+$I->see('Projet actif #2');
 $I->see(strftime("%d/%m/%Y", $oneDayBefore));
 $I->see(strftime("%d/%m/%Y", $oneDayAfter));

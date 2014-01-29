@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # /*!
-#     Run all scripts in this folder
+#     Lance tous les scripts dans ce répertoire
 #     @author Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
 #  */
 

@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Project specification
+ * Spécification de l'entité Project
  *
  * PHP version 5.3.3
  *
  * @category Spec
- * @package  DzProject\Model
+ * @package  DzProject\Entity
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/spec/DzProject/Model/ProjectSpec.php
+ * @link     https://github.com/dieze/DzProject/blob/master/spec/DzProject/Entity/ProjectSpec.php
  */
 
-namespace spec\DzProject\Model;
+namespace spec\DzProject\Entity;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -20,13 +20,13 @@ use Zend\Stdlib\Exception;
 
 /**
  * Classe de spécification du comportement
- * du repository pour les projets.
+ * de l'entité projet.
  *
  * @category Spec
- * @package  DzProject\Model
+ * @package  DzProject\Entity
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/spec/DzProject/Model/ProjectSpec.php
+ * @link     https://github.com/dieze/DzProject/blob/master/spec/DzProject/Entity/ProjectSpec.php
  * @see      ObjectBehavior
  */
 class ProjectSpec extends ObjectBehavior
@@ -38,7 +38,7 @@ class ProjectSpec extends ObjectBehavior
      */
     function it_is_initializable()
     {
-        $this->shouldHaveType('DzProject\Model\Project');
+        $this->shouldHaveType('DzProject\Entity\Project');
     }
 
     /**

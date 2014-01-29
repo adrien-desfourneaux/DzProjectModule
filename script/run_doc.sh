@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # /*!
-#     Run documentation generation for the DzProject module.
+#     Lance la génération de la documentation pour le module DzProject
 #     @author Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
 #  */
 

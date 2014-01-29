@@ -1,38 +1,33 @@
 <?php
 
 /**
- * ProjectRepository source
+ * Fichier de source pour le ProjectMapper
  *
  * PHP version 5.3.3
  *
  * @category Source
- * @package  DzProject\Model
+ * @package  DzProject\Mapper
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Model/ProjectRepository.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Mapper/Project.php
  */
 
-namespace DzProject\Model;
+namespace DzProject\Mapper;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 /**
- * Repository pour les projets.
+ * Mapper pour les projets.
  *
  * @category Source
- * @package  DzProject\Model
+ * @package  DzProject\Mapper
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Model/ProjectRepository.php
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Mapper/Project.php
  */
-class ProjectRepository
+class Project implements ProjectInterface
 {
-    /**
-     * Entity class.
-     * @var string
-     */
-    protected $entity;
-
     /**
      * Doctrine ORM EntityManager.
      * @var EntityManager
@@ -40,14 +35,21 @@ class ProjectRepository
     protected $entityManager;
 
     /**
-     * Constructeur de ProjectRepository.
-     *
-     * @param EntityManager $entityManager Instance of EntityManager
+     * Entity class.
+     * @var string
      */
-    public function __construct($entityManager)
+    protected $entityClass;
+
+    /**
+     * Constructeur de ProjectMapper.
+     *
+     * @param EntityManager $entityManager Instance de EntityManager
+     * @param string        $entityClass   Nom de la classe de l'entité projet
+     */
+    public function __construct($entityManager, $entityClass = 'DzProject\Entity\Project')
     {
-        $this->entity        = 'DzProject\Model\Project';
         $this->entityManager = $entityManager;
+        $this->entityClass = $entityClass;
     }
 
     /**
@@ -58,7 +60,7 @@ class ProjectRepository
     public function getRepository()
     {
         return $this->entityManager
-            ->getRepository($this->entity);
+            ->getRepository($this->entityClass);
     }
 
     /**
@@ -66,7 +68,7 @@ class ProjectRepository
      *
      * @return ArrayCollection
      */
-    public function findAllProjects()
+    public function findAll()
     {
         return $this->getRepository()
             ->findAll();
@@ -79,11 +81,11 @@ class ProjectRepository
      *
      * @return ArrayCollection
      */
-    public function findActiveProjects()
+    public function findActive()
     {
         return $this->entityManager
             ->createQuery(
-                'SELECT p FROM DzProject\Model\Project p ' .
+                'SELECT p FROM ' . $this->entityClass . ' p ' .
                 'WHERE p.beginDate <= :today AND p.endDate >= :today'
             )
             ->setParameter('today', strtotime(date("y-m-d")))

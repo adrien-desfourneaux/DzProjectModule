@@ -1,7 +1,8 @@
 <?php
 
 /**
- * ShowModuleInformations acceptance test
+ * Test d'acceptation ShowModuleInformations
+ * Afficher les informations du module.
  *
  * PHP version 5.3.3
  *
@@ -14,9 +15,9 @@
  */
 
 $I = new WebGuy($scenario);
-$I->wantTo('See Module Informations');
-$I->amOnPage('/project');
+$I->wantTo('Voir les informations du module');
+$I->amOnPage('/dzproject');
 
-$I->see('DzProject Module');
-$I->see('Author');
-$I->see('Repository');
+$I->see('DzProject');
+$I->see('Auteur');
+$I->see('Dépôt');

@@ -1,0 +1,25 @@
+<?php
+/**
+ * Configuration du module DzProject
+ *
+ * Si vous avez un dossier ./config/autoload/ dans votre projet, vous pouvez
+ * y mettre ce fichier de configuration et changer les valeurs selon vos besoins.
+ */
+$settings = array(
+    /**
+     * Nom de la classe d'entité projet
+     *
+     * Nom de la classe d'entité à utiliser. Utile si vous voulez utiliser votre
+     * propre classe d'entité au lieu de la classe par défaut.
+     * La classe par défaut est DzProject\Entity\Project.
+     * La classe d'entité doit implémenter DzProject\Entity\ProjectInterface
+     */
+    'project_entity_class' => 'DzProject\Entity\Project',
+);
+
+/**
+ * Ne pas modifier
+ */
+return array(
+    'dzproject' => $settings,
+);

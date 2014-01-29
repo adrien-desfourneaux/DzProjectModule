@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Bootstrap file for functional tests
+ * Fichier de Bootstrap pour les tests fonctionnels
  *
  * PHP version 5.3.3
  *

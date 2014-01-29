@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Helper for functional tests
+ * Aides pour les tests fonctionnels
  *
  * PHP version 5.3.3
  *

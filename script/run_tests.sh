@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # /*!
-#     Run all tests for the DzProject module.
+#     Lance tous les tests pour le module DzProject
 #     @author Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
 #  */
 

@@ -1,32 +1,31 @@
 DzProject
 =========
 
-Project management ZF2 module
+Module de management de projet pour ZF2
 
-Install
+Installation
 ==========
-Coming soon...
+Bientôt...
 
-Shell script utilities
+Utilitaires
 ==================
 
-Some shell script utilities can be found in the script folder :
+Quelques utilitaires sous la forme de scripts shell peuvent être trouvés dans le répertoire script :
 
-- **run_doc.sh** : run documentation generation using [phpDocumentor](http://www.phpdoc.org/) . Documentation can be found in the **doc** folder of the module.
-- **run_metrics.sh** : run metrics generation using [PHP Depend](http://pdepend.org/) and [PHPLoc](https://github.com/sebastianbergmann/phploc). Metrics can be found in the **metrics** folder of the module.
-- **run_sniffers.sh** : run some sniffers (including [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer), [PHP Mess Detector](http://phpmd.org/), and some docblocks checks).
-- **run_tests.sh** : run specification tests with [phpspec](http://www.phpspec.net/) and acceptance tests with [Codeception](http://codeception.com/). There are some prerequisites for acceptance tests, see **Codeception acceptance tests prerequisites**
-- **run_all.sh** : run all scripts above.
+- **run_doc.sh** : Lancer la génération de documentation en utilisant [phpDocumentor](http://www.phpdoc.org/). La documentation générée se situe dans le répertoire **doc** du module.
+- **run_metrics.sh** : Lance la génération des métriques en utilisant [PHP Depend](http://pdepend.org/) et [PHPLoc](https://github.com/sebastianbergmann/phploc). Les métriques générés se situent dans le répertoire **metrics** du module.
+- **run_sniffers.sh** : Lance les sniffers (dont [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer), [PHP Mess Detector](http://phpmd.org/), et quelques vérifications de la validité des blocks de documentation de code (DocBlocks).
+- **run_tests.sh** : Lance les tests de spécifications avec [phpspec](http://www.phpspec.net/) et les tests d'acceptation avec [Codeception](http://codeception.com/). Quelques prérequis doivent être remplis avant de lancer les tests d'acceptation, voir **Prérequis pour les tests d'acceptation Codeception**
+- **run_all.sh** : Lance tous les scripts ci-dessus.
 
-As they are shell scripts, They can only be run on a unix system.
+Comme il s'agit de script sheel, il ne peuvent être exécutés que sur un système d'exploitation unix.
 
-
-Codeception acceptance test prerequisites
+Prérequis pour les tests d'acceptation Codeception
 =====================================
-Codeception acceptance tests use Selenium in order to drive web browser and run tests.
-There are some prerequisites for the acceptance tests to run.
+Les tests d'acceptation Codeception utilisent Selenium pour diriger un navigateur web et lancer les tests.
+Il y a quelques prérequis pour pouvoir lancer les tests d'acceptation.
 
-Create a file **zf2\_app/public/dzproject.php** that contains something like :
+Créer un fichier **zf2\_app/public/dzproject.test.php** qui contient :
 
 	<?php
 	/**
@@ -44,11 +43,11 @@ Create a file **zf2\_app/public/dzproject.php** that contains something like :
 	require 'init_autoloader.php';
 
 	// Run the application!
-	Zend\Mvc\Application::init(require 'module/DzProject/tests/application.config.php')->run();
+	Zend\Mvc\Application::init(require 'module/DzProject/config/application.config.php')->run();
 	
-The important part is on the last line, when we start the application using the application.config.php of the module.
+La partie importante se situe sur la dernière ligne, là où on lance l'application en utilisant le fichier application.config.php du module.
 
-Edit the file **DzProject/tests/acceptance.suite.yml** :
+Editer le fichier **DzProject/config/acceptance.suite.yml** :
 
 	class_name: WebGuy
 	modules:
@@ -61,24 +60,24 @@ Edit the file **DzProject/tests/acceptance.suite.yml** :
 	            browser: firefox
 	            host: 0.0.0.0
 
-**In url, set the url to load the application.**
-**In host, set the host ip where it can find the Selenium2 WebDriver (see below)**
+**Dans "url", définir l'url à charger pour lancer l'application.**
+**Dans "host", définir l'ip de la machine où est lancé le serveur Selenium2 (voir ci-dessous)**
 
-Go to the root folder of the module and start the Selenium2 WebDriver :
+Aller dans le répertoire du module et lancer le serveur Selenium2 :
 	
 	java -jar tests/selenium-server-standalone-2.39.0.jar
 
-You need to have firefox installed on your host machine.
+La navigateur web firefox doit être installé sur votre machine.
 
-Now you can run acceptance tests.
-To start an acceptance test (ShowModuleInformationCept for example), go to the module root folder and run :
+Vous pouvez maintenant lancer les tests d'acceptation.
+Pour lancer un test d'acceptation (ShowModuleInformationCept par exemple), aller dans le répertoire du module et lancer la commande :
 
 	../../vendor/bin/codecept run tests/acceptance/ShowModuleInformationsCept.php
 	
-You can also run all acceptance tests with
+Vous pouvez également lancer tous les tests d'acceptation avec la commande :
 
 	../../vendor/bin/codecept run
 	
-Or use the shell script utility that will also run all specs :
+Il est aussi possible d'utiliser le script shell qui va lancer tous les tests d'acceptation :
 
-	script/run_tests.sh
+	script/run_tests.sh cept

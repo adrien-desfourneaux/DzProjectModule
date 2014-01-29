@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Bootstrap file for tests
+ * Fichier de Bootstrap pour les tests
  *
  * PHP version 5.3.3
  *

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Helper for acceptance tests
+ * Aides pour les tests d'acceptation
  * 
  * PHP version 5.3.3
  *
@@ -16,7 +16,7 @@
 namespace Codeception\Module;
 
 /**
- * Classe helper pour les tests d'acceptance.
+ * Classe helper pour les tests d'acceptation.
  * Fonctions personnalisés pour le WebGuy.
  *
  * @category   Test

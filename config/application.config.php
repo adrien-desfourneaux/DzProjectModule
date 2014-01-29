@@ -1,12 +1,12 @@
 <?php
 /**
- * Test application configuration file.
+ * Fichier de configuration de l'application de test.
  * 
- * This file contains only the modules really needed for
- * the DzProject module to work.
+ * Ce fichier contient uniquement les modules réellement nécéssaires
+ * pour que le module fonctionne.
  *
- * This file should be run either by /public/dz-project.php
- * or /public/test/dz-project.php
+ * Ce fichier devrait être lancé soit par /public/dzproject.php
+ * ou /public/dzproject.test.php
  *
  * PHP version 5.3.3
  *

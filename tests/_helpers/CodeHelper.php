@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Helper for unit tests
+ * Aides pour les tests unitaires
  *
  * PHP version 5.3.3
  *

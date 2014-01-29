@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # /*!
-#     Run all sniffers for the DzProject module.
+#     Lance tous les sniffers pour le module DzProject
 #     @author Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
 #  */
 

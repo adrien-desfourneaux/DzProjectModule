@@ -1,10 +1,10 @@
-# Codeception Test Suite Configuration
+# Configuration de la suite de tests Codeception
 
-# suite for functional (integration) tests.
-# emulate web requests and make application process them.
-# (tip: better to use with frameworks).
+# Suite de tests pour les tests fonctionnels (tests d'intégration)
+# Emule les requêtes web et les fait traiter par l'application.
+# (tip: mieux utilisé avec des frameworks).
 
-# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+# LANCER LA COMMANDE `build` APRES L'AJOUT/LA SUPPRESSION DE MODULES.
 
 class_name: TestGuy
 modules:
