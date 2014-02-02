@@ -44,7 +44,7 @@ $I->haveInDatabase(
     )
 );
 
-$I->amOnPage('/dzproject/show-all/all');
+$I->amOnPage('/project/show-all/all');
 
 $I->see('Projets');
 

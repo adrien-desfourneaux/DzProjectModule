@@ -16,7 +16,7 @@
 
 $I = new WebGuy($scenario);
 $I->wantTo('Voir les informations du module');
-$I->amOnPage('/dzproject');
+$I->amOnPage('/project');
 
 $I->see('DzProject');
 $I->see('Auteur');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fichier de source du ProjectController
  *
@@ -33,9 +34,7 @@ class ProjectController extends AbstractActionController
 {
     const ROUTE_SHOWMODULE = 'dzproject';
     const ROUTE_ADD        = 'dzproject/add';
-    const ROUTE_DELETE     = 'dzproject/delete';
     const ROUTE_SHOWALL    = 'dzproject/showall';
-    const ROUTE_SHOWACTIVE = 'dzproject/showall/active';
 
     const CONTROLLER_NAME  = 'dzproject';
     
@@ -54,15 +53,9 @@ class ProjectController extends AbstractActionController
     protected $addForm;
 
     /**
-     * Formulaire de suppression de projet
-     *
-     * @var Form
-     */
-    protected $deleteForm;
-
-    /**
      * Action par défaut du ProjectController
-     * Affiche les informations du module.
+     * Information du module
+     * ROUTE: /project
      *
      * @return ViewModel
      */
@@ -72,34 +65,46 @@ class ProjectController extends AbstractActionController
     }
 
     /**
-     * Traite les données du formulaire d'ajout de projet
+     * Envoie le formulaire d'ajout de projet
+     * Traite en retour les données du formulaire
+     * ROUTE: /project/add
      *
-     * @return null
+     * @return ViewModel
      */
     public function addAction()
     {
+        return new ViewModel();
     }
 
     /**
      * Traite les données du formulaire de suppression de projet
+     * ROUTE: /project/delete/:id
+     * GET: id Identifiant du projet à supprimer
      *
-     * @return null
+     * @return ViewModel
      */
     public function deleteAction()
     {
+        return new ViewModel();
     }
 
     /**
-     * Affiche un projet particulier
+     * Fiche projet
+     * GET: id Identifiant du projet
      *
-     * @return null
+     * @return ViewModel
      */
     public function showAction()
     {
+        return new ViewModel();
     }
 
     /**
      * Affiche un ensemble de projets
+     * ROUTE: /project/show-all/:type
+     * GET: type Type des projets à afficher
+     *           all    Tous les projets
+     *           active Seulement les projets actifs
      *
      * @return ViewModel
      */
@@ -108,17 +113,9 @@ class ProjectController extends AbstractActionController
         $type = $this->params()
             ->fromRoute('type');
 
-        $projects = array();
-
-        if ($type == 'all') {
-            $projects = $this->getProjectService()
-                ->getProjectMapper()
-                ->findAll();
-        } else if ($type == 'active') {
-            $projects = $this->getProjectService()
-                ->getProjectMapper()
-                ->findActive();
-        }
+        $projects = $this->getProjectService()
+            ->getProjectMapper()
+            ->findByType($type);
 
         return new ViewModel(
             array(

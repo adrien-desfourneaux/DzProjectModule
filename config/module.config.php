@@ -46,29 +46,72 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+
+            // Information du module
             'dzproject' => array(
                 'type' => 'Segment',
-                'priority' => 1000,
                 'options' => array(
-                    'route' => '/dzproject[/]',
+                    'route' => '/project[/]',
                     'defaults' => array(
                         'controller' => 'dzproject',
                         'action' => 'index',
                     ),
                 ),
-                'may_terminate' => true,
+
+                'may_terminate' => 'true',
                 'child_routes' => array(
+
+                    // Ajout d'un projet
+                    'add' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'add[/]',
+                            'defaults' => array(
+                                'action' => 'add',
+                            ),
+                        ),
+                    ),
+
+                    // Suppression d'un projet
+                    'delete' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'delete/:id[/]',
+                            'contraints' => array(
+                                'id' => '\d',
+                            ),
+                            'defaults' => array(
+                                'action' => 'delete',
+                            ),
+                        ),
+                    ),
+
+                    // Fiche projet
+                    'show' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'show/:id[/]',
+                            'constrains' => array(
+                                'id' => '\d',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'dzproject',
+                                'action' => 'show',
+                            ),
+                        ),
+                    ),
+
+                    // Visualisation des projets
                     'showall' => array(
                         'type' => 'Segment',
                         'options' => array(
                             'route' => 'show-all[/:type][/]',
                             'constraints' => array(
-                                'type' => '(all)|(active)'
+                                'type' => '(all)|(active)',
                             ),
                             'defaults' => array(
-                                'controller' => 'dzproject',
                                 'action' => 'showall',
-                                'type' => 'all'
+                                'type' => 'all',
                             ),
                         ),
                     ),

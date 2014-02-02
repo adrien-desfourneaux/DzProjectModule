@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <ruleset name="PEAR Custom">
-  <description>Standard PEAR, mais sans contrôle de longueur de ligne (linelength) et contrôle de nom de fonction camelcaps.</description>
+  <description>Standard PEAR, mais sans contrôle de longueur de ligne (linelength), contrôle de structures de test inline, et contrôle de nom de fonction camelcaps.</description>
   <rule ref="PEAR">
     <exclude name="Generic.Files.LineLength"/>
+    <exclude name="Generic.ControlStructures.InlineControlStructure"/>
     <exclude name="PEAR.NamingConventions.ValidFunctionName"/>
   </rule>
 </ruleset>

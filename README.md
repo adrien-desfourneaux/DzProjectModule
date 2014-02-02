@@ -56,7 +56,7 @@ Editer le fichier **DzProject/config/acceptance.suite.yml** :
 	        - WebDriver
 	    config:
     	    WebDriver:
-        	    url: 'http://0.0.0.0/dzproject.php'
+        	    url: 'http://0.0.0.0/dzproject.test.php'
 	            browser: firefox
 	            host: 0.0.0.0
 

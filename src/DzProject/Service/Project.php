@@ -9,7 +9,7 @@
  * @package  DzProject\Service
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Service/ProjectService.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Service/Project.php
  */
 
 namespace DzProject\Service;
@@ -28,7 +28,7 @@ use DzProject\Options\ProjectServiceOptionsInterface;
  * @package  DzProject\Service
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Service/ProjectService.php
+ * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Service/Project.php
  * @see      ServiceManagerAwareInterface
  */
 class Project implements ServiceManagerAwareInterface

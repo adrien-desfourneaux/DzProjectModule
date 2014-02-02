@@ -36,7 +36,7 @@ interface ProjectInterface
     /**
      * Définit le nom d'affichage.
      *
-     * @param string $displayName Display name to set
+     * @param string $displayName Nouveau nom d'affichage
      *
      * @return Project
      */
@@ -52,7 +52,7 @@ interface ProjectInterface
     /**
      * Définit la date de début.
      *
-     * @param integer $beginDate Begin date to set
+     * @param integer $beginDate Nouvelle date de début
      *
      * @return Project
      */

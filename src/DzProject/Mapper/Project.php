@@ -64,6 +64,22 @@ class Project implements ProjectInterface
     }
 
     /**
+     * Trouve un projet selon son type.
+     *
+     * @param string $type Type de projet à trouver
+     *
+     * @return \Doctrine\ORM\Common\Collections\ArrayCollection
+     */
+    public function findByType($type)
+    {
+        if ($type == 'active') {
+            return $this->findActive();
+        } else {
+            return $this->findAll();
+        }
+    }
+
+    /**
      * Trouve tous les projets.
      *
      * @return ArrayCollection

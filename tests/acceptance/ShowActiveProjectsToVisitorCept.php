@@ -86,7 +86,7 @@ $I->haveInDatabase(
     )
 );
 
-$I->amOnPage('/dzproject/show-all/active');
+$I->amOnPage('/project/show-all/active');
 
 $I->see('Projets');
 

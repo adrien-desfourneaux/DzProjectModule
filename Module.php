@@ -71,6 +71,27 @@ class Module implements
      * ou un tableau pour créer un tel objet.
      *
      * @return array|\Zend\ServiceManager\Config
+     */
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'dzProjectShowAllWidget' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\DzProjectShowAllWidget;
+                    $viewHelper->setProjectService($locator->get('dzproject_project_service'));
+                    return $viewHelper;
+                },
+            ),
+        );
+    }
+
+    /**
+     * Doit retourner un objet de type \Zend\ServiceManager\Config
+     * ou un tableau pour créer un tel objet.
+     *
+     * @return array|\Zend\ServiceManager\Config
      *
      * @see ServiceProviderInterface
      */

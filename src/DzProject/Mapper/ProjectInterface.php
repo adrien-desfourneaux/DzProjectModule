@@ -26,6 +26,15 @@ namespace DzProject\Mapper;
 interface ProjectInterface
 {
     /**
+     * Trouve un  projet selon son type
+     *
+     * @param string $type Type de projet à trouver
+     *
+     * @return \Doctrine\ORM\Common\Collections\ArrayCollection
+     */
+    public function findByType($type);
+
+    /**
      * Trouve tous les projets
      *
      * @return \Doctrine\ORM\Common\Collections\ArrayCollection
