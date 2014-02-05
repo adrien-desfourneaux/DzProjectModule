@@ -47,7 +47,7 @@ create () {
   chmod g+w data/$DBNAME.sqlite
 
   if [ ! -f tests/_data/$DBNAME.sqlite ]; then
-    sqlite3 "" tests/_data/$DBNAME.sqlite
+    sqlite3 tests/_data/$DBNAME.sqlite ""
     chmod g+w tests/_data/$DBNAME.sqlite
   fi
 
