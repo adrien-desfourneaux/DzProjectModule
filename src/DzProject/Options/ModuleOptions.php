@@ -26,14 +26,54 @@ use Zend\Stdlib\AbstractOptions;
  * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Options/ModuleOptions.php
  */
 class ModuleOptions extends AbstractOptions implements
+    ProjectControllerOptionsInterface,
     ProjectServiceOptionsInterface
 {
+    /**
+     * Utiliser le paramètre redirect s'il est présent
+     *
+     * @var bool
+     */
+    protected $useRedirectParameterIfPresent = true;
+
     /**
      * Nom de la classe d'entité projet
      *
      * @var string
      */
     protected $projectEntityClass = 'DzProject\Entity\Project';
+
+    /**
+     * Template de vue pour le widget d'affichage de plusieurs projets
+     *
+     * @var string
+     */
+    protected $projectShowallWidgetViewTemplate = 'dz-project/project/showallWidget.phtml';
+
+    /**
+     * Définit s'il faut utiliser le paramètre redirect
+     * s'il est présent
+     *
+     * @param bool $useRedirectParameterIfPresent Valeur de l'option
+     *
+     * @return ModuleOptions
+     */
+    public function setUseRedirectParameterIfPresent($useRedirectParameterIfPresent)
+    {
+        $this->useRedirectParameterIfPresent = $useRedirectParameterIfPresent;
+        return $this;
+    }
+
+    /**
+     * Obtient s'il faut utiliser le paramètre redirect
+     * s'il est présent
+     *
+     * @return bool
+     */
+    public function getUseRedirectParameterIfPresent()
+    {
+        return $this->useRedirectParameterIfPresent;
+    }
 
     /**
      * Définit le nom de la classe d'entité projet
@@ -56,5 +96,28 @@ class ModuleOptions extends AbstractOptions implements
     public function getProjectEntityClass()
     {
         return $this->projectEntityClass;
+    }
+
+    /**
+     * Définit le template de vue pour le widget d'affichage de plusieurs projets
+     *
+     * @param string $projectShowallWidgetViewTemplate Chemin vers le template
+     *
+     * @return ModuleOptions
+     */
+    public function setProjectShowallWidgetViewTemplate($projectShowallWidgetViewTemplate)
+    {
+        $this->projectShowallWidgetViewTemplate = $projectShowallWidgetViewTemplate;
+        return $this;
+    }
+
+    /**
+     * Obtient le template de vue pour le widget d'affichage de plusieurs projets
+     *
+     * @return string
+     */
+    public function getProjectShowallWidgetViewTemplate()
+    {
+        return $this->projectShowallWidgetViewTemplate;
     }
 }

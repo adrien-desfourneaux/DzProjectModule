@@ -14,6 +14,8 @@
 
 namespace DzProject\Form;
 
+use Zend\Form\Form;
+
 /**
  * Classe formulaire d'Ajout de Projet (Add)
  *
@@ -23,7 +25,7 @@ namespace DzProject\Form;
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
  * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Form/Add.php
  */
-class Add extends Zend\Form\Form
+class Add extends Form
 {
     /**
      * Constructeur du formulaire
@@ -74,19 +76,7 @@ class Add extends Zend\Form\Form
             array(
                 'name' => 'add',
                 'options' => array(
-                    'label' => 'Nouveau',
-                ),
-                'attributes' => array(
-                    'type' => 'submit'
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'name' => 'close',
-                'options' => array(
-                    'label' => 'Fermer',
+                    'label' => 'Ajouter',
                 ),
                 'attributes' => array(
                     'type' => 'submit'

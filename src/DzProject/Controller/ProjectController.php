@@ -16,9 +16,12 @@ namespace DzProject\Controller;
 
 use Zend\Form\Form;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Stdlib\ResponseInterface as Response;
 use Zend\View\Model\ViewModel;
 use DzProject\Service\Project as ProjectService;
 use Zend\Stdlib\Exception;
+
+use DzProject\Options\ProjectControllerOptionsInterface;
 
 /**
  * Classe contrôleur de projet.
@@ -53,6 +56,19 @@ class ProjectController extends AbstractActionController
     protected $addForm;
 
     /**
+     * Options pour le ProjectController
+     *
+     * @var ProjectControllerOptionsInterface
+     */
+    protected $options;
+
+    /**
+     * Message d'échec d'ajout de projet
+     * @var string
+     */
+    protected $failedAddMessage = "'Echec de l'ajout. Veuillez réessayer.";
+
+    /**
      * Action par défaut du ProjectController
      * Information du module
      * ROUTE: /project
@@ -73,7 +89,44 @@ class ProjectController extends AbstractActionController
      */
     public function addAction()
     {
-        return new ViewModel();
+
+        $request = $this->getRequest();
+        $service = $this->getProjectService();
+        $form    = $this->getAddForm();
+
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
+            $redirect = $request->getQuery()->get('redirect');
+        } else {
+            $redirect = false;
+        }
+
+        $redirectUrl = $this->url()->fromRoute(static::ROUTE_ADD)
+            . ($redirect ? '?redirect=' . $redirect : '');
+        $prg = $this->prg($redirectUrl, true);
+
+        if ($prg instanceof Response) {
+            return $prg;
+        } elseif ($prg === false) {
+            return array(
+                'addForm' => $form,
+                'redirect' => $redirect,
+            );
+        }
+
+        $post = $prg;
+
+        $project = $service->add($post);
+
+        $redirect = isset($prg['redirect']) ? $prg['redirect'] : null;
+
+        if (!$project) {
+            return array(
+                'addForm' => $form,
+                'redirect' => $redirect,
+            );
+        }
+
+        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_SHOWALL) . ($redirect ? '?redirect='.$redirect : ''));
     }
 
     /**
@@ -148,5 +201,56 @@ class ProjectController extends AbstractActionController
     {
         $this->projectService = $projectService;
         return $this;
+    }
+
+    /**
+     * Obtient le formulaire d'Ajout de projet
+     *
+     * @return Form
+     */
+    public function getAddForm()
+    {
+        if (!$this->addForm) {
+            $this->setAddForm($this->getServiceLocator()->get('dzproject_add_form'));
+        }
+        return $this->addForm;
+    }
+
+    /**
+     * Définit le formulaire d'Ajout de projet
+     *
+     * @param Form $addForm Nouveau formulaire d'Ajout de projet
+     *
+     * @return void
+     */
+    public function setAddForm(Form $addForm)
+    {
+        $this->addForm = $addForm;
+    }
+
+    /**
+     * Définit les options pour le ProjectController
+     *
+     * @param ProjectControllerOptionsInterface $options Nouvelles options
+     *
+     * @return ProjectController
+     */
+    public function setOptions(ProjectControllerOptionsInterface $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * Obtient les options pour le ProjectController
+     *
+     * @return ProjectControllerOptionsInterface
+     */
+    public function getOptions()
+    {
+        if (!$this->options instanceof ProjectControllerOptionsInterface) {
+            $this->setOptions($this->getServiceLocator()->get('dzproject_module_options'));
+        }
+        return $this->options;
     }
 }

@@ -17,3 +17,37 @@
 ?>
 
 <h1>Ajout d'un projet</h1>
+
+<?php
+$form = $this->addForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('dzproject/add'));
+$form->setAttribute('method', 'post');
+?>
+
+<?php echo $this->form()->openTag($form) ?>
+
+    <dl class="zend_form">
+        <?php echo $this->formElementErrors($form->get('displayName')) ?>
+
+        <dt><?php echo $this->formLabel($form->get('displayName')) ?></dt>
+        <dd><?php echo $this->formInput($form->get('displayName')) ?></dd>
+
+        <dt><?php echo $this->formLabel($form->get('beginDate')) ?></dt>
+        <dd><?php echo $this->formInput($form->get('beginDate')) ?></dd>
+
+        <dt><?php echo $this->formLabel($form->get('endDate')) ?></dt>
+        <dd><?php echo $this->formInput($form->get('endDate')) ?></dd>
+
+        <?php
+        if ($this->redirect) :
+            ?>
+            <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+            <?php
+        endif
+        ?>
+
+        <dd><?php echo $this->formButton($form->get('add')) ?></dd>
+    </dl>
+
+<?php echo $this->form()->closeTag() ?>

@@ -15,6 +15,24 @@ $settings = array(
      * La classe d'entité doit implémenter DzProject\Entity\ProjectInterface
      */
     'project_entity_class' => 'DzProject\Entity\Project',
+
+    /**
+     * Définit le template de vue pour le widget d'affichage de plusieurs projets
+     *
+     * Valeur par défaut: 'dz-project/project/showallWidget.phtml'
+     * Valeurs acceptées: (chaine de caractère) chemin vers un script de vue
+     */
+    'project_showall_widget_view_template' => 'dz-project/project/showallWidget.phtml',
+
+    /**
+     * Utiliser le paramètre redirect s'il est présent
+     *
+     * Après un ajout avec succès, vérifie s'il y a un paramètre
+     * redirect de type GET out POST
+     *
+     * Valeurs acceptées: booléen true ou false
+     */
+    'use_redirect_parameter_if_present' => true,
 );
 
 /**

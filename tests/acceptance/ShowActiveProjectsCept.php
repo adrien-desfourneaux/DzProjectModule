@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Test d'acceptation ShowActiveProjectsToVisitor
- * Afficher les projets actifs au visiteur.
+ * Test d'acceptation ShowActiveProjects
+ * Afficher les projets actifs.
  *
  * PHP version 5.3.3
  *
@@ -11,7 +11,7 @@
  * @subpackage Acceptance
  * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link       https://github.com/dieze/DzProject/blob/master/tests/acceptance/ShowActiveProjectsToVisitorCept.php
+ * @link       https://github.com/dieze/DzProject/blob/master/tests/acceptance/ShowActiveProjectsCept.php
  */
 
 $I = new WebGuy($scenario);
@@ -90,7 +90,7 @@ $I->amOnPage('/project/show-all/active');
 
 $I->see('Projets');
 
-$I->see('Nom');
+$I->see('Désignation');
 $I->see('Période');
 
 $I->dontSee('Projet terminé');

@@ -107,4 +107,43 @@ class Project implements ProjectInterface
             ->setParameter('today', strtotime(date("y-m-d")))
             ->getResult();
     }
+
+    /**
+     * Insère un nouveau projet dans le média de stockage
+     * 
+     * @param \DzProject\Entity\Project $entity Entité projet à insérer
+     *
+     * @return void
+     */
+    public function insert($entity)
+    {
+        return $this->persist($entity);
+    }
+
+    /**
+     * Met à jour un projet existant
+     * 
+     * @param \DzProject\Entity\Project $entity Entité projet à mettre à jour
+     *
+     * @return void
+     */
+    public function update($entity)
+    {
+        return $this->persist($entity);
+    }
+
+    /**
+     * Persiste un projet en base de données
+     *
+     * @param \DzProject\Entity\Project $entity Entité projet à persister
+     *
+     * @return \DzProject\Entity\Project
+     */
+    protected function persist($entity)
+    {
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+
+        return $entity;
+    }
 }

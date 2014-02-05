@@ -77,9 +77,10 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'dzProjectShowAllWidget' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
+                'dzProjectShowAllWidget' => function ($serviceManager) {
+                    $locator = $serviceManager->getServiceLocator();
                     $viewHelper = new View\Helper\DzProjectShowAllWidget;
+                    $viewHelper->setViewTemplate($locator->get('dzproject_module_options')->getProjectShowallWidgetViewTemplate());
                     $viewHelper->setProjectService($locator->get('dzproject_project_service'));
                     return $viewHelper;
                 },
@@ -100,20 +101,31 @@ class Module implements
         return array(
             'invokables' => array(
                 'dzproject_project_service' => 'DzProject\Service\Project',
-                'dzproject_project_hydrator' => 'Zend\Stdlib\Hydrator\ClassMethods'
+                'dzproject_add_form_hydrator' => 'Zend\Stdlib\Hydrator\ClassMethods'
             ),
             'factories' => array(
 
-                'dzproject_module_options' => function ($sm) {
-                    $config = $sm->get('Config');
+                'dzproject_module_options' => function ($serviceManager) {
+                    $config = $serviceManager->get('Config');
                     return new Options\ModuleOptions(isset($config['dzproject']) ? $config['dzproject'] : array());
                 },
 
-                'dzproject_project_mapper' => function ($sm) {
-                    $options = $sm->get('dzproject_module_options');
-                    $entityManager = $sm->get('doctrine.entitymanager.orm_default');
+                'dzproject_project_mapper' => function ($serviceManager) {
+                    $options = $serviceManager->get('dzproject_module_options');
+                    $entityManager = $serviceManager->get('doctrine.entitymanager.orm_default');
                     $entityClass = $options->getProjectEntityClass();
                     return new Mapper\Project($entityManager, $entityClass);
+                },
+
+                'dzproject_add_form' => function ($serviceManager) {
+                    $form = new Form\Add(null);
+                    $form->setInputFilter(new Form\AddFilter());
+                    return $form;
+                },
+
+                'dzproject_project_hydrator' => function ($serviceManager) {
+                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
+                    return $hydrator;
                 },
             ),
         );

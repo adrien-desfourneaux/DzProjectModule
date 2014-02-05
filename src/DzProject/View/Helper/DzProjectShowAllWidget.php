@@ -31,7 +31,9 @@ use Zend\View\Model\ViewModel;
 class DzProjectShowAllWidget extends AbstractHelper
 {
     /**
-     * $var string template used for view
+     * Template de vue pour le widget d'affichage de plusieurs projets
+     *
+     * @var string Template à utiliser
      */
     protected $viewTemplate;
     
@@ -68,7 +70,7 @@ class DzProjectShowAllWidget extends AbstractHelper
             )
         );
 
-        $viewModel->setTemplate('dz-project/project/showall.phtml');
+        $viewModel->setTemplate($this->viewTemplate);
         if ($render) {
             return $this->getView()->render($viewModel);
         } else {
@@ -97,5 +99,18 @@ class DzProjectShowAllWidget extends AbstractHelper
     public function getProjectService()
     {
         return $this->projectService;
+    }
+
+    /**
+     * Définit le template de vue pour le widget d'affichage de plusieurs projets
+     *
+     * @param string $viewTemplate Nouveau template de vue
+     *
+     * @return DzProjectShowAllWidget
+     */
+    public function setViewTemplate($viewTemplate)
+    {
+        $this->viewTemplate = $viewTemplate;
+        return $this;
     }
 }

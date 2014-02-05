@@ -47,4 +47,22 @@ interface ProjectInterface
      * @return \Doctrine\ORM\Common\Collections\ArrayCollection
      */
     public function findActive();
+
+    /**
+     * Insère un nouveau projet dans le média de stockage
+     * 
+     * @param \DzProject\Entity\Project $entity Entité projet à insérer
+     *
+     * @return void
+     */
+    public function insert($entity);
+
+    /**
+     * Met à jour un projet existant
+     * 
+     * @param \DzProject\Entity\Project $entity Entité projet à mettre à jour
+     *
+     * @return void
+     */
+    public function update($entity);
 }
