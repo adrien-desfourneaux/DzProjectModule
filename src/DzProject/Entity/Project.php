@@ -114,7 +114,7 @@ class Project implements ProjectInterface
      */
     public function setBeginDate($beginDate)
     {
-        if (!is_numeric($beginDate)) {
+        if (!is_numeric($beginDate) || is_float($beginDate)) {
             throw new Exception\InvalidArgumentException();
         } else if (!is_null($this->endDate) && $beginDate > $this->endDate) {
             throw new Exception\LogicException();
@@ -144,7 +144,7 @@ class Project implements ProjectInterface
      */
     public function setEndDate($endDate)
     {
-        if (!is_numeric($endDate)) {
+        if (!is_numeric($endDate) || is_float($endDate)) {
             throw new Exception\InvalidArgumentException();
         } else if (!is_null($this->beginDate) && $endDate < $this->beginDate) {
             throw new Exception\LogicException();
