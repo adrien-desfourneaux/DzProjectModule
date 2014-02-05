@@ -1,5 +1,3 @@
-/* Replace this file with actual dump of your database */
-
 CREATE TABLE project
 (
     project_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

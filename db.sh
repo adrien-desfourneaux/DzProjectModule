@@ -50,6 +50,8 @@ create () {
     sqlite3 "" tests/_data/$DBNAME.sqlite
     chmod g+w tests/_data/$DBNAME.sqlite
   fi
+
+  cat data/$DBNAME.sqlite.sql > tests/_data/dump.sql
 }
 
 # /*!
