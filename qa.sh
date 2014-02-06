@@ -107,6 +107,28 @@ checkdoc () {
 }
 
 # /*!
+#     Lance toutes les commandes
+#  */
+runall () {
+  # test
+  runspec
+  runcept
+
+  # analyse
+  runcodesniffer
+  runmessdetector
+  runcpdetector
+
+  # metric
+  genstats
+  gendepend
+
+  # doc
+  gendoc
+  checkdoc
+}
+
+# /*!
 #     Affiche l'aide
 #  */
 help () {
@@ -117,6 +139,7 @@ help () {
   printf "analyse\t\tanalyse la structure et la syntaxe du code\n"
   printf "metric\t\tanalyse la métrique du code\n"
   printf "doc\t\tgestion de la documentation du module\n"
+  printf "all\t\tlance toutes les commandes\n"
   printf "\naffiche cette aide si aucune action n'est spécifiée\n"
 }
 
@@ -205,5 +228,10 @@ elif [ $1 = 'doc' ]; then
   else helpdoc
   fi
 
-fi
+# all
+elif [ $1 = 'all' ]; then runall;
 
+# help
+else help;
+
+fi
