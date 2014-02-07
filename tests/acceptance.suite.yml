@@ -14,6 +14,7 @@ modules:
     enabled:
         - Db
         - WebDriver
+        - WebHelper
     config:
         WebDriver:
             url: 'http://192.168.56.101/dzproject.test.php'

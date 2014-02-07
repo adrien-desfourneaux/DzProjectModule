@@ -7,6 +7,7 @@
 use \Codeception\Maybe;
 use Codeception\Module\Db;
 use Codeception\Module\WebDriver;
+use Codeception\Module\WebHelper;
 
 /**
  * Inherited methods
@@ -2887,6 +2888,28 @@ class WebGuy extends \Codeception\AbstractGuy
      */
     public function appendField($field, $value) {
         $this->scenario->addStep(new \Codeception\Step\Action('appendField', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     * Insère les projets par défaut
+     * dans la base de données
+     *
+     * @return void
+     * @see Codeception\Module\WebHelper::haveDefaultProjectsInDatabase()
+     * @return \Codeception\Maybe
+     */
+    public function haveDefaultProjectsInDatabase() {
+        $this->scenario->addStep(new \Codeception\Step\Action('haveDefaultProjectsInDatabase', func_get_args()));
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);

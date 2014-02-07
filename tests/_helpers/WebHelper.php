@@ -28,4 +28,22 @@ namespace Codeception\Module;
  */
 class WebHelper extends \Codeception\Module
 {
+    /**
+     * Insère les projets par défaut
+     * dans la base de données
+     *
+     * @return void
+     */
+    public function haveDefaultProjectsInDatabase()
+    {
+        $dbh = $this->getModule('Db')->dbh;
+        $sql = file_get_contents(__DIR__ . '/../../data/dzproject.dump.sqlite.sql');
+
+        preg_match_all("/INSERT INTO '?project'? .*?;/s", $sql, $matches);
+        $inserts = $matches[0];
+
+        foreach ($inserts as $insert) {
+            $dbh->exec($insert);
+        }
+    }
 }
