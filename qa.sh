@@ -40,7 +40,7 @@ runcodesniffer () {
   ../../vendor/bin/phpcs --standard="phpcs.xml" --ignore="/doc/" --extensions="php,phtml" .
 
   # Search for unwanted tab characters
-  exclude="^\./(\.git/|doc/|.*_log/|.*\.DS_Store).*"
+  exclude="^\./(\.git/|doc/|.*_log/|.*\.DS_Store$|.*\.png$|.*\.jar$|.*\.sqlite$).*"
   find -E . -not -regex "$exclude" | xargs grep "\t" -sl | awk '{print "Tab characters in "$1}'
 }
 
