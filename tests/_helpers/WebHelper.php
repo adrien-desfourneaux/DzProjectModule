@@ -15,6 +15,8 @@
 
 namespace Codeception\Module;
 
+use DzProject\Helper\DbDumper;
+
 /**
  * Classe helper pour les tests d'acceptation.
  * Fonctions personnalisés pour le WebGuy.
@@ -37,13 +39,7 @@ class WebHelper extends \Codeception\Module
     public function haveDefaultProjectsInDatabase()
     {
         $dbh = $this->getModule('Db')->dbh;
-        $sql = file_get_contents(__DIR__ . '/../../data/dzproject.dump.sqlite.sql');
-
-        preg_match_all("/INSERT INTO '?project'? .*?;/s", $sql, $matches);
-        $inserts = $matches[0];
-
-        foreach ($inserts as $insert) {
-            $dbh->exec($insert);
-        }
+        $dbDumper = new DbDumper($dbh);
+        $dbDumper->insertProjects();
     }
 }
