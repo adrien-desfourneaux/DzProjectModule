@@ -38,16 +38,21 @@ runcept () {
 runcodesniffer () {
     cdscriptpath
     ../../vendor/bin/phpcs --standard="phpcs.xml" --ignore="/doc/" --extensions="php,phtml" .
+}
 
+# /*!
+#     Vérifie la présence d'indentation
+#     avec des caractères tabs
+#  */ 
+checktabindent () {
     exclude="^\./(\.git/|doc/|.*_log/|.*\.DS_Store$|.*\.png$|.*\.jar$|.*\.sqlite$).*"
 
-    # Search for unwanted tab characters
     if uname | grep "Linux" > /dev/null; then
-        find . -regextype posix-extended -not -regex "$exclude" | xargs grep $'\t' -sl | awk '{print "Tab characters in "$1}'
+        find . -regextype posix-extended -not -regex "$exclude" | xargs grep $'^\t' -sl | awk '{print "Tab indent in "$1}'
     elif uname | grep "Darwin" > /dev/null; then
-        find -E . -not -regex "$exclude" | xargs grep "\t" -sl | awk '{print "Tab characters in "$1}'
+        find -E . -not -regex "$exclude" | xargs grep "^\t" -sl | awk '{print "Tab indent in "$1}'
     else
-        echo "Impossible de détecter les caractères tabs\n" 1>&2
+        echo "Impossible de détecter les indentations avec caractères tab\n" 1>&2
         return 1
     fi
 }
@@ -70,8 +75,18 @@ runcpdetector () {
 
 # /*!
 #     Génère les statistiques du module
+#     Deprécié
 #  */
 genstats () {
+    cdscriptpath
+    mkdir -p metrics
+    ../../vendor/bin/phploc --progress . > metrics/stats.txt
+}
+
+# /*!
+#     Affiche les statistiques du module
+#  */
+showstats () {
     cdscriptpath
     mkdir -p metrics
     ../../vendor/bin/phploc --progress . > metrics/stats.txt
@@ -126,13 +141,16 @@ runall () {
     runspec
     runcept
 
-    # analyse
+    # code check
     runcodesniffer
+    checktabindent
     runmessdetector
     runcpdetector
 
-    # metric
-    genstats
+    # code stats
+    showstats
+
+    # code depend
     gendepend
 
     # doc
@@ -148,15 +166,14 @@ help () {
     printf "help\t\taffiche cette aide\n"
     printf "help [command]\taffiche l'aide de la commande\n"
     printf "test\t\tgestion des tests du module\n"
-    printf "analyse\t\tanalyse la structure et la syntaxe du code\n"
-    printf "metric\t\tanalyse la métrique du code\n"
+    printf "code\t\tgestion du code source\n"
     printf "doc\t\tgestion de la documentation du module\n"
     printf "all\t\tlance toutes les commandes\n"
     printf "\naffiche cette aide si aucune action n'est spécifiée\n"
 }
 
 # /*!
-#     Affiche l'aide de test
+#     Affiche l'aide de la gestion des test
 #  */
 helptest () {
     printf "Usage: qa.sh test [arg]\n"
@@ -165,28 +182,18 @@ helptest () {
 }
 
 # /*!
-#      Affiche l'aide de analyse
+#      Affiche l'aide de la gestion du code
 #  */
-helpanalyse () {
-    printf "Usage: qa.sh analyse [arg]\n"
-    printf "code\tvéfifie la syntaxe du code\n"
-    printf "mess\trecherche des problmes potentiels dans le code\n"
-    printf "cp\trecherche des traces de copier-coller dans le code\n"
+helpcode () {
+    printf "Usage: qa.sh code [command]\n"
+    printf "check\tvéfifie la syntaxe du code\n"
+    printf "stats\tAffiche des statistiques sur le code\n"
+    printf "depend\tGénère les diagrammes de dépendances de code\n"
     printf "\nLance tous les arguments si aucun n'est spécifié\n"
 }
 
 # /*!
-#     Affiche l'aide de metric
-#  */
-helpmetric () {
-    printf "Usage: qa.sh metric [arg]\n"
-    printf "depend\tGénère des diagramme de dépendances du code\n"
-    printf "stats\tGénère des statistiques sur le code\n"
-    printf "\nLance tous les arguments si aucun n'est spécifié\n"
-}
-
-# /*!
-#     Affiche l'aide de doc
+#     Affiche l'aide de la gestion de la documentation
 #  */
 helpdoc () {
     printf "Usage: qa.sh doc [action]\n"
@@ -198,16 +205,16 @@ helpdoc () {
 # no argument
 if [ $# -eq 0 ]; then help
 
-    # help
+# help
 elif [ $1 = 'help' ]; then
     if [ $# -eq 1 ]; then help
     elif [ $2 = 'test' ]; then helptest
-    elif [ $2 = 'analyse' ]; then helpanalyse
-    elif [ $2 = 'metric' ]; then helpanalyse
+    elif [ $2 = 'code' ]; then helpcode
     elif [ $2 = 'doc' ]; then helpdoc
+    else help
     fi
 
-    # test
+# test
 elif [ $1 = 'test' ]; then
     if [ $# -eq 1 ]; then runspec; runcept
     elif [ $2 = 'spec' ]; then runspec
@@ -215,24 +222,26 @@ elif [ $1 = 'test' ]; then
     else helptest
     fi
 
-    # analyse
-elif [ $1 = 'analyse' ]; then
-    if [ $# -eq 1 ]; then runcodesniffer; runmessdetector; runcpdetector
-    elif [ $2 = 'code' ]; then runcodesniffer
-    elif [ $2 = 'mess' ]; then runmessdetector
-    elif [ $2 = 'cp' ]; then runcpdetector
-    else helpanalyse
-    fi
-
-    # metric
-elif [ $1 = 'metric' ]; then
-    if [ $# -eq 1 ]; then gendepend; genstats
+# code
+elif [ $1 = 'code' ]; then
+    if [ $# -eq 1 ]; then
+        runcodesniffer
+        checktabindent
+        runmessdetector
+        runcpdetector
+        showstats
+        gendepend
+    elif [ $2 = 'check' ]; then
+        runcodesniffer
+        checktabindent
+        runmessdetector
+        runcpdetector
+    elif [ $2 = 'stats' ]; then showstats
     elif [ $2 = 'depend' ]; then gendepend
-    elif [ $2 = 'stats' ]; then genstats
-    else helpmetric
+    else helpcode
     fi
 
-    # doc
+# doc
 elif [ $1 = 'doc' ]; then
     if [ $# -eq 1 ]; then checkdoc; gendoc
     elif [ $2 = 'check' ]; then checkdoc
@@ -240,10 +249,10 @@ elif [ $1 = 'doc' ]; then
     else helpdoc
     fi
 
-    # all
+# all
 elif [ $1 = 'all' ]; then runall;
 
-    # help
+# help
 else help;
 
 fi
