@@ -55,7 +55,7 @@ class Add extends Form
                     'label' => 'Date de début',
                 ),
                 'attributes' => array(
-                    'type' => 'text'
+                    'type' => 'date'
                 ),
             )
         );
@@ -67,7 +67,7 @@ class Add extends Form
                     'label' => 'Date de fin',
                 ),
                 'attributes' => array(
-                    'type' => 'text'
+                    'type' => 'date'
                 ),
             )
         );
