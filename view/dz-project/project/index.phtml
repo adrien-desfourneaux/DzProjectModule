@@ -18,10 +18,79 @@
 
 <h1>DzProject</h1>
 
-<dl>
-  <dt>Auteur</dt>
-  <dd>Adrien Desfourneaux (aka Dieze51) &lt;dieze51@gmail.com&gt;</dd>
-  
-  <dt>Dépôt</dt>
-  <dd>https://github.com/dieze/DzProject.git</dd>
-</dl>
+<p>DzProject est un module de gestion de projet pour ZF2, compatible Doctrine. Il est écrit et maintenu par Adrien Desfourneaux (aka Dieze) &lt;dieze51@gmail.com&gt;. Le projet est hébergé par GitHub à l'adresse <a href="https://github.com/dieze/DzProject.git">https://github.com/dieze/DzProject.git</a></p>
+
+<h2>Fonctionnalités</h2>
+
+Le module gère :
+<ul>
+    <li><a href="<?php echo $this->url('dzproject/add'); ?>">l'ajout de projet (/project/add)</a></li>
+    <li><span style="color:red">TODO: la suppression de projet (/project/delete/:id)</span></li>
+    <li><a href="<?php echo $this->url('dzproject/showall'); ?>">l'affichage de tous les projets (/project/show-all)</a></li>
+    <li><a href="<?php echo $this->url('dzproject/showall', array('type' => 'active')); ?>">l'affichage des projets actifs (/project/show-all/active)</a>. Un projet est actif quand la date du jour se situe entre la date de début et la date de fin du projet.</li>
+</ul>
+
+<p>L'aide de vue <em>DzProjectShowAllWidget</em> permet d'intégrer l'affichage de tous les projets, ou des projets actifs, à un template de vue existant.</p>
+
+<pre>&lt;?php echo $this->dzProjectShowAllWidget(); ?&gt;</pre>
+<div style="border: 1px solid black; margin: 10px 0;">
+    <div style="width: 500px; margin: auto;">
+        <?php echo $this->dzProjectShowAllWidget(); ?>
+    </div>
+</div>
+
+<pre>&lt;?php echo $this->dzProjectShowAllWidget(array('type' => 'active')); ?&gt;</pre>
+<div style="border: 1px solid black; margin: 10px 0;">
+    <div style="width: 500px; margin: auto;">
+        <?php echo $this->dzProjectShowAllWidget(array('type' => 'active')); ?>
+    </div>
+</div>
+
+<p>L'aide de vue <em>DzProjectAddWidget</em> permet d'intégrer l'affichage du formulaire d'ajout de projet à un template de vue existant, avec la possibilité de mettre en place une redirection.</p>
+
+<pre>&lt;?php echo $this->dzProjectAddWidget(); ?&gt;</pre>
+<div style="border: 1px solid black; margin: 10px 0;">
+    <div style="width: 500px; margin: auto;">
+        <?php echo $this->dzProjectAddWidget(); ?>
+    </div>
+</div>
+
+<pre>&lt;?php echo $this->dzProjectAddWidget(array('redirect' => $this->url())); ?&gt;</pre>
+<div style="border: 1px solid black; margin: 10px 0;">
+    <div style="width: 500px; margin: auto;">
+        <?php echo $this->dzProjectAddWidget(array('redirect' => $this->url())); ?>
+    </div>
+</div>
+
+<p>Il est possible de tester manuellement les fonctionnalités du module, indépendamment du reste de l'application, en copiant le fichier <em>DzProject/dzproject.php</em> dans le dossier <em>public</em> de l'application ZF2 puis en se rendant à l'url <em>http://le-nom-de-votre-domaine/dzproject.php/project</em>.</p>
+
+<h2>Base de données</h2>
+
+<p>Le module DzProject possède sa propre base de données de développement dans le fichier de base de données sqlite <em>DzProject/data/dzproject.sqlite</em>. Les fichiers <em>dzproject.sqlite.sql</em> et <em>dzproject.dump.sqlite.sql</em> contiennent respectivement les instructions de création et d'insertion de données de tests dans le base de données.</p>
+
+<p>Le script shell <em>DzProject/db.sh</em> permet la gestion de cette base de données. Lancer la commande <pre>./db.sh help</pre> pour accéder à l'aide intégrée.
+
+<h2>Qualité du code</h2>
+
+<p>Le script shell <b>DzProject/qa.sh</b> permet de vérifier la qualité du code, lancer les tests, vérifier et générer la documentation du code. Lancer la commande <pre>./qa.sh help</pre> pour accéder à l'aide intégrée.</p>
+
+Les outils de qualité de code mis en oeuvres sont :
+<ul>
+    <li><a href="https://github.com/phpDocumentor/phpDocumentor2">phpDocumentor</a> pour la documentation du code</li>
+    <li><a href="https://github.com/squizlabs/PHP_CodeSniffer">PHP_CodeSniffer</a> pour le respect du standard de codage PEAR</li>
+    <li><a href="https://github.com/phpmd/phpmd">PHPMD</a> pour la détection d'éventuels problèmes de conception</li>
+    <li><a href="http://pdepend.org/">PDepend</a> pour la génération de diagrammes de dépendances</li>
+    <li><a href="https://github.com/sebastianbergmann/phploc">PHPLoc</a> pour la génération de statistiques sur le code</li>
+    <li><a href="https://github.com/sebastianbergmann/phpcpd">PHPCPD</a> pour la détection des copier-coller</li>
+</ul>
+
+<h2>Tests</h2>
+
+<p>Des tests d'acceptation du module DzProject se situent dans le dossier DzProject/tests/acceptance. Ces tests utilisent la suite de test <a href="http://codeception.com/">Codeception</a>, avec le module <a href="http://codeception.com/docs/modules/WebDriver">WebDriver</a> pour piloter un navigateur web grâce à <a href="http://docs.seleniumhq.org/">Selenium</a>.</p>
+
+<p>Afin que ces tests fonctionnent, copier le fichier <em>DzProject/dzproject.test.php</em> dans le dossier public de l'application ZF2, puis éditer le fichier <em>DzProject/tests/acceptance.suite.yml</em> et modifier la ligne url en spécifiant l'ip de la machine où se situe votre application. Modifier également la ligne host en y spécifiant l'ip de la machine où se trouvera le serveur Selenium. Enfin lancer le serveur Selenium : <pre>java -jar DzProject/tests/selenium-server-standalone-2.39.0.jar</pre>Installer la dernière version de Firefox sur la machine où est lancé le serveur Selenium.</p>
+
+<p>Vous pouvez maintenant lancer les tests d'acceptation.
+Pour lancer un test d'acceptation (ShowAllProjectsCept par exemple), aller dans le répertoire du module et lancer la commande : <pre>../../vendor/bin/codecept run tests/acceptance/ShowAllProjectsCept.php</pre> Vous pouvez également lancer tous les tests d'acceptation avec la commande : <pre>../../vendor/bin/codecept run</pre> Il est aussi possible d'utiliser le script shell qui va lancer tous les tests d'acceptation : <pre>./qa.sh test cept</pre></p>
+
+<p>Des tests unitaires, sous la forme de spécifications, sont également disponibles dans le dossier DzProject/spec. Ces tests utilisent la suite de test <a href="http://www.phpspec.net/">PHPSpec</a>. La commande <pre>./qa.sh test spec</pre> lancera l'exécution de ces tests.</p>
