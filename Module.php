@@ -84,6 +84,13 @@ class Module implements
                     $viewHelper->setProjectService($locator->get('dzproject_project_service'));
                     return $viewHelper;
                 },
+                'dzProjectAddWidget' => function ($serviceManager) {
+                    $locator = $serviceManager->getServiceLocator();
+                    $viewHelper = new View\Helper\DzProjectAddWidget;
+                    $viewHelper->setViewTemplate($locator->get('dzproject_module_options')->getProjectAddWidgetViewTemplate());
+                    $viewHelper->setProjectController($locator->get('controllerloader')->get('dzproject'));
+                    return $viewHelper;
+                },
             ),
         );
     }
