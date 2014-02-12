@@ -89,7 +89,6 @@ class ProjectController extends AbstractActionController
      */
     public function addAction()
     {
-
         $request = $this->getRequest();
         $service = $this->getProjectService();
         $form    = $this->getAddForm();
@@ -126,7 +125,11 @@ class ProjectController extends AbstractActionController
             );
         }
 
-        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_SHOWALL) . ($redirect ? '?redirect='.$redirect : ''));
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+            return $this->redirect()->toUrl($redirect);
+        } else {
+            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_SHOWALL));
+        }
     }
 
     /**
