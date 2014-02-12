@@ -51,6 +51,13 @@ class ModuleOptions extends AbstractOptions implements
     protected $projectShowallWidgetViewTemplate = 'dz-project/project/showallWidget.phtml';
 
     /**
+     * Template de vue pour le widget d'affichage du formualire d'ajout de projet
+     *
+     * @var string
+     */
+    protected $projectAddWidgetViewTemplate = 'dz-project/project/addWidget.phtml';
+
+    /**
      * Définit s'il faut utiliser le paramètre redirect
      * s'il est présent
      *
@@ -119,5 +126,28 @@ class ModuleOptions extends AbstractOptions implements
     public function getProjectShowallWidgetViewTemplate()
     {
         return $this->projectShowallWidgetViewTemplate;
+    }
+
+    /**
+     * Définit le template de vue pour le widget d'affichage du formulaire d'ajout de projet
+     *
+     * @param string $projectAddWidgetViewTemplate Chemin vers le template
+     *
+     * @return ModuleOptions
+     */
+    public function setProjectAddWidgetViewTemplate($projectAddWidgetViewTemplate)
+    {
+        $this->projectAddWidgetViewTemplate = $projectAddWidgetViewTemplate;
+        return $this;
+    }
+
+    /**
+     * Obtient le template de vue pour le widget d'affichage du formulaire d'ajout de projet
+     *
+     * @return string
+     */
+    public function getProjectAddWidgetViewTemplate()
+    {
+        return $this->projectAddWidgetViewTemplate;
     }
 }

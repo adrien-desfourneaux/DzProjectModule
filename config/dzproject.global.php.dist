@@ -25,6 +25,14 @@ $settings = array(
     'project_showall_widget_view_template' => 'dz-project/project/showallWidget.phtml',
 
     /**
+     * Définit le template de vue pour le widget d'affichage du formulaire d'ajout de projet
+     *
+     * Valeur par défaut: 'dz-project/project/addWidget.phtml'
+     * Valeurs acceptées: (chaine de caractère) chemin vers un script de vue
+     */
+    'project_showall_widget_view_template' => 'dz-project/project/addWidget.phtml',
+
+    /**
      * Utiliser le paramètre redirect s'il est présent
      *
      * Après un ajout avec succès, vérifie s'il y a un paramètre
