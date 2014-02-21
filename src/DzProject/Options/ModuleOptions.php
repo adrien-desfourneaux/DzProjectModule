@@ -27,12 +27,16 @@ use Zend\Stdlib\AbstractOptions;
  */
 class ModuleOptions extends AbstractOptions implements
     ProjectControllerOptionsInterface,
-    ProjectServiceOptionsInterface
+    ProjectServiceOptionsInterface,
+    ProjectWidgetsOptionsInterface,
+    ProjectListOptionsInterface
 {
     /**
      * Utiliser le paramètre redirect s'il est présent
      *
      * @var bool
+     *
+     * @see \DzProject\Options\ProjectControllerOptionsInterface
      */
     protected $useRedirectParameterIfPresent = true;
 
@@ -40,22 +44,55 @@ class ModuleOptions extends AbstractOptions implements
      * Nom de la classe d'entité projet
      *
      * @var string
+     *
+     * @see \DzProject\Options\ProjectServiceOptionsInterface
      */
     protected $projectEntityClass = 'DzProject\Entity\Project';
 
     /**
-     * Template de vue pour le widget d'affichage de plusieurs projets
+     * Template de vue pour le widget de listing des projets
      *
      * @var string
+     *
+     * @see \DzProject\Options\ProjectWidgetsOptionsInterface
      */
-    protected $projectShowallWidgetViewTemplate = 'dz-project/project/showallWidget.phtml';
+    protected $projectListWidgetViewTemplate = 'dz-project/project/list.phtml';
 
     /**
      * Template de vue pour le widget d'affichage du formualire d'ajout de projet
      *
      * @var string
+     *
+     * @see \DzProject\Options\ProjectWidgetsOptionsInterface
      */
-    protected $projectAddWidgetViewTemplate = 'dz-project/project/addWidget.phtml';
+    protected $projectAddWidgetViewTemplate = 'dz-project/project/add.phtml';
+
+    /**
+     * Template de vue pour le widget d'affichage du formulaire de suppression de projet
+     *
+     * @var string
+     *
+     * @see \DzProject\Options\ProjectWidgetsOptionsInterface
+     */
+    protected $projectDeleteWidgetViewTemplate = 'dz-project/project/delete.phtml';
+
+    /**
+     * Afficher ou non les actions de suppression de projet
+     * dans le listing des projets
+     *
+     * @var bool
+     *
+     * @see \DzProject\Options\ProjectListOptionsInterface
+     */
+    protected $projectListHasDeleteAction = true;
+
+    /**
+     * Afficher ou non l'action d'ajout
+     * dans le listing des projets
+     *
+     * @var bool
+     */
+    protected $projectListHasAddAction = true;
 
     /**
      * Définit s'il faut utiliser le paramètre redirect
@@ -68,6 +105,7 @@ class ModuleOptions extends AbstractOptions implements
     public function setUseRedirectParameterIfPresent($useRedirectParameterIfPresent)
     {
         $this->useRedirectParameterIfPresent = $useRedirectParameterIfPresent;
+
         return $this;
     }
 
@@ -92,6 +130,7 @@ class ModuleOptions extends AbstractOptions implements
     public function setProjectEntityClass($projectEntityClass)
     {
         $this->projectEntityClass = $projectEntityClass;
+
         return $this;
     }
 
@@ -106,26 +145,27 @@ class ModuleOptions extends AbstractOptions implements
     }
 
     /**
-     * Définit le template de vue pour le widget d'affichage de plusieurs projets
+     * Définit le template de vue pour le widget de listing des projets
      *
-     * @param string $projectShowallWidgetViewTemplate Chemin vers le template
+     * @param string $projectListWidgetViewTemplate Chemin vers le template
      *
      * @return ModuleOptions
      */
-    public function setProjectShowallWidgetViewTemplate($projectShowallWidgetViewTemplate)
+    public function setProjectListWidgetViewTemplate($projectListWidgetViewTemplate)
     {
-        $this->projectShowallWidgetViewTemplate = $projectShowallWidgetViewTemplate;
+        $this->projectListWidgetViewTemplate = $projectListWidgetViewTemplate;
+
         return $this;
     }
 
     /**
-     * Obtient le template de vue pour le widget d'affichage de plusieurs projets
+     * Obtient le template de vue pour le widget de listing des projets
      *
      * @return string
      */
-    public function getProjectShowallWidgetViewTemplate()
+    public function getProjectListWidgetViewTemplate()
     {
-        return $this->projectShowallWidgetViewTemplate;
+        return $this->projectListWidgetViewTemplate;
     }
 
     /**
@@ -138,6 +178,7 @@ class ModuleOptions extends AbstractOptions implements
     public function setProjectAddWidgetViewTemplate($projectAddWidgetViewTemplate)
     {
         $this->projectAddWidgetViewTemplate = $projectAddWidgetViewTemplate;
+
         return $this;
     }
 
@@ -149,5 +190,81 @@ class ModuleOptions extends AbstractOptions implements
     public function getProjectAddWidgetViewTemplate()
     {
         return $this->projectAddWidgetViewTemplate;
+    }
+
+    /**
+     * Définit le template de vue pour le widget d'affichage du formulaire de suppression de projet
+     *
+     * @param string $projectDeleteWidgetViewTemplate Chemin vers le template
+     *
+     * @return ModuleOptions
+     */
+    public function setProjectDeleteWidgetViewTemplate($projectDeleteWidgetViewTemplate)
+    {
+        $this->projectDeleteWidgetViewTemplate = $projectDeleteWidgetViewTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Obtient le template de vue pour le widget d'affichage du formulaire de suppression de projet
+     *
+     * @return string
+     */
+    public function getProjectDeleteWidgetViewTemplate()
+    {
+        return $this->projectDeleteWidgetViewTemplate;
+    }
+
+    /**
+     * Définit s'il faut afficher les actions de suppression de projet
+     * dans listing de projets
+     *
+     * @param bool $hasDeleteAction Valeur de l'option
+     *
+     * @return ModuleOptions
+     */
+    public function setProjectListHasDeleteAction($hasDeleteAction)
+    {
+        $this->projectListHasDeleteAction = $hasDeleteAction;
+
+        return $this;
+    }
+
+    /**
+     * Obtient s'il faut afficher les actions de suppression de projet
+     * dans le listing des projets
+     *
+     * @return bool
+     */
+    public function getProjectListHasDeleteAction()
+    {
+        return $this->projectListHasDeleteAction;
+    }
+
+    /**
+     * Définit s'il faut afficher l'action d'ajout de projet
+     * dans le listing des projets
+     *
+     * @param bool $hasAddAction Valeur de l'option
+     *
+     * @return ModuleOptions
+     */
+    public function setProjectListHasAddAction($hasAddAction)
+    {
+        $this->projectListHasAddAction = $hasAddAction;
+
+        return $this;
+    }
+
+    /**
+     * Obtient s'il faut afficher l'action d'ajout de projet
+     * dans le listing des projets
+     *
+     * @return bool
+     */
+    public function getProjectListHasAddAction()
+    {
+        return $this->projectListHasAddAction;
     }
 }

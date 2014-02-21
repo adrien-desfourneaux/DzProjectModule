@@ -1,9 +1,13 @@
 {
     "name": "dieze/dz-project",
-    "description": "Project management module for ZF2. Supports Doctrine2.",
+    "description": "Module de gestion de projet pour ZF2, compatible Doctrine",
     "type": "library",
     "keywords": [
-        "zf2"
+        "zf2",
+        "project",
+        "projet",
+        "management",
+        "gestion"
     ],
     "homepage": "https://github.com/dieze/DzProject",
     "authors": [
@@ -13,13 +17,17 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4.0",
+        "zendframework/zend-eventmanager": "~2.1",
+        "zendframework/zend-filter": "~2.1",
+        "zendframework/zend-form": "~2.1",
         "zendframework/zend-stdlib": "~2.1",
         "zendframework/zend-loader": "~2.1",
         "zendframework/zend-mvc": "~2.1",
         "zendframework/zend-modulemanager": "~2.1",
         "zendframework/zend-servicemanager": "~2.1",
-        "zendframework/zend-view": "~2.1"
+        "zendframework/zend-view": "~2.1",
+        "phpcollection/phpcollection": "dev-master"
     },
     "require-dev": {
         "codeception/codeception": "*",
@@ -28,6 +36,7 @@
         "henrikbjorn/phpspec-code-coverage" : "dev-master",
         "phpdocumentor/phpdocumentor": "2.*",
         "squizlabs/php_codesniffer": "1.*",
+        "fabpot/php-cs-fixer": "dev-master",
         "phpmd/phpmd": "1.5.*",
         "pdepend/pdepend": "1.1.1",
         "phploc/phploc": "*",

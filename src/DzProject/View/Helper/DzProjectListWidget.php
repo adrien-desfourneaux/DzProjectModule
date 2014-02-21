@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Fichier de source du DzProjectAddWidget
- * Widget qui affiche le formulaire d'Ajout de projet
+ * Fichier de source du DzProjectListWidget
+ * Widget qui affiche tous les Projets
  *
  * PHP version 5.3.3
  *
@@ -10,26 +10,24 @@
  * @package  DzProject\View\Helper
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/View/Helper/DzProjectAddWidget.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/View/Helper/DzProjectListWidget.php
  */
 
 namespace DzProject\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
-use DzProject\Controller\ProjectController;
-use Zend\Stdlib\Response;
 
 /**
- * Widget d'affichage du formulaire d'ajout de projet.
+ * Widget de listing des projets
  *
  * @category Source
  * @package  DzProject\View\Helper
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/View/Helper/DzProjectAddWidget.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/View/Helper/DzProjectListWidget.php
  */
-class DzProjectAddWidget extends AbstractHelper
+class DzProjectListWidget extends AbstractHelper
 {
     /**
      * Contrôleur de projet
@@ -38,8 +36,7 @@ class DzProjectAddWidget extends AbstractHelper
     protected $projectController;
 
     /**
-     * Template de vue pour le widget d'affichage
-     * du formulaire d'ajout de projet
+     * Template de vue pour le widget de listing des projets
      *
      * @var string Template à utiliser
      */
@@ -62,16 +59,10 @@ class DzProjectAddWidget extends AbstractHelper
             $render = true;
         }
 
-        if (array_key_exists('redirectSuccess', $options)) {
-            $redirectSuccess = $options['redirectSuccess'];
+        if (array_key_exists('type', $options)) {
+            $type = $options['type'];
         } else {
-            $redirectSuccess = false;
-        }
-
-        if (array_key_exists('redirectFailure', $options)) {
-            $redirectFailure = $options['redirectFailure'];
-        } else {
-            $redirectFailure = false;
+            $type = 'all';
         }
 
         if (array_key_exists('hasTitle', $options)) {
@@ -80,36 +71,32 @@ class DzProjectAddWidget extends AbstractHelper
             $hasTitle = true;
         }
 
-        if (array_key_exists('hasSubmit', $options)) {
-            $hasSubmit = $options['hasSubmit'];
+        if (array_key_exists('hasDeleteAction', $options)) {
+            $hasDeleteAction = $options['hasDeleteAction'];
         } else {
-            $hasSubmit = true;
+            $hasDeleteAction = true;
+        }
+
+        if (array_key_exists('hasAddAction', $options)) {
+            $hasAddAction = $options['hasAddAction'];
+        } else {
+            $hasAddAction = true;
         }
 
         $projectController = $this->getProjectController();
+        $projectController->getEvent()->getRouteMatch()->setParam('type', $type);
 
-        if ($redirectSuccess) {
-            $projectController->getRequest()->getQuery()->set('redirectSuccess', $redirectSuccess);
+        $viewModel = $projectController->listAction();
+
+        // Il arrive que le controlleur ne renvoie pas
+        // un ViewModel mais un array de variables
+        if (!($viewModel instanceof ViewModel)) {
+            $viewModel = new ViewModel($viewModel);
         }
 
-        if ($redirectFailure) {
-            $projectController->getRequest()->getQuery()->set('redirectFailure', $redirectFailure);
-        }
-
-        $projectController->getRequest()->getQuery()->set('hasTitle', $hasTitle);
-        $projectController->getRequest()->getQuery()->set('hasSubmit', $hasSubmit);
-
-        $response = $projectController->addAction();
-
-        if (is_array($response)) {
-            $viewModel = new ViewModel($response);
-        } elseif ($response instanceof ViewModel) {
-            $viewModel = $response;
-        } elseif ($response instanceof Response) {
-            return $response;
-        }
-
-        $viewModel->setVariable('isWidget', true)
+        $viewModel->setVariable('hasTitle', $hasTitle)
+            ->setVariable('hasDeleteAction', $hasDeleteAction)
+            ->setVariable('hasAddAction', $hasAddAction)
             ->setTemplate($this->viewTemplate);
 
         if ($render) {
@@ -124,7 +111,7 @@ class DzProjectAddWidget extends AbstractHelper
      *
      * @param ProjectController $projectController Contrôleur de projets
      *
-     * @return DzProjectAddWidget
+     * @return DzProjectDeleteWidget
      */
     public function setProjectController($projectController)
     {
@@ -144,11 +131,11 @@ class DzProjectAddWidget extends AbstractHelper
     }
 
     /**
-     * Définit le template de vue pour le widget d'affichage du formulaire d'ajout de projet
+     * Définit le template de vue pour le widget de listing des projets
      *
      * @param string $viewTemplate Nouveau template de vue
      *
-     * @return DzProjecAddWidget
+     * @return DzProjectListWidget
      */
     public function setViewTemplate($viewTemplate)
     {

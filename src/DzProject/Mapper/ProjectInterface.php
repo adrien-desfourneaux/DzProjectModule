@@ -50,7 +50,7 @@ interface ProjectInterface
 
     /**
      * Insère un nouveau projet dans le média de stockage
-     * 
+     *
      * @param \DzProject\Entity\Project $entity Entité projet à insérer
      *
      * @return void
@@ -59,7 +59,7 @@ interface ProjectInterface
 
     /**
      * Met à jour un projet existant
-     * 
+     *
      * @param \DzProject\Entity\Project $entity Entité projet à mettre à jour
      *
      * @return void

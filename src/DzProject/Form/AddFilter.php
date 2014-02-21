@@ -40,36 +40,78 @@ class AddFilter extends InputFilter
                 'validators' => array(
                     array(
                         'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => "La désignation ne doit pas être vide",
+                            ),
+                        ),
                     ),
                     array(
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 200,
+                            'messages' => array(
+                                \Zend\Validator\StringLength::TOO_LONG => "La désignation ne doit pas excéder 200 caractères",
+                            ),
                         ),
                     ),
                 ),
             )
         );
 
-        /**
-         * @todo
-         */
         $this->add(
             array(
                 'name'       => 'beginDate',
                 'required'   => true,
                 'filters'    => array(array('name' => 'StringTrim')),
+                'validators' => array(
+                    array(
+                        'name'=>'Date',
+                        'break_chain_on_failure'=>true,
+                        'options'=>array(
+                            'format'=>'d/m/Y',
+                            'messages'=>array(
+                                'dateFalseFormat'=>'Format de date invalide, doit être jj/mm/aaaa',
+                                'dateInvalidDate'=>'Date invalide, doit être jj/mm/aaaa'
+                            ),
+                        ),
+                    )
+                )
             )
         );
 
-        /**
-         * @todo
-         */
         $this->add(
             array(
                 'name'       => 'endDate',
                 'required'   => true,
                 'filters'    => array(array('name' => 'StringTrim')),
+                'validators' => array(
+                    array(
+                        'name'=>'Date',
+                        'break_chain_on_failure'=>true,
+                        'options'=>array(
+                            'format'=>'d/m/Y',
+                            'messages'=>array(
+                                'dateFalseFormat'=>'Format de date invalide, doit être jj/mm/aaaa',
+                                'dateInvalidDate'=>'Date invalide, doit être jj/mm/aaaa'
+                            ),
+                        ),
+                    ),
+                    array(
+                        'name' => 'Callback',
+                        'options' => array(
+                            'messages' => array(
+                                    \Zend\Validator\Callback::INVALID_VALUE => 'La date de fin doit être supérieure à la date de début',
+                            ),
+                            'callback' => function ($value, $context = array()) {
+                                $beginDate = \DateTime::createFromFormat('d/m/Y', $context['beginDate']);
+                                $endDate = \DateTime::createFromFormat('d/m/Y', $value);
+
+                                return $endDate >= $beginDate;
+                            },
+                        ),
+                    ),
+                )
             )
         );
 

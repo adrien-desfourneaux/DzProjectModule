@@ -61,6 +61,33 @@ return array(
                 'may_terminate' => 'true',
                 'child_routes' => array(
 
+                    // Affichage des erreurs
+                    'error' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => 'error',
+                            'defaults' => array(
+                                'controller' => 'dzproject',
+                                'action' => 'error',
+                            ),
+                        ),
+                    ),
+
+                    // Listing des projets
+                    'list' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'list[/:type][/]',
+                            'constraints' => array(
+                                'type' => '(all)|(active)',
+                            ),
+                            'defaults' => array(
+                                'action' => 'list',
+                                'type' => 'all',
+                            ),
+                        ),
+                    ),
+
                     // Ajout d'un projet
                     'add' => array(
                         'type' => 'Segment',
@@ -77,41 +104,11 @@ return array(
                         'type' => 'Segment',
                         'options' => array(
                             'route' => 'delete/:id[/]',
-                            'contraints' => array(
+                            /*'contraints' => array(
                                 'id' => '\d',
-                            ),
+                            ),*/
                             'defaults' => array(
                                 'action' => 'delete',
-                            ),
-                        ),
-                    ),
-
-                    // Fiche projet
-                    'show' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => 'show/:id[/]',
-                            'constrains' => array(
-                                'id' => '\d',
-                            ),
-                            'defaults' => array(
-                                'controller' => 'dzproject',
-                                'action' => 'show',
-                            ),
-                        ),
-                    ),
-
-                    // Visualisation des projets
-                    'showall' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => 'show-all[/:type][/]',
-                            'constraints' => array(
-                                'type' => '(all)|(active)',
-                            ),
-                            'defaults' => array(
-                                'action' => 'showall',
-                                'type' => 'all',
                             ),
                         ),
                     ),
@@ -142,4 +139,8 @@ return array(
             )
         )
     ),
+    'dzproject' => array(
+        'project_list_has_add_action' => true,
+        'project_list_has_delete_action' => true,
+    )
 );

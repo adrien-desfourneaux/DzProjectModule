@@ -1,0 +1,36 @@
+body > .container {
+    margin-top: 50px;
+}
+
+.help-block ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.table-responsive {
+	margin: 20px auto;
+}
+
+img.deleteAction {
+    width: 20px;
+}
+
+.entry td {
+	padding: 0 !important; /* override bootstrap */
+	vertical-align: middle !important; /* override bootstrap */
+}
+
+.entry a.href {
+	display: block;
+	padding: 8px;
+	color: inherit;
+	outline: none;
+}
+
+.entry a.href:link,
+.entry a.href:hover,
+.entry a.href:active,
+.entry a.href:visited {
+	text-decoration: none;
+	color: inherit;
+}

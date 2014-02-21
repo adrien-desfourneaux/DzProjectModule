@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Fichier de source du DzProjectAddWidget
- * Widget qui affiche le formulaire d'Ajout de projet
+ * Fichier de source du DzProjectDeleteWidget
+ * Widget qui affiche le formulaire de suppression de projet
  *
  * PHP version 5.3.3
  *
@@ -10,7 +10,7 @@
  * @package  DzProject\View\Helper
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/View/Helper/DzProjectAddWidget.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/View/Helper/DzProjectDeleteWidget.php
  */
 
 namespace DzProject\View\Helper;
@@ -18,18 +18,17 @@ namespace DzProject\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
 use DzProject\Controller\ProjectController;
-use Zend\Stdlib\Response;
 
 /**
- * Widget d'affichage du formulaire d'ajout de projet.
+ * Widget d'affichage du formulaire de suppression de projet
  *
  * @category Source
  * @package  DzProject\View\Helper
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/View/Helper/DzProjectAddWidget.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/View/Helper/DzProjectDeleteWidget.php
  */
-class DzProjectAddWidget extends AbstractHelper
+class DzProjectDeleteWidget extends AbstractHelper
 {
     /**
      * Contrôleur de projet
@@ -48,13 +47,14 @@ class DzProjectAddWidget extends AbstractHelper
     /**
      * __invoke
      *
-     * @param array $options array of options
+     * @param integer $id      identifiant du projet à supprimer
+     * @param array   $options array of options
      *
      * @access public
      *
      * @return mixed
      */
-    public function __invoke($options = array())
+    public function __invoke($id, $options = array())
     {
         if (array_key_exists('render', $options)) {
             $render = $options['render'];
@@ -62,16 +62,10 @@ class DzProjectAddWidget extends AbstractHelper
             $render = true;
         }
 
-        if (array_key_exists('redirectSuccess', $options)) {
-            $redirectSuccess = $options['redirectSuccess'];
+        if (array_key_exists('redirect', $options)) {
+            $redirect = $options['redirect'];
         } else {
-            $redirectSuccess = false;
-        }
-
-        if (array_key_exists('redirectFailure', $options)) {
-            $redirectFailure = $options['redirectFailure'];
-        } else {
-            $redirectFailure = false;
+            $redirect = false;
         }
 
         if (array_key_exists('hasTitle', $options)) {
@@ -87,29 +81,24 @@ class DzProjectAddWidget extends AbstractHelper
         }
 
         $projectController = $this->getProjectController();
+        $projectController->getEvent()->getRouteMatch()->setParam('id', $id);
 
-        if ($redirectSuccess) {
-            $projectController->getRequest()->getQuery()->set('redirectSuccess', $redirectSuccess);
+        if ($redirect) {
+            $projectController->getRequest()->getQuery()->set('redirect', $redirect);
         }
 
-        if ($redirectFailure) {
-            $projectController->getRequest()->getQuery()->set('redirectFailure', $redirectFailure);
-        }
-
-        $projectController->getRequest()->getQuery()->set('hasTitle', $hasTitle);
-        $projectController->getRequest()->getQuery()->set('hasSubmit', $hasSubmit);
-
-        $response = $projectController->addAction();
+        $response = $projectController->deleteAction();
 
         if (is_array($response)) {
             $viewModel = new ViewModel($response);
         } elseif ($response instanceof ViewModel) {
             $viewModel = $response;
-        } elseif ($response instanceof Response) {
+        } else {
             return $response;
         }
 
-        $viewModel->setVariable('isWidget', true)
+        $viewModel->setVariable('hasTitle', $hasTitle)
+            ->setVariable('hasSubmit', $hasSubmit)
             ->setTemplate($this->viewTemplate);
 
         if ($render) {
@@ -124,7 +113,7 @@ class DzProjectAddWidget extends AbstractHelper
      *
      * @param ProjectController $projectController Contrôleur de projets
      *
-     * @return DzProjectAddWidget
+     * @return DzProjectDeleteWidget
      */
     public function setProjectController($projectController)
     {
@@ -144,11 +133,11 @@ class DzProjectAddWidget extends AbstractHelper
     }
 
     /**
-     * Définit le template de vue pour le widget d'affichage du formulaire d'ajout de projet
+     * Définit le template de vue pour le widget d'affichage du formulaire de suppression de projet
      *
      * @param string $viewTemplate Nouveau template de vue
      *
-     * @return DzProjecAddWidget
+     * @return DzProjectDeleteWidget
      */
     public function setViewTemplate($viewTemplate)
     {

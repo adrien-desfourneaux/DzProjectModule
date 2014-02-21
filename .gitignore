@@ -2,3 +2,5 @@
 doc/
 coverage
 metrics/
+vendor/
+*.sublime-workspace

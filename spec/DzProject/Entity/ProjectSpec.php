@@ -15,7 +15,6 @@
 namespace spec\DzProject\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Zend\Stdlib\Exception;
 
 /**
@@ -36,7 +35,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('DzProject\Entity\Project');
     }
@@ -47,7 +46,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_has_a_rw_display_name()
+    public function it_has_a_rw_display_name()
     {
         $display_name = 'test';
         $this->setDisplayName($display_name);
@@ -55,12 +54,12 @@ class ProjectSpec extends ObjectBehavior
     }
 
     /**
-     * Le Project retourne son instance 
+     * Le Project retourne son instance
      * quand on définit son attribut displayName.
      *
      * @return null
      */
-    function it_returns_itself_when_setting_display_name()
+    public function it_returns_itself_when_setting_display_name()
     {
         $this->setDisplayName('test')->shouldReturn($this);
     }
@@ -72,7 +71,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_only_accepts_string_as_display_name()
+    public function it_only_accepts_string_as_display_name()
     {
         // negative integer
         $display_name = -1;
@@ -95,7 +94,7 @@ class ProjectSpec extends ObjectBehavior
         $this->shouldThrow(new Exception\InvalidArgumentException())->duringSetDisplayName($display_name);
 
         // null
-        $display_name = null; 
+        $display_name = null;
         $this->shouldThrow(new Exception\InvalidArgumentException())->duringSetDisplayName($display_name);
 
         // array
@@ -109,7 +108,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_has_a_rw_begin_date()
+    public function it_has_a_rw_begin_date()
     {
         $begin_date = 1388530800;
         $this->setBeginDate($begin_date);
@@ -122,7 +121,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_returns_itself_when_setting_begin_date()
+    public function it_returns_itself_when_setting_begin_date()
     {
         $this->setBeginDate(1388530800)->shouldReturn($this);
     }
@@ -133,7 +132,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_only_accepts_int_as_begin_date()
+    public function it_only_accepts_int_as_begin_date()
     {
         // negative integer
         $begin_date = -1;
@@ -156,7 +155,7 @@ class ProjectSpec extends ObjectBehavior
         $this->shouldThrow(new Exception\InvalidArgumentException())->duringSetBeginDate($begin_date);
 
         // null
-        $begin_date = null; 
+        $begin_date = null;
         $this->shouldThrow(new Exception\InvalidArgumentException())->duringSetBeginDate($begin_date);
 
         // array
@@ -171,7 +170,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_only_accepts_begin_date_that_is_before_end_date()
+    public function it_only_accepts_begin_date_that_is_before_end_date()
     {
         $before = 1388530800;
         $after  = 1420066800;
@@ -186,7 +185,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_has_a_rw_end_date()
+    public function it_has_a_rw_end_date()
     {
         $end_date = 1420066800;
         $this->setEndDate($end_date);
@@ -199,7 +198,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_returns_itself_when_setting_end_date()
+    public function it_returns_itself_when_setting_end_date()
     {
         $end_date = 1420066800;
         $this->setEndDate($end_date)->shouldReturn($this);
@@ -211,7 +210,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_only_accepts_int_as_end_date()
+    public function it_only_accepts_int_as_end_date()
     {
         // negative integer
         $end_date = -1;
@@ -234,7 +233,7 @@ class ProjectSpec extends ObjectBehavior
         $this->shouldThrow(new Exception\InvalidArgumentException())->duringSetEndDate($end_date);
 
         // null
-        $end_date = null; 
+        $end_date = null;
         $this->shouldThrow(new Exception\InvalidArgumentException())->duringSetEndDate($end_date);
 
         // array
@@ -248,7 +247,7 @@ class ProjectSpec extends ObjectBehavior
      *
      * @return null
      */
-    function it_only_accepts_end_date_that_is_after_begin_date()
+    public function it_only_accepts_end_date_that_is_after_begin_date()
     {
         $before = 1388530800;
         $after  = 1420066800;

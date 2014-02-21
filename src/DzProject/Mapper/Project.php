@@ -64,6 +64,23 @@ class Project implements ProjectInterface
     }
 
     /**
+     * Trouve un projet selon son id.
+     *
+     * @param integer $id Identifiant du projet à trouver
+     *
+     * @return mixed
+     */
+    public function findById($id)
+    {
+        $project = $this->getRepository()->findOneByProjectId($id);
+        if ($project == null) {
+            throw new \Exception("L'entité Project d'identifiant projectId = " . $id . " n'a pas été trouvée");
+        }
+
+        return $project;
+    }
+
+    /**
      * Trouve un projet selon son type.
      *
      * @param string $type Type de projet à trouver
@@ -110,7 +127,7 @@ class Project implements ProjectInterface
 
     /**
      * Insère un nouveau projet dans le média de stockage
-     * 
+     *
      * @param \DzProject\Entity\Project $entity Entité projet à insérer
      *
      * @return void
@@ -122,7 +139,7 @@ class Project implements ProjectInterface
 
     /**
      * Met à jour un projet existant
-     * 
+     *
      * @param \DzProject\Entity\Project $entity Entité projet à mettre à jour
      *
      * @return void
@@ -130,6 +147,20 @@ class Project implements ProjectInterface
     public function update($entity)
     {
         return $this->persist($entity);
+    }
+
+    /**
+     * Supprime un projet
+     *
+     * @param integer $id Identifiant du projet à supprimer
+     *
+     * @return void
+     */
+    public function delete($id)
+    {
+        $project = $this->findById($id);
+        $this->entityManager->remove($project);
+        $this->entityManager->flush();
     }
 
     /**

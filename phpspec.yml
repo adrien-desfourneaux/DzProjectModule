@@ -1,6 +1,6 @@
 formatter.name: progress
 
-suites:        
+suites:
     DzProject:
         namespace:   DzProject
         spec_prefix: spec
@@ -10,5 +10,5 @@ suites:
 extensions:
     - PhpSpec\Extension\CodeCoverageExtension
 
-code_coverage: 
+code_coverage:
     format: 'clover'

@@ -21,7 +21,7 @@ $I->wantTo('Voir les projets actifs');
 // dans data/dzproject.dump.sqlite.sql
 $I->haveDefaultProjectsInDatabase();
 
-$I->amOnPage('/project/show-all/active');
+$I->amOnPage('/project/list/active');
 
 $I->see('Projets');
 

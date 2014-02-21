@@ -2,8 +2,8 @@
 
 /**
  * Aides pour les tests d'acceptation
- * 
- * PHP version 5.3.3
+ *
+ * PHP version 5.4.0
  *
  * @category   Test
  * @package    DzProject
@@ -15,8 +15,7 @@
 
 namespace Codeception\Module;
 
-use DzProject\Test\Helper\DbDumper;
-use DzProject\Test\Helper\WebHelperDbInterface;
+use DzProject\Test\Helper\WebHelperDbTrait;
 
 /**
  * Classe helper pour les tests d'acceptation.
@@ -29,18 +28,7 @@ use DzProject\Test\Helper\WebHelperDbInterface;
  * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
  * @link       https://github.com/dieze/DzProject/blob/master/tests/_helpers/WebHelper.php
  */
-class WebHelper extends \Codeception\Module implements WebHelperDbInterface
+class WebHelper extends \Codeception\Module
 {
-    /**
-     * Insère les projets par défaut
-     * dans la base de données
-     *
-     * @return void
-     */
-    public function haveDefaultProjectsInDatabase()
-    {
-        $dbh = $this->getModule('Db')->dbh;
-        $dbDumper = new DbDumper($dbh);
-        $dbDumper->insertProjects();
-    }
+    use WebHelperDbTrait;
 }

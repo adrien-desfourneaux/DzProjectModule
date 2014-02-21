@@ -2,30 +2,30 @@
 
 /**
  * Méthodes d'aide d'insertion de données
- * depuis les fichiers data/*.dump.sqlite.sql
- * 
+ * depuis les fichiers data/*.sql
+ *
  * PHP version 5.3.3
  *
  * @category Source
  * @package  DzProject\Test\Helper
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Test/Helper/DbDumper.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Test/Helper/Db.php
  */
 
 namespace DzProject\Test\Helper;
 
 /**
  * Méthodes d'aide d'insertion de données
- * depuis les fichiers data/*.dump.sqlite.sql
+ * depuis les fichiers data/*.sql
  *
  * @category Source
  * @package  DzProject\Test\Helper
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Test/Helper/DbDumper.php
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Test/Helper/Db.php
  */
-class DbDumper
+class Db
 {
     /**
      * Connection PDO
@@ -40,7 +40,7 @@ class DbDumper
     protected $dumpFile;
 
     /**
-     * Constructeur de DbDumper
+     * Constructeur de Db
      *
      * @param \PDO $dbh Connection PDO
      *
@@ -71,6 +71,18 @@ class DbDumper
     }
 
     /**
+     * Exécute le fichier de dump
+     *
+     * @return void
+     */
+    public function execDumpFile()
+    {
+        $sql = file_get_contents($this->getDumpFile());
+
+        $this->dbh->exec($sql);
+    }
+
+    /**
      * Obtient le chemin vers le fichier de dump
      *
      * @return string
@@ -85,11 +97,12 @@ class DbDumper
      *
      * @param string $dumpFile Nouveau chemin
      *
-     * @return DbDumper
+     * @return Db
      */
     public function setDumpFile($dumpFile)
     {
         $this->dumpFile = $dumpFile;
+
         return $this;
     }
 }

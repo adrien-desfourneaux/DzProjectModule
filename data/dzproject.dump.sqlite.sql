@@ -69,3 +69,15 @@ INSERT INTO project (
     strftime('%s', 'now', 'start of day', '-1 hour', '-2 days'),
     strftime('%s', 'now', 'start of day', '-1 hour', '-1 day')
 );
+
+INSERT INTO project (
+    project_id,
+    display_name,
+    begin_date,
+    end_date
+) VALUES (
+    7,
+    'Project actif 1 de Jean Michel',
+    strftime('%s', 'now', 'start of day', '-1 hour', '-1 day'),
+    strftime('%s', 'now', 'start of day', '-1 hour', '+3 years')
+);

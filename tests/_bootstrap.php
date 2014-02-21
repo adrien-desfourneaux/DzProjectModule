@@ -13,4 +13,4 @@
  * @link       https://github.com/dieze/DzProject/blob/master/tests/_bootstrap.php
  */
 
-// This is global bootstrap for autoloading 
+// This is global bootstrap for autoloading

@@ -1,7 +1,7 @@
 <?php
 /**
  * Fichier de configuration de l'application de test.
- * 
+ *
  * Ce fichier contient uniquement les modules réellement nécéssaires
  * pour que le module fonctionne.
  *
@@ -25,7 +25,7 @@ return array(
     'module_listener_options' => array(
         'module_paths' => array(
             __DIR__ . '/../../../module',
-            __DIR__ . '/../../../vendor'
+            __DIR__ . '/vendor'
         )
     ),
 );

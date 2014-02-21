@@ -17,6 +17,7 @@ namespace DzProject;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\Session\Container as SessionContainer;
 
 /**
  * Classe module de DzProject.
@@ -77,18 +78,60 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'dzProjectShowAllWidget' => function ($serviceManager) {
+                'dzProjectListWidget' => function ($serviceManager) {
                     $locator = $serviceManager->getServiceLocator();
-                    $viewHelper = new View\Helper\DzProjectShowAllWidget;
-                    $viewHelper->setViewTemplate($locator->get('dzproject_module_options')->getProjectShowallWidgetViewTemplate());
-                    $viewHelper->setProjectService($locator->get('dzproject_project_service'));
+
+                    $viewTemplate = $locator->get('dzproject_module_options')->getProjectListWidgetViewTemplate();
+                    $projectController = $locator->get('controllerloader')->get('dzproject');
+                    $projectController->setEvent($locator->get('application')->getMvcEvent());
+
+                    $viewHelper = new View\Helper\DzProjectListWidget;
+                    $viewHelper->setViewTemplate($viewTemplate);
+                    $viewHelper->setProjectController($projectController);
+
                     return $viewHelper;
                 },
                 'dzProjectAddWidget' => function ($serviceManager) {
                     $locator = $serviceManager->getServiceLocator();
+
+                    $viewTemplate = $locator->get('dzproject_module_options')->getProjectAddWidgetViewTemplate();
+                    $projectController = $locator->get('controllerloader')->get('dzproject');
+                    $projectController->setEvent($locator->get('application')->getMvcEvent());
+
                     $viewHelper = new View\Helper\DzProjectAddWidget;
-                    $viewHelper->setViewTemplate($locator->get('dzproject_module_options')->getProjectAddWidgetViewTemplate());
-                    $viewHelper->setProjectController($locator->get('controllerloader')->get('dzproject'));
+                    $viewHelper->setViewTemplate($viewTemplate);
+                    $viewHelper->setProjectController($projectController);
+
+                    return $viewHelper;
+                },
+                'dzProjectDeleteWidget' => function ($serviceManager) {
+                    $locator = $serviceManager->getServiceLocator();
+
+                    $viewTemplate = $locator->get('dzproject_module_options')->getProjectDeleteWidgetViewTemplate();
+                    $projectController = $locator->get('controllerloader')->get('dzproject');
+                    $projectController->setEvent($locator->get('application')->getMvcEvent());
+
+                    $viewHelper = new View\Helper\DzProjectDeleteWidget;
+                    $viewHelper->setViewTemplate($viewTemplate);
+                    $viewHelper->setProjectController($projectController);
+
+                    return $viewHelper;
+                },
+                'routeName' => function ($sm) {
+                    $match = $sm->getServiceLocator()->get('application')->getMvcEvent()->getRouteMatch();
+                    $viewHelper = new View\Helper\RouteName($match);
+
+                    return $viewHelper;
+                },
+                'routeParam' => function ($sm) {
+                    $match = $sm->getServiceLocator()->get('application')->getMvcEvent()->getRouteMatch();
+                    $viewHelper = new View\Helper\RouteParam($match);
+
+                    return $viewHelper;
+                },
+                'currentUrl' => function ($serviceManager) {
+                    $request = $serviceManager->getServiceLocator()->get('request');
+                    $viewHelper = new View\Helper\CurrentUrl($request);
                     return $viewHelper;
                 },
             ),
@@ -108,12 +151,11 @@ class Module implements
         return array(
             'invokables' => array(
                 'dzproject_project_service' => 'DzProject\Service\Project',
-                'dzproject_add_form_hydrator' => 'Zend\Stdlib\Hydrator\ClassMethods'
             ),
             'factories' => array(
-
                 'dzproject_module_options' => function ($serviceManager) {
                     $config = $serviceManager->get('Config');
+
                     return new Options\ModuleOptions(isset($config['dzproject']) ? $config['dzproject'] : array());
                 },
 
@@ -121,18 +163,31 @@ class Module implements
                     $options = $serviceManager->get('dzproject_module_options');
                     $entityManager = $serviceManager->get('doctrine.entitymanager.orm_default');
                     $entityClass = $options->getProjectEntityClass();
+
                     return new Mapper\Project($entityManager, $entityClass);
+                },
+
+                'dzproject_project_hydrator' => function ($serviceManager) {
+                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
+
+                    // hydratation
+                    $hydrator->addStrategy('beginDate', new \DzProject\Hydrator\Strategy\DateStrTimestamp);
+                    $hydrator->addStrategy('endDate', new \DzProject\Hydrator\Strategy\DateStrTimestamp);
+
+                    // extraction
+                    $hydrator->addStrategy('begin_date', new \DzProject\Hydrator\Strategy\DateStrTimestamp);
+                    $hydrator->addStrategy('end_date', new \DzProject\Hydrator\Strategy\DateStrTimestamp);
+
+                    return $hydrator;
                 },
 
                 'dzproject_add_form' => function ($serviceManager) {
                     $form = new Form\Add(null);
                     $form->setInputFilter(new Form\AddFilter());
-                    return $form;
-                },
+                    $form->setHydrator($serviceManager->get('dzproject_project_hydrator'));
+                    $form->setSessionContainer(new SessionContainer('dzproject'));
 
-                'dzproject_project_hydrator' => function ($serviceManager) {
-                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
-                    return $hydrator;
+                    return $form;
                 },
             ),
         );

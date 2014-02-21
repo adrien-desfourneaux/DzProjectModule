@@ -16,7 +16,11 @@
 
 ?>
 
-<?php $this->inlineScript()->captureStart(); ?>
+<?php 
+// Script pour l'affichage du datepicker
+// sur les champs de type date
+$this->inlineScript()->captureStart();
+?>
 Modernizr.load({
     test: Modernizr.inputtypes.date,
     nope: [
@@ -31,7 +35,14 @@ Modernizr.load({
 });
 <?php $this->inlineScript()->captureEnd(); ?>
 
+<?php
+// Titre affiché ou non
+if (isset($this->hasTitle) && !$this->hasTitle) {
+} else {
+    ?>
 <h1>Ajout d'un projet</h1>
+    <?php
+} ?>
 
 <?php
 $form = $this->addForm;
@@ -41,28 +52,60 @@ $form->setAttribute('method', 'post');
 ?>
 
 <?php echo $this->form()->openTag($form) ?>
+    <fieldset>
 
-    <dl class="zend_form">
-        <?php echo $this->formElementErrors($form->get('displayName')) ?>
+        <?php $errors = $this->formElementErrors($form->get('displayName')); ?>
+        <div class="form-group<?php if ($errors !== '') : ?> has-error<?php endif ?>">
+            <?php echo $this->formLabel($form->get('displayName')) ?>
+            <?php echo $this->formInput($form->get('displayName')) ?>
+            <div class="help-block">
+                <?php echo $errors; ?>
+            </div>
+        </div>
 
-        <dt><?php echo $this->formLabel($form->get('displayName')) ?></dt>
-        <dd><?php echo $this->formInput($form->get('displayName')) ?></dd>
+        <?php $errors = $this->formElementErrors($form->get('beginDate')); ?>
+        <div class="form-group<?php if ($errors != '') : ?> has-error<?php endif ?>">
+            <?php echo $this->formLabel($form->get('beginDate')) ?>
+            <?php echo $this->formInput($form->get('beginDate')) ?>
+            <div class="help-block">
+                <?php echo $errors; ?>
+            </div>
+        </div>
 
-        <dt><?php echo $this->formLabel($form->get('beginDate')) ?></dt>
-        <dd><?php echo $this->formInput($form->get('beginDate')) ?></dd>
-
-        <dt><?php echo $this->formLabel($form->get('endDate')) ?></dt>
-        <dd><?php echo $this->formInput($form->get('endDate')) ?></dd>
+        <?php $errors = $this->formElementErrors($form->get('endDate')); ?>
+        <div class="form-group<?php if ($errors != '') : ?> has-error<?php endif ?>">
+            <?php echo $this->formLabel($form->get('endDate')) ?>
+            <?php echo $this->formInput($form->get('endDate')) ?>
+            <div class="help-block">
+                <?php echo $errors; ?>
+            </div>
+        </div>
 
         <?php
-        if ($this->redirect) :
+        // Redirection en cas de succès de l'ajout
+        if ($this->redirectSuccess) :
             ?>
-            <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+            <input type="hidden" name="redirectSuccess" value="<?php echo $this->escapeHtml($this->redirectSuccess) ?>" />
             <?php
         endif
         ?>
 
-        <dd><?php echo $this->formButton($form->get('add')) ?></dd>
-    </dl>
+        <?php
+        // Redirection en cas d'échec de l'ajout
+        if ($this->redirectFailure) :
+            ?>
+            <input type="hidden" name="redirectFailure" value="<?php echo $this->escapeHtml($this->redirectFailure) ?>" />
+            <?php
+        endif
+        ?>
 
+        <?php
+        // Bouton d'envoi du formulaire affiché ou non
+        if (isset($this->hasSubmit) && !$this->hasSubmit) {
+        } else {
+            echo $this->formButton($form->get('submit'));
+        }
+        ?>
+        
+    </fieldset>
 <?php echo $this->form()->closeTag() ?>

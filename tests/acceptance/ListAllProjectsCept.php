@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test d'acceptation ShowAllProjects
+ * Test d'acceptation ListAllProjects
  * Afficher tous les projets.
  *
  * PHP version 5.3.3
@@ -11,7 +11,7 @@
  * @subpackage Acceptance
  * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link       https://github.com/dieze/DzProject/blob/master/tests/acceptance/ShowAllProjectsCept.php
+ * @link       https://github.com/dieze/DzProject/blob/master/tests/acceptance/ListAllProjectsCept.php
  */
 
 $I = new WebGuy($scenario);
@@ -19,9 +19,9 @@ $I->wantTo('Voir tous les projets');
 
 // Insère les projets situés
 // dans data/dzproject.dump.sqlite.sql
-$I->haveDefaultProjectsInDatabase();
+$I->haveAllDefaultsInDatabase();
 
-$I->amOnPage('/project/show-all/all');
+$I->amOnPage('/project/list/all');
 
 $I->see('Projets');
 

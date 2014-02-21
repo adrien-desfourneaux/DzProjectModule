@@ -5,7 +5,7 @@
  *
  * PHP version 5.3.3
  *
- * @category Interface
+ * @category Source
  * @package  DzProject\Entity
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
@@ -21,47 +21,46 @@ namespace DzProject\Entity;
  * @package  DzProject\Entity
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     http://github.com/dieze/DzProject/blob/master/src/DzProject/Entity/ProjectInterface.php
- *
+ * @link     https://github.com/dieze/DzProject/blob/master/src/DzProject/Entity/ProjectInterface.php
  */
 interface ProjectInterface
 {
-    /**
+	/**
      * Obtient l'id projet.
      *
-     * @return integer 
+     * @return integer
      */
     public function getProjectId();
 
     /**
      * Définit le nom d'affichage.
      *
-     * @param string $displayName Nouveau nom d'affichage
+     * @param string $displayName Display name to set
      *
-     * @return Project
+     * @return ProjectInterface
      */
     public function setDisplayName($displayName);
 
     /**
      * Obtient le nom d'affichage.
      *
-     * @return string 
+     * @return string
      */
     public function getDisplayName();
 
     /**
      * Définit la date de début.
      *
-     * @param integer $beginDate Nouvelle date de début
+     * @param integer $beginDate Begin date to set
      *
-     * @return Project
+     * @return ProjectInterface
      */
     public function setBeginDate($beginDate);
 
     /**
      * Obtient la date de début.
      *
-     * @return integer 
+     * @return integer
      */
     public function getBeginDate();
 
@@ -70,14 +69,14 @@ interface ProjectInterface
      *
      * @param integer $endDate End date to set
      *
-     * @return Project
+     * @return ProjectInterface
      */
     public function setEndDate($endDate);
 
     /**
      * Obtient la date de fin.
      *
-     * @return integer 
+     * @return integer
      */
     public function getEndDate();
 }

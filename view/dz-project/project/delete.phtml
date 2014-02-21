@@ -16,4 +16,36 @@
 
 ?>
 
+<?php $p = $this->project; ?>
+
+<?php
+// Titre affiché ou non
+if (isset($this->hasTitle) && !$this->hasTitle) {
+} else {
+    ?>
 <h1>Suppression d'un projet</h1>
+    <?php
+} ?>
+
+<form method="post" action="<?php echo $this->url('dzproject/delete', array('id' => $p['project_id'])); ?>">
+
+    <p>Voulez vous vraiment supprimer le projet <?php echo $p['display_name']; ?> ?</p>
+
+    <?php
+    // Redirection ou non
+    if ($this->redirect) :
+        ?>
+        <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+        <?php
+    endif
+    ?>
+
+    <?php
+    // Bouton d'envoi du formulaire affiché ou non
+    if (isset($this->hasSubmit) && !$this->hasSubmit) {
+    } else {
+        ?>
+    <input type="submit" name="submit" value="Supprimer" class="btn btn-danger"/>
+    	<?php
+    } ?>
+</form>
