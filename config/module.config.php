@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Configuration du module DzProject
+ * Configuration du module DzProjectModule
  *
  * PHP version 5.3.3
  *
  * @category Config
- * @package  DzProject
+ * @package  DzProjectModule
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/config/module.config.php
+ * @link     https://github.com/dieze/DzProjectModule/blob/master/config/module.config.php
  */
 
 /**
@@ -41,7 +41,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'dzproject' => 'DzProject\Controller\ProjectController',
+            'dzproject' => 'DzProjectModule\Controller\ProjectController',
         ),
     ),
     'router' => array(
@@ -120,11 +120,11 @@ return array(
         'driver' => array(
             'dzproject_entity' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'paths' => __DIR__ . '/../src/DzProject/Entity'
+                'paths' => __DIR__ . '/../src/DzProjectModule/Entity'
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'DzProject\Entity' => 'dzproject_entity'
+                    'DzProjectModule\Entity' => 'dzproject_entity'
                 )
             )
         ),

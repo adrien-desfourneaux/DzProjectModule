@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * Vue pour l'action ProjectController::addAction()
+ * Ajout d'un nouveau projet
+ *
+ * PHP version 5
+ *
+ * @category   Source
+ * @package    DzProjectModule
+ * @subpackage View
+ * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
+ * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
+ * @link       https://github.com/dieze/DzProjectModule/blob/master/view/dz-project-module/project/add.phtml
+ */
+
+?>
+
+<?php 
+// Script pour l'affichage du datepicker
+// sur les champs de type date
+$this->inlineScript()->captureStart();
+?>
+Modernizr.load({
+    test: Modernizr.inputtypes.date,
+    nope: [
+        'http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js',
+        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js'
+    ],
+    complete: function () {
+        $('input[type=date]').datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+    }
+});
+<?php $this->inlineScript()->captureEnd(); ?>
+
+<?php
+// Titre affiché ou non
+if (isset($this->hasTitle) && !$this->hasTitle) {
+} else {
+    ?>
+<h1>Ajout d'un projet</h1>
+    <?php
+} ?>
+
+<?php
+$form = $this->addForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('dzproject/add'));
+$form->setAttribute('method', 'post');
+?>
+
+<?php echo $this->form()->openTag($form) ?>
+    <fieldset>
+
+        <?php $errors = $this->formElementErrors($form->get('displayName')); ?>
+        <div class="form-group<?php if ($errors !== '') : ?> has-error<?php endif ?>">
+            <?php echo $this->formLabel($form->get('displayName')) ?>
+            <?php echo $this->formInput($form->get('displayName')) ?>
+            <div class="help-block">
+                <?php echo $errors; ?>
+            </div>
+        </div>
+
+        <?php $errors = $this->formElementErrors($form->get('beginDate')); ?>
+        <div class="form-group<?php if ($errors != '') : ?> has-error<?php endif ?>">
+            <?php echo $this->formLabel($form->get('beginDate')) ?>
+            <?php echo $this->formInput($form->get('beginDate')) ?>
+            <div class="help-block">
+                <?php echo $errors; ?>
+            </div>
+        </div>
+
+        <?php $errors = $this->formElementErrors($form->get('endDate')); ?>
+        <div class="form-group<?php if ($errors != '') : ?> has-error<?php endif ?>">
+            <?php echo $this->formLabel($form->get('endDate')) ?>
+            <?php echo $this->formInput($form->get('endDate')) ?>
+            <div class="help-block">
+                <?php echo $errors; ?>
+            </div>
+        </div>
+
+        <?php
+        // Redirection en cas de succès de l'ajout
+        if ($this->redirectSuccess) :
+            ?>
+            <input type="hidden" name="redirectSuccess" value="<?php echo $this->escapeHtml($this->redirectSuccess) ?>" />
+            <?php
+        endif
+        ?>
+
+        <?php
+        // Redirection en cas d'échec de l'ajout
+        if ($this->redirectFailure) :
+            ?>
+            <input type="hidden" name="redirectFailure" value="<?php echo $this->escapeHtml($this->redirectFailure) ?>" />
+            <?php
+        endif
+        ?>
+
+        <?php
+        // Bouton d'envoi du formulaire affiché ou non
+        if (isset($this->hasSubmit) && !$this->hasSubmit) {
+        } else {
+            echo $this->formButton($form->get('submit'));
+        }
+        ?>
+        
+    </fieldset>
+<?php echo $this->form()->closeTag() ?>

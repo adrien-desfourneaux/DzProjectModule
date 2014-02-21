@@ -132,6 +132,56 @@ runcpdetector () {
 }
 
 # /*!
+#     Installe l'environnement d'éxécution du module
+#     C'est à dire copier les fichiers css, les images, etc...
+#     dans le dossier /public de l'application
+#  */
+setenvironment () {
+    cdscriptpath
+
+    cp -f public/css/dzproject.css ../../public/css && printf "dzproject.css -> /public/css\n"
+    cp -rf public/img/dzproject ../../public/img && printf "img/dzproject -> /public/img\n"
+
+    printf "\n"
+}
+
+# /*!
+#     Installe les fichiers de développement et
+#     de test du module dans le dossier /public
+#     de l'application et met les bonnes permissions
+#     sur ces fichiers
+#
+#     Attention: On s'attend à ce que le groupe du
+#     fichier soit le même que celui du serveur web
+#  */
+setdevelopment () {
+    cdscriptpath
+
+    setenvironment
+
+    cp -f public/dzproject.php ../../public && printf "dzproject.php -> /public\n"
+    cp -f public/dzproject.test.php ../../public && printf "dzproject.test.php -> /public\n"
+
+    printf "\n"
+
+    chmod 644 ../../public/dzproject.php && printf "chmod 644 dzproject.php\n"
+    chmod 644 ../../public/dzproject.test.php && printf "chmod 644 dzproject.test.php\n"
+}
+
+# /*!
+#     Supprimer les fichiers de dévelppement et de test
+#     du module du dossier /public de l'application
+#  */
+setproduction () {
+    cdscriptpath
+
+    setenvironment
+
+    rm -f ../../public/dzproject.php && printf "Suppression de /public/dzproject.php\n"
+    rm -f ../../public/dzproject.test.php && printf "Suppression de /public/dzproject.test.php\n"
+}
+
+# /*!
 #     Génère les statistiques du module
 #     Deprécié
 #  */
@@ -178,10 +228,10 @@ checkdoc () {
     cdscriptpath
 
     Category="(\<Config\>|\<Autoload\>|\<Source\>|\<Spec\>|\<Test\>)$"
-    Package="\<DzProject(/.*|\>)"
+    Package="\<DzProjectModule(/.*|\>)"
     Author="Adrien Desfourneaux \(aka Dieze\) <dieze51@gmail\.com>$"
     License="\shttp://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2$"
-    Link="\<https://github.com/dieze/DzProject/blob/master/.+"
+    Link="\<https://github.com/dieze/DzProjectModule/blob/master/.+"
     exclude=".*tests.*Guy.php$"
 
     find . \( -name "*.php" -o -name "*.phtml" \) -and -not -regex "$exclude" | xargs grep -E -sL "@category\s+${Category}" | awk '{print "Wrong or no category in "$1}'
@@ -234,12 +284,22 @@ help () {
     printf "Usage: qa.sh [command]\n"
     printf "help\t\tAffiche cette aide\n"
     printf "help [command]\tAffiche l'aide de la commande\n"
+    printf "env\t\tGestion de l'environnement du module (développement, production, ...)\n"
     printf "test\t\tGestion des tests du module\n"
     printf "code\t\tGestion du code source\n"
     printf "doc\t\tGestion de la documentation du module\n"
     printf "loader\t\tGestion du loader du module\n"
     printf "all\t\tLance toutes les commandes\n"
     printf "\nAffiche cette aide si aucune action n'est spécifiée\n"
+}
+
+# /*!
+#     Affiche l'aide de la gestion de l'environnement
+#  */
+helpenv () {
+    printf "Usage: qa.sh env [arg]\n"
+    printf "prod\tMet en place l'environnement de production du module\n"
+    printf "dev\tMet en place l'environnement de développement du module\n"
 }
 
 # /*!
@@ -260,7 +320,6 @@ helpcode () {
     printf "fix\tRésout les problèmes de conformité du code aux standards\n"
     printf "stats\tAffiche des statistiques sur le code\n"
     printf "depend\tGénère les diagrammes de dépendances de code\n"
-    printf "\nLance tous les arguments si aucun n'est spécifié\n"
 }
 
 # /*!
@@ -270,7 +329,6 @@ helpdoc () {
     printf "Usage: qa.sh doc [action]\n"
     printf "check\tvérifie les blocs de documentation de code\n"
     printf "gen\tGénère la documentation du module\n"
-    printf "\nLance toutes les actions si aucune n'est spécifiée\n"
 }
 
 # /*!
@@ -279,7 +337,6 @@ helpdoc () {
 helploader () {
     printf "Usage: qa.sh loader [arg]\n"
     printf "classmap\tGénère le classmap pour l'autoload\n"
-    printf "\nLance toutes les arguments si aucun n'est spécifié\n"
 } 
 
 # no argument
@@ -293,6 +350,14 @@ elif [ $1 = 'help' ]; then
     elif [ $2 = 'doc' ]; then helpdoc
     elif [ $2 = 'loader' ]; then helploader
     else help
+    fi
+
+# env
+elif [ $1 = 'env' ]; then
+    if [ $# -eq 1 ]; then runspec; runcept
+    elif [ $2 = 'prod' ]; then setproduction
+    elif [ $2 = 'dev' ]; then setdevelopment
+    else helptest
     fi
 
 # test
@@ -316,6 +381,8 @@ elif [ $1 = 'code' ]; then
         runmessdetector
         runcpdetector
     elif [ $2 = 'fix' ]; then runcodefixer
+    elif [ $2 = 'dev' ]; then setdevelopment
+    elif [ $2 = 'prod' ]; then setproduction
     elif [ $2 = 'stats' ]; then showstats
     elif [ $2 = 'depend' ]; then gendepend
     else helpcode

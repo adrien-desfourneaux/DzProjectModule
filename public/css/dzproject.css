@@ -1,3 +1,11 @@
+/*
+ * Fichier de style du module DzProjectModule
+ *
+ * NE PAS MODIFIER SI DANS LE DOSSIER /public DE L'APPLICATION 
+ * Toute modification qui aurait eu lieu dans le dossier /public
+ * de l'application pourrait être automatiquement écrasée.
+ */
+
 body > .container {
     margin-top: 50px;
 }

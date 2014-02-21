@@ -1,7 +1,7 @@
-DzProject
+DzProjectModule
 =========
 
-Module de gestion de projet pour ZF2, compatible Doctrine.
+Module de gestion de projets pour ZF2, compatible Doctrine.
 
 Installation
 ==========

@@ -1,36 +1,40 @@
 <?php
 
 /**
- * Fichier de module de DzProject
+ * Fichier de module de DzProjectModule
  *
  * PHP version 5.3.3
  *
  * @category Source
- * @package  DzProject
+ * @package  DzProjectModule
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/Module.php
+ * @link     https://github.com/dieze/DzProjectModule/blob/master/Module.php
  */
 
-namespace DzProject;
+namespace DzProjectModule;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ControllerPluginProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\Session\Container as SessionContainer;
 
 /**
- * Classe module de DzProject.
+ * Classe module de DzProjectModule.
  *
  * @category Source
- * @package  DzProject
+ * @package  DzProjectModule
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProject/blob/master/Module.php
+ * @link     https://github.com/dieze/DzProjectModule/blob/master/Module.php
  */
 class Module implements
     AutoloaderProviderInterface,
     ConfigProviderInterface,
+    ControllerPluginProviderInterface,
+    ViewHelperProviderInterface,
     ServiceProviderInterface
 {
     /**
@@ -65,6 +69,21 @@ class Module implements
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
+    }
+
+    /**
+     * Doit retourner un objet de type \Zend\ServiceManager\Config
+     * ou un tableau pour créer un tel objet.
+     *
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getControllerPluginConfig()
+    {
+        return array(
+            'invokables' => array(
+                'dzProjectError' => 'DzProjectModule\Controller\Plugin\DzProjectError',
+            )
+        );
     }
 
     /**
@@ -150,7 +169,7 @@ class Module implements
     {
         return array(
             'invokables' => array(
-                'dzproject_project_service' => 'DzProject\Service\Project',
+                'dzproject_project_service' => 'DzProjectModule\Service\Project',
             ),
             'factories' => array(
                 'dzproject_module_options' => function ($serviceManager) {
@@ -171,12 +190,12 @@ class Module implements
                     $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
 
                     // hydratation
-                    $hydrator->addStrategy('beginDate', new \DzProject\Hydrator\Strategy\DateStrTimestamp);
-                    $hydrator->addStrategy('endDate', new \DzProject\Hydrator\Strategy\DateStrTimestamp);
+                    $hydrator->addStrategy('beginDate', new \DzProjectModule\Hydrator\Strategy\DateStrTimestamp);
+                    $hydrator->addStrategy('endDate', new \DzProjectModule\Hydrator\Strategy\DateStrTimestamp);
 
                     // extraction
-                    $hydrator->addStrategy('begin_date', new \DzProject\Hydrator\Strategy\DateStrTimestamp);
-                    $hydrator->addStrategy('end_date', new \DzProject\Hydrator\Strategy\DateStrTimestamp);
+                    $hydrator->addStrategy('begin_date', new \DzProjectModule\Hydrator\Strategy\DateStrTimestamp);
+                    $hydrator->addStrategy('end_date', new \DzProjectModule\Hydrator\Strategy\DateStrTimestamp);
 
                     return $hydrator;
                 },

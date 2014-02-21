@@ -6,11 +6,11 @@
  * PHP version 5
  *
  * @category   Source
- * @package    DzProject
+ * @package    DzProjectModule
  * @subpackage View
  * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
  * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link       https://github.com/dieze/DzProject/blob/master/view/layout/layout.phtml
+ * @link       https://github.com/dieze/DzProjectModule/blob/master/view/layout/layout.phtml
  */
 
 ?>
@@ -20,7 +20,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('DzProject')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('DzProjectModule')->setSeparator(' - ')->setAutoEscape(false) ?>
 
 <?php
 echo $this->headMeta()
@@ -57,7 +57,7 @@ echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.micros
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('dzproject') ?>">DzProject</a>
+                    <a class="navbar-brand" href="<?php echo $this->url('dzproject') ?>">DzProjectModule</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">

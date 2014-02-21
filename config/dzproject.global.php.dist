@@ -1,6 +1,6 @@
 <?php
 /**
- * Configuration du module DzProject
+ * Configuration du module DzProjectModule
  *
  * Si vous avez un dossier ./config/autoload/ dans votre projet, vous pouvez
  * y mettre ce fichier de configuration et changer les valeurs selon vos besoins.
@@ -21,34 +21,34 @@ $settings = array(
      *
      * Nom de la classe d'entité à utiliser. Utile si vous voulez utiliser votre
      * propre classe d'entité au lieu de la classe par défaut.
-     * La classe par défaut est DzProject\Entity\Project.
-     * La classe d'entité doit implémenter DzProject\Entity\ProjectInterface
+     * La classe par défaut est DzProjectModule\Entity\Project.
+     * La classe d'entité doit implémenter DzProjectModule\Entity\ProjectInterface
      */
-    'project_entity_class' => 'DzProject\Entity\Project',
+    'project_entity_class' => 'DzProjectModule\Entity\Project',
 
     /**
      * Définit le template de vue pour le widget de listing des projets
      *
-     * Valeur par défaut: 'dz-project/project/list.phtml'
+     * Valeur par défaut: 'dz-project-module/project/list.phtml'
      * Valeurs acceptées: (chaine de caractère) chemin vers un script de vue
      */
-    'project_list_widget_view_template' => 'dz-project/project/list.phtml',
+    'project_list_widget_view_template' => 'dz-project-module/project/list.phtml',
 
     /**
      * Définit le template de vue pour le widget d'affichage du formulaire d'ajout de projet
      *
-     * Valeur par défaut: 'dz-project/project/add.phtml'
+     * Valeur par défaut: 'dz-project-module/project/add.phtml'
      * Valeurs acceptées: (chaine de caractère) chemin vers un script de vue
      */
-    'project_add_widget_view_template' => 'dz-project/project/add.phtml',
+    'project_add_widget_view_template' => 'dz-project-module/project/add.phtml',
 
     /**
      * Définit le template de vue pour le widget d'affichage du formulaire de suppression de projet
      *
-     * Valeur par défaut: 'dz-project/project/delete.phtml'
+     * Valeur par défaut: 'dz-project-module/project/delete.phtml'
      * Valeurs acceptées: (chaine de caractère) chemin vers un script de vue
      */
-    'project_delete_widget_view_template' => 'dz-project/project/delete.phtml',
+    'project_delete_widget_view_template' => 'dz-project-module/project/delete.phtml',
 
     /**
      * Afficher ou non les actions de suppression de projet

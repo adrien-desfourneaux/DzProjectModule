@@ -5,7 +5,7 @@
   http://pmd.sf.net/ruleset_xml_schema.xsd"
   xsi:noNamespaceSchemaLocation="
   http://pmd.sf.net/ruleset_xml_schema.xsd">
-  <description>Règles PHPMD pour le module DzProject</description>
+  <description>Règles PHPMD pour le module DzProjectModule</description>
 
   <rule ref="rulesets/codesize.xml"/>
   <rule ref="rulesets/design.xml"/>

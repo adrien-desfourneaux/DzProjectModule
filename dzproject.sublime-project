@@ -9,7 +9,7 @@
     {
         "xdebug": {
             "path_mapping": {
-                "/var/www/module/DzProject" : "/Users/adrien/Documents/suivi-projet/module/DzProject"
+                "/var/www/module/DzProjectModule" : "/Users/adrien/Documents/suivi-projet/module/DzProjectModule"
             },
             "url": "http://192.168.56.101/dzproject.php",
             "super_globals": true,
