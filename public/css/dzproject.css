@@ -1,10 +1,21 @@
 /*
- * Fichier de style du module DzProjectModule
- *
- * NE PAS MODIFIER SI DANS LE DOSSIER /public DE L'APPLICATION 
- * Toute modification qui aurait eu lieu dans le dossier /public
- * de l'application pourrait être automatiquement écrasée.
+ * Fichier de style du module DzProjectModule.
  */
+
+ .widget-examples {
+    list-style-type: none;
+ }
+
+ .widget-examples > li {
+    display: inline-block;
+    vertical-align: top;
+    border: 1px solid black;
+    border-radius: 0 0 5px 5px;
+}
+
+.widget-container {
+    padding: 10px;
+}
 
 body > .container {
     margin-top: 50px;
@@ -19,7 +30,7 @@ body > .container {
 	margin: 20px auto;
 }
 
-img.deleteAction {
+.deleteAction img {
     width: 20px;
 }
 

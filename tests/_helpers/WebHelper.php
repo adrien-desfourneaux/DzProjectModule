@@ -9,13 +9,18 @@
  * @package    DzProjectModule
  * @subpackage Helper
  * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link       https://github.com/dieze/DzProjectModule/blob/master/tests/_helpers/WebHelper.php
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link       https://github.com/dieze/DzProjectModule
  */
 
 namespace Codeception\Module;
 
-use DzProjectModule\Test\Helper\WebHelperDbTrait;
+use Codeception\Module;
+
+use DzProjectModule\Test\Helper\DbWebHelper;
+use DzProjectModule\Test\Helper\DbWebHelperInterface;
+
+use Zend\Dom\Query;
 
 /**
  * Classe helper pour les tests d'acceptation.
@@ -25,10 +30,66 @@ use DzProjectModule\Test\Helper\WebHelperDbTrait;
  * @package    DzProjectModule
  * @subpackage Helper
  * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link       https://github.com/dieze/DzProjectModule/blob/master/tests/_helpers/WebHelper.php
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link       https://github.com/dieze/DzProjectModule
  */
-class WebHelper extends \Codeception\Module
+class WebHelper extends Module implements DbWebHelperInterface
 {
-    use WebHelperDbTrait;
+    /**
+     * Helper pour les méthodes de Db.
+     *
+     * @var DbWebHelper
+     */
+    protected $dbHelper;
+
+    /**
+     * Initialisation du Helper.
+     *
+     * @return void
+     */
+    public function _initialize()
+    {
+        parent::_initialize();
+
+        $dbModule = $this->getModule('Db');
+        $this->dbHelper = new DbWebHelper($dbModule);
+    }
+
+    /**
+     * Exécute une requête Xpath
+     *
+     * @param string $xpath Requête Xpath
+     *
+     * @return string Résultat de la requête
+     */
+    public function queryXpath($xpath)
+    {
+    	$webdriver = $this->getModule('WebDriver');
+    	$html = $webdriver->webDriver->getPageSource();
+
+    	$dom = new Query($html);
+    	$nodeList = $dom->queryXpath($xpath);
+
+    	if (count($nodeList) > 1) {
+    		return false;
+    	} else {
+    		return $nodeList[0]->textContent;
+    	}
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function haveDefaultProjectsInDatabase()
+    {
+        return $this->dbHelper->haveDefaultProjectsInDatabase();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function haveAllProjectDefaultsInDatabase()
+    {
+        return $this->dbHelper->haveAllProjectDefaultsInDatabase();
+    }
 }

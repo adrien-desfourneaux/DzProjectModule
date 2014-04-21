@@ -1,6 +1,7 @@
 .DS_Store
-doc/
+composer.phar
 coverage
+doc/
 metrics/
 vendor/
-*.sublime-workspace
+node_modules/

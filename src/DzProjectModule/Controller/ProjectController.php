@@ -1,31 +1,27 @@
 <?php
 
 /**
- * Fichier de source du ProjectController
+ * Fichier de source du ProjectController.
  *
- * PHP version 5.3.3
+ * PHP version 5.3.0
  *
  * @category Source
  * @package  DzProjectModule\Controller
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/src/DzProjectModule/Controller/ProjectController.php
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 
 namespace DzProjectModule\Controller;
 
-use Zend\Form\Form;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventmanagerAwareTrait;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Stdlib\ResponseInterface as Response;
-use Zend\View\Model\ViewModel;
-use Zend\Uri\Http as HttpUri;
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
-use DzProjectModule\Service\Project as ProjectService;
-use Zend\Session\Container;
+use DzBaseModule\Controller\AbstractActionController;
+use DzBaseModule\Uri\QueryParameters;
 
-use DzProjectModule\Options\ProjectControllerOptionsInterface;
+use DzViewModule\View\Model\ViewModel;
+
+use Zend\Form\FormInterface;
+use Zend\Stdlib\ResponseInterface as Response;
+use Zend\View\Model\ModelInterface;
 
 /**
  * Classe contrôleur de projet.
@@ -33,107 +29,17 @@ use DzProjectModule\Options\ProjectControllerOptionsInterface;
  * @category Source
  * @package  DzProjectModule\Controller
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     http://github.com/dieze/DzProjectModule/blob/master/src/DzProjectModule/Controller/ProjectController.php
- * @see      AbstractActionController Contrôleur d'actions abstrait.
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     http://github.com/dieze/DzProjectModule
  */
-class ProjectController
-extends AbstractActionController
+class ProjectController extends AbstractActionController
 {
     const ROUTE_SHOWMODULE = 'dzproject';
     const ROUTE_ADD        = 'dzproject/add';
     const ROUTE_DELETE     = 'dzproject/delete';
     const ROUTE_LIST       = 'dzproject/list';
-    const ROUTE_ERROR      = 'dzproject/error';
 
     const CONTROLLER_NAME  = 'dzproject';
-
-    /**
-     * Service pour les projets
-     *
-     * @var ProjectService
-     */
-    protected $projectService;
-
-    /**
-     * Formulaire d'ajout de projet
-     *
-     * @var Form
-     */
-    protected $addForm;
-
-    /**
-     * Champs de listing des projets
-     *
-     * Tableau des champs du tableau à afficher
-     * pour le listing projets. Les champs de type
-     * "Action" (comme Delete par exemple) ne sont
-     * pas pris en compte.
-     *
-     * Format:
-     * $fields = array(
-     *      array(
-     *          'heading' => 'Titre du champ (<th>)',
-     *          'href' => array(
-     *              '1' => "Lien <a href=...> pour le projet d'identifiant 1",
-     *              '2' => "Lien <a href=...> pour le projet d'identifiant 2",
-     *              ...
-     *          ),
-     *          'values'  => array(
-     *              '1' => "Valeur pour le projet d'identifiant 1",
-     *              '2' => "Valeur pour le projet d'identifiant 2",
-     *              ...
-     *          ),
-     *          'class' => array(
-     *              '1' => "Classe (class) pour la valeur du projet d'identifiant 1",
-     *              '2' => "Classe (class) pour la valuer du projet d'identifiant 2",
-     *              ...
-     *          )
-     *      ),
-     *      ...
-     * );
-     *
-     * L'ordre des heading est l'odre dans lequel
-     * ils seront affichés de gauche à droite.
-     * Tous les champs sont optionnels
-     *
-     * @var array
-     */
-    protected $listFields = array();
-
-    /**
-     * Options pour le ProjectController
-     *
-     * @var ProjectControllerOptionsInterface
-     */
-    protected $options;
-
-    /**
-     * Message d'échec lorsqu'un projet demandé n'existe pas
-     *
-     * @var string
-     */
-    protected $oneNotFoundMessage = "Le projet demandé n'a pas été trouvé";
-
-    /**
-     * Message d'échec lorsque des projets demandés n'existent pas
-     *
-     * @var string
-     */
-    protected $manyNotFoundMessage = "Les projets demandés n'ont pas été trouvés";
-
-    /**
-     * Message d'échec d'ajout de projet
-     * @var string
-     */
-    protected $failedAddMessage = "Echec de l'ajout. Veuillez réessayer.";
-
-    /**
-     * Message d'échec de la suppression de projet
-     *
-     * @var string
-     */
-    protected $failedDeleteMessage = "Echec de la suppression. Veuillez réessayer.";
 
     /**
      * Action par défaut du ProjectController
@@ -144,193 +50,97 @@ extends AbstractActionController
      */
     public function indexAction()
     {
-        return new ViewModel();
-    }
+        $viewModel = $this->getViewModel('index');
 
-    /**
-     * Action en cas d'erreur
-     *
-     * @return ViewModel
-     */
-    public function errorAction()
-    {
-        $errorMessage = $this->Params()->fromPost('errorMessage', "Aucun message d'erreur à afficher");
-
-        return new ViewModel(
-            array(
-                'errorMessage' => $errorMessage,
-            )
-        );
+        return $viewModel;
     }
 
     /**
      * Envoie le formulaire d'ajout de projet
      * Traite en retour les données du formulaire
      * ROUTE: /project/add
-     * GET: redirectSuccess -> url de redirection en cas de succès de l'ajout
-     *      routeFailure -> array urlencodé serialisé contenant le nom et les paramètres
-     *                      de la route en cas d'échec de l'ajout
      *
      * @return ViewModel
      */
     public function addAction()
     {
-        // Préparation de la page
+        $options     = $this->getOptions();
+        $service     = $this->getService('project');
+        $viewModel   = $this->getViewModel('add');
+        $form        = $this->getForm('add');
+        $useRedirect = $options->getUseRedirectParameterIfPresent();
 
-        $request = $this->getRequest();
-        $service = $this->getProjectService();
+        // Redirige en prenant en compte les paramètres de requête.
 
-        /*$form = $this->getAddForm();
-        $form->retrieveData(false);
-        $form->retrieveMessages(false);*/
+        $baseUrl = $this->url()->fromRoute(static::ROUTE_ADD);
 
-        // Option de redirection si succès de l'ajout
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirectSuccess')) {
-            $redirectSuccess = $request->getQuery()->get('redirectSuccess');
-        } else {
-            $redirectSuccess = false;
-        }
+        $queryParams = new QueryParameters();
+        $queryParams->setQuery($this->getRequest()->getQuery());
 
-        // Option de redirection si échec de l'ajout
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirectFailure')) {
-            $redirectFailure = $request->getQuery()->get('redirectFailure');
-        } else {
-            $redirectFailure = false;
-        }
+        $queryParams->fetch('hasTitle', true);
+        $queryParams->fetch('hasSubmit', true);
+        $queryParams->fetch('redirectSuccess', false);
+        $queryParams->fetch('redirectFailure', false);
 
-        // Option d'affichage ou non du titre
-        // On affiche toujours le titre quand le résultat est
-        // obtenu depuis un controller
-        if ($request->getQuery()->get('hasTitle') !== null) {
-            $hasTitle = $request->getQuery()->get('hasTitle');
-        } else {
-            $hasTitle = true;
-        }
+        $queryString = $queryParams->encode();
 
-        // Option d'affichage ou non du bouton de validation du formulaire
-        // On afffiche toujours le bouton de validation quand le résultat est
-        // obtenu depuis un controller
-        if ($request->getQuery()->get('hasSubmit') !== null) {
-            $hasSubmit = $request->getQuery()->get('hasSubmit');
-        } else {
-            $hasSubmit = true;
-        }
+        $redirect = $baseUrl . '?' . $queryString;
 
-        $redirectUrl = $this->url()->fromRoute(static::ROUTE_ADD);
-
-        // Passage des paramètres GET
-        // Ces paramètres seront stockés dans des champs <input type="hidden">
-        // et renvoyés au controller via POST
-
-        if ($redirectSuccess && !$redirectFailure) {
-            $redirectUrl = $redirectUrl . '?redirectSuccess=' . $redirectSuccess;
-        } elseif ($redirectFailure && !$redirectSuccess) {
-            $redirectUrl = $redirectUrl . '?redirectFailure=' . $redirectFailure;
-        } elseif ($redirectSuccess && $redirectFailure) {
-            $redirectUrl = $redirectUrl . '?redirectSuccess=' . $redirectSuccess . '&redirectFailure=' . $redirectFailure;
-        }
-        
-        // POST - Request - GET
-
-        // S'il y a des variables POST, prg va les stocker
-        // dans le conteneur de session et faire une
-        // redirection Location 303 (instanceof Request)
-        // afin d'éviter le renvoi répétitif du formulaire
-        // si rafraîchissement de la page.
-
-        // S'il n'y a pas de variables POST,
-        // prg renvoie false et on affiche la
-        // page (pour la première fois)
-
-
-        $prg = $this->prg($redirectUrl, true);
+        $prg = $this->prg($redirect, true);
 
         if ($prg instanceof Response) {
-            
-            // Redirect location
+            // Données POST présentes.
+            // PRG les stocke en session
+            // et fait une redirection 301
+
+            $form->persist();
+
             return $prg;
-
         } elseif ($prg === false) {
-
-            // Pas de données POST
-            // On affiche le formulaire
+            // Aucune données POST.
+            // Affichage de la page
             // pour la première fois
-            // mais peut-être également après
-            // une redirection
 
-            // On va récupérer les messages et entrées
-            // utilisateur du formulaire de connexion qui
-            // ont été sauvegardés en session
-            $form = $this->getAddForm();
-            $form->retrieveData();
-            $form->retrieveMessages();
+            $form->retrieve();
 
-            return array(
-                'addForm' => $form,
-                'hasTitle' => $hasTitle,
-                'hasSubmit' => $hasSubmit,
-                'redirectSuccess' => $redirectSuccess,
-                'redirectFailure' => $redirectFailure
-            );
+            $viewModel->setVariables($queryParams);
+            return $viewModel;
         }
 
-        // prg contient les données POST
-        // renvoyées par le formulaire.
-
-        // On va les passer au service des projets
-        // qui s'occupera de l'ajout
-
+        // Données POST contenues dans $prg
         $post = $prg;
 
+        $redirectSuccess = isset($prg['redirectSuccess']) ? $prg['redirectSuccess'] : null;
+        $redirectFailure = isset($prg['redirectFailure']) ? $prg['redirectFailure'] : null;
+
+        // Envoi des données POST au service des projets
+        // qui s'occupe de l'ajout
         $project = $service->add($post);
 
         // Si l'ajout a échoué, le service des projets renvoie false
         // Il y a redirection selon si l'ajout a échoué ou a réussi
 
-        $redirectSuccess = isset($prg['redirectSuccess']) ? $prg['redirectSuccess'] : null;
-        $redirectFailure = isset($prg['redirectFailure']) ? $prg['redirectFailure'] : null;
-
         if (!$project) {
 
-            if ($redirectFailure) {
+            $form->persist();
 
-                // On va faire une redirection "header: location"
-                // vers la page de redirection d'échec
-                // On stocke les données et les messages d'erreur du formulaire en session
-                // pour pouvoir les récupérer après la redirection
-                $form = $this->getAddForm();
-                $form->saveMessages();
-                $form->saveData();
-
+            if ($useRedirect && $redirectFailure) {
                 // Redirection selon l'option redirectFailure
                 return $this->redirect()->toUrl($redirectFailure);
-
             } else {
+                $viewModel->setVariables($queryParams->toArray());
+                $viewModel->setVariable('redirectSuccess', $redirectSuccess);
+                $viewModel->setVariable('redirectFailure', $redirectFailure);
 
-                // On va récupérer les messages et entrées
-                // utilisateur du formulaire de connexion qui
-                // ont été sauvegardés en session
-                $form = $this->getAddForm();
-                //$form->retrieveData();
-                //$form->retrieveMessages();
-
-                // Réaffichage du formulaire d'ajout de projet
-                // avec les messages d'erreurs des validateurs
-                return array(
-                    'addForm' => $form,
-                    'hasTitle' => $hasTitle,
-                    'hasSubmit' => $hasSubmit,
-                    'redirectSuccess' => $redirectSuccess,
-                    'redirectFailure' => $redirectFailure
-                );
+                return $viewModel;
             }
         }
 
         // L'ajout a réussi
-        // Redirection selon le paramètre redirectFailure
+        // Redirection selon le paramètre redirectSuccess
         // sinon afficher la liste des projets
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirectSuccess) {
+        if ($useRedirect && $redirectSuccess) {
             return $this->redirect()->toUrl($redirectSuccess);
         } else {
             return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LIST));
@@ -346,73 +156,53 @@ extends AbstractActionController
      */
     public function deleteAction()
     {
-        // Voir addAction pour les explications
+        $options     = $this->getOptions();
+        $service     = $this->getService('project');
+        $viewModel   = $this->getViewModel('delete');
+        $useRedirect = $options->getUseRedirectParameterIfPresent();
 
-        $request = $this->getRequest();
-        $service = $this->getProjectService();
+        // Redirige en prenant en compte les paramètres de requête.
 
         // Identifiant du projet à supprimer
         // que l'on récupère depuis la route
-        $id = $this->params()->fromRoute('id');
+        $id = (int)$this->params()->fromRoute('id');
 
-        // Option de redirection si succès de la suppression
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
-            $redirect = $request->getQuery()->get('redirect');
-        } else {
-            $redirect = false;
-        }
+        $baseUrl = $this->url()->fromRoute(static::ROUTE_DELETE, array('id' => $id));
 
-        // Url de redirection qui prend en compte les paramètres
-        $redirectUrl = $this->url()->fromRoute(static::ROUTE_DELETE, array('id' => $id))
-            . ($redirect ? '?redirect=' . $redirect : '');
+        $queryParams = new QueryParameters();
+        $queryParams->setQuery($this->getRequest()->getQuery());
 
-        // Voir addAction() pour comprendre prg
-        $prg = $this->prg($redirectUrl, true);
+        $queryParams->fetch('hasTitle', true);
+        $queryParams->fetch('hasSubmit', true);
+        $queryParams->fetch('redirect', false);
+
+        $queryString = $queryParams->encode();
+
+        $redirect = $baseUrl . '?' . $queryString;
+
+        $prg = $this->prg($redirect, true);
 
         if ($prg instanceof Response) {
             return $prg;
         } elseif ($prg === false) {
 
-            // On va retourner le ViewModel
-            // Pour afficher les informations du projet, on a
-            // besoin de l'entité projet en variable du ViewModel
-            // On fait appel au service qui va retourner un array()
-            // contenant les infos projet
-            $project = $service->findById($id);
+            // Affichage du formulaire de suppression de projet.
+            $viewModel->setVariables($queryParams->toArray());
+            $viewModel->setVariable('id', $id);
 
-            // Il se peut que le projet demandé n'existe pas
-            // dans ce cas le service renvoie false
-            if (!$project) {
-
-                // \DzProjectModule\Controller\Plugin\DzProjectError est
-                // un plugin de controlleur. Sa clé 'dzProjectError' est
-                // définie dans le Module.php
-                // Le plugin dzProjectError dispatch l'action errorAction()
-                // du ProjectController en lui passant un message d'erreur
-                // stocké dans la variable passée en paramètre du plugin.
-                // Puis il effectue le rendu du ViewModel et retourne la
-                // chaine de sortie.
-                return $this->dzProjectError($this->oneNotFoundMessage);
-            }
-
-            return array(
-                'project' => $project,
-                'redirect' => $redirect,
-            );
+            return $viewModel;
         }
 
         $post = $prg;
 
         // On passe l'identifiant au service des projets
-        // qui va s'occuper de supprimer le projet
-        // Le service retourne false si la suppression a échouée
-        // true sinon
+        // qui va s'occuper de supprimer le projet.
 
         $success = $service->delete($id);
 
         if (!$success) {
-            // Appel au plugin de controller dzProjectError()
-            return $this->dzProjectError($this->failedDeleteMessage);
+            $message = $this->message('project delete failed');
+            return $this->messageModel($message);
         }
 
         // Redirection si succès de l'ajout
@@ -420,7 +210,7 @@ extends AbstractActionController
 
         // Redirige selon si l'on a fournit l'option redirect
         // Si non, on redirige vers la liste des projets
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+        if ($useRedirect && $redirect) {
             return $this->redirect()->toUrl($redirect);
         } else {
             return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LIST));
@@ -438,196 +228,92 @@ extends AbstractActionController
      */
     public function listAction()
     {
-        // Type du projet à afficher
-        // On peut afficher tous les projets (all),
-        // ou seulement les projets actifs (active).
-        // Le module Projet ne gère pas la notion
-        // d'utilisateur donc on ne peut pas ici dans
-        // ce module afficher les projets d'un utilisateur
-        // particulier.
-        $type = $this->params()
-            ->fromRoute('type');
+        $options         = $this->getOptions();
+        $service         = $this->getService('project');
+        $viewModel       = $this->getViewModel('list');
+        $useRedirect     = $options->getUseRedirectParameterIfPresent();
+        $hasAddAction    = $options->getProjectListHasAddAction();
+        $hasDeleteAction = $options->getProjectListHasDeleteAction();
 
-        // La vue du listing des projets affiche également
-        // le formulaire d'ajout de projet sous la forme d'une
-        // fenêtre bootstrap Modal. Pour le confort de l'utilisateur
-        // cette fenêtre est automatiquement activée via javascript
-        // si le formulaire contient des erreurs et doit-être remplit 
-        // à nouveau. On a donc besoin du formulaire d'ajout de projet
-        // dans le ViewModel du listing pour connaître si le formulaire
-        // contient des erreurs.
+        // Options de requête
+        $hasTitle        = (bool)$this->params()->fromQuery('hasTitle', true);
+        $hasAddAction    = (bool)$this->params()->fromQuery('hasAddAction', $hasAddAction);
+        $hasDeleteAction = (bool)$this->params()->fromQuery('hasDeleteAction', $hasDeleteAction);
 
-        $addForm = $this->getAddForm();
-        $addForm->retrieveMessages(false);
-        $addForm->retrieveData(false);
+        // Option de route
+        $type = $this->params()->fromRoute('type');
 
-        // Les méthodes retrieveMessages() et retrieveData() du
-        // formulaire d'ajout de projet ont un 1er paramètre facultatif
-        // "flush", qui vaut true par défaut, et qui provoque la suppression
-        // respectivement des messages et des données du formulaire qui ont
-        // été stockés en session. Ici il est important de mettre ce paramètre
-        // à false puisque on va appeller le formulaire d'ajout de projet via
-        // le widget dzProjectAddWidget() qui, en éxécutant l'action addAction()
-        // du controller va également provoquer la récupération des messages et
-        // des données. Il faut donc ne pas les effacer.
-
-        // On recherche des projets selon leur type
-        // Pour cela on fait notre demande auprès du service
-        // de projets
-        $projects = $this->getProjectService()->findByType($type);
-
-        if (!$projects) {
-            return $this->dzProjectError($this->manyNotFoundMessage);
-        }
-
-        // On peut décider de ne jamais afficher les boutons de suppression
-        // des projets sur le listing des projets. Pour cela il suffit de
-        // mettre l'option project_list_has_delete_action à false
-        $hasDeleteAction = $this->getOptions()->getProjectListHasDeleteAction();
-
-        // On peut décider de ne jamais afficher le bouton d'ajout
-        // de projet sur le listing des projets. Pour cela il suffit de
-        // mettre l'option project_list_has_add_action à false
-        $hasAddAction = $this->getOptions()->getProjectListHasAddAction();
-
-        // Pour que l'on puisse personnaliser au maximum le listing des projets
-        // on passe par une variable listFields qui contient un plan du listing
-        // avec chacune de ses valeurs. La personne qui voudrait réutiliser ce 
-        // module peut écouter l'événement initListFields et ajouter, modifier
-        // ou supprimer des champs et des valeurs du listing.
-        // TODO : Implémenter le listFields dans une classe.
-        $fields = array();
-        $fields[0] = array('heading' => 'Désignation');
-        $fields[1] = array('heading' => 'Période');
-
-        foreach ($projects as $p) {
-            $fields[0]['values'][$p['project_id']] = $p['display_name'];
-            $fields[1]['values'][$p['project_id']] = $p['begin_date'] . ' - ' . $p['end_date'];
-        }
-
-        // On sauvegarde nos modification dans le controller
-        $this->setListFields($fields);
-
-        // On déclenche l'événement initListFields en passant les projets en paramètre
-        // Dans un callback d'événement, on peut récupérer le listFields via la méthode getListFields()
-        // de la cible ( $e->getTarget() ) de l'événement.
-        $this->getEventManager()->trigger('initListFields', $this, array('projects' => $projects));
-        
-        // Après une éventuelle modification, on récupère les champs 
-        $fields = $this->getListFields();
-
-        return new ViewModel(
+        $viewModel->setVariables(
             array(
-                'projects' => $projects,
-                'fields' => $fields,
+                'hasTitle'        => $hasTitle,
                 'hasDeleteAction' => $hasDeleteAction,
-                'hasAddAction' => $hasAddAction,
-                'addForm' => $addForm,
+                'hasAddAction'    => $hasAddAction,
+                'type'            => $type,
             )
         );
+
+        return $viewModel;
     }
 
     /**
-     * Obtient le service pour le projet
+     * Obtient un service.
      *
-     * @return ProjectService
+     * @param string $name Nom du service à obtenir.
+     *
+     * @return 
      */
-    public function getProjectService()
+    public function getService($name)
     {
-        if (!$this->projectService) {
-            $this->projectService = $this->getServiceLocator()->get('dzproject_project_service');
+        switch ($name)
+        {
+            case 'project':
+                return $this->service('DzProjectModule\ProjectService');
+                break;
         }
-
-        return $this->projectService;
     }
 
     /**
-     * Définit le service pour le projet
+     * Obtient un ViewModel.
      *
-     * @param ProjectService $projectService Service pour le projet
+     * @param string $page Page correspandant au ViewModel à obtenir.
      *
-     * @return ProjectController
+     * @return ModelInterface
      */
-    public function setProjectService(ProjectService $projectService)
+    public function getViewModel($page)
     {
-        $this->projectService = $projectService;
+        switch ($page)
+        {
+            case 'index':
+                return new ViewModel();
+                break;
 
-        return $this;
-    }
+            case 'add':
+                return $this->viewmodel('DzProjectModule\AddViewModel');
+                break;
 
-    /**
-     * Obtient le formulaire d'Ajout de projet
-     *
-     * @return Form
-     */
-    public function getAddForm()
-    {
-        if (!$this->addForm) {
-            $this->setAddForm($this->getServiceLocator()->get('dzproject_add_form'));
+            case 'delete':
+                return $this->viewmodel('DzProjectModule\DeleteViewModel');
+                break;
+
+            case 'list':
+                return $this->viewmodel('DzProjectModule\ListViewModel');
+                break;
         }
-
-        return $this->addForm;
     }
 
     /**
-     * Définit le formulaire d'Ajout de projet
+     * Obtient un formulaire.
      *
-     * @param Form $addForm Nouveau formulaire d'Ajout de projet
+     * @param string $name Nom du formulaire à obtenir.
      *
-     * @return void
+     * @return FormInterface
      */
-    public function setAddForm(Form $addForm)
+    public function getForm($name)
     {
-        $this->addForm = $addForm;
-    }
-
-    /**
-     * Obtient les champs du listing des projets
-     *
-     * @return array
-     */
-    public function getListFields()
-    {
-        return $this->listFields;
-    }
-
-    /**
-     * Définit les champs du listing des projets
-     *
-     * @param array $listFields Nouvel array contenant les champs
-     *
-     * @return void
-     */
-    public function setListFields($listFields)
-    {
-        $this->listFields = $listFields;
-    }
-
-    /**
-     * Définit les options pour le ProjectController
-     *
-     * @param ProjectControllerOptionsInterface $options Nouvelles options
-     *
-     * @return ProjectController
-     */
-    public function setOptions(ProjectControllerOptionsInterface $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * Obtient les options pour le ProjectController
-     *
-     * @return ProjectControllerOptionsInterface
-     */
-    public function getOptions()
-    {
-        if (!$this->options instanceof ProjectControllerOptionsInterface) {
-            $this->setOptions($this->getServiceLocator()->get('dzproject_module_options'));
+        switch ($name)
+        {
+            case 'add':
+                return $this->form('DzProjectModule\AddForm');
         }
-
-        return $this->options;
     }
 }

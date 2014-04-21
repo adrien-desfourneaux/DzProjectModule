@@ -1,33 +1,34 @@
 <?php
 /**
- * Configuration du module DzProjectModule
+ * Configuration du module DzProjectModule.
  *
  * Si vous avez un dossier ./config/autoload/ dans votre projet, vous pouvez
  * y mettre ce fichier de configuration et changer les valeurs selon vos besoins.
  */
 $settings = array(
     /**
-     * Utiliser le paramètre redirect s'il est présent
+     * Utiliser le paramètre redirect s'il est présent.
      *
      * Après un ajout avec succès, vérifie s'il y a un paramètre
-     * redirect de type GET out POST
+     * redirect de type GET out POST.
      *
      * Valeurs acceptées: booléen true ou false
      */
     'use_redirect_parameter_if_present' => true,
 
     /**
-     * Nom de la classe d'entité projet
+     * Nom de la classe d'entité projet.
      *
      * Nom de la classe d'entité à utiliser. Utile si vous voulez utiliser votre
      * propre classe d'entité au lieu de la classe par défaut.
+     *
      * La classe par défaut est DzProjectModule\Entity\Project.
      * La classe d'entité doit implémenter DzProjectModule\Entity\ProjectInterface
      */
     'project_entity_class' => 'DzProjectModule\Entity\Project',
 
     /**
-     * Définit le template de vue pour le widget de listing des projets
+     * Définit le template de vue pour le widget de listing des projets.
      *
      * Valeur par défaut: 'dz-project-module/project/list.phtml'
      * Valeurs acceptées: (chaine de caractère) chemin vers un script de vue
@@ -35,7 +36,7 @@ $settings = array(
     'project_list_widget_view_template' => 'dz-project-module/project/list.phtml',
 
     /**
-     * Définit le template de vue pour le widget d'affichage du formulaire d'ajout de projet
+     * Définit le template de vue pour le widget d'affichage du formulaire d'ajout de projet.
      *
      * Valeur par défaut: 'dz-project-module/project/add.phtml'
      * Valeurs acceptées: (chaine de caractère) chemin vers un script de vue
@@ -43,7 +44,7 @@ $settings = array(
     'project_add_widget_view_template' => 'dz-project-module/project/add.phtml',
 
     /**
-     * Définit le template de vue pour le widget d'affichage du formulaire de suppression de projet
+     * Définit le template de vue pour le widget d'affichage du formulaire de suppression de projet.
      *
      * Valeur par défaut: 'dz-project-module/project/delete.phtml'
      * Valeurs acceptées: (chaine de caractère) chemin vers un script de vue
@@ -52,10 +53,10 @@ $settings = array(
 
     /**
      * Afficher ou non les actions de suppression de projet
-     * dans le listing des projets
+     * dans le listing des projets.
      *
      * Mettre à false si on veut retirer la possibilité de supprimer
-     * un projet depuis le listing projet
+     * un projet depuis le listing projet.
      * 
      * Valeur par défaut: true
      * Valeurs acceptées: booléen true ou false
@@ -64,10 +65,10 @@ $settings = array(
 
     /**
      * Afficher ou non l'action d'ajout de projet
-     * dans le listing des projets
+     * dans le listing des projets.
      *
      * Mettre à false si on veut retirer la possibilité d'ajouter
-     * un projet depuis le listing projet
+     * un projet depuis le listing projet.
      * 
      * Valeur par défaut: true
      * Valeurs acceptées: booléen true ou false

@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Spécification de l'entité Project
+ * Spécification de l'entité Project.
  *
- * PHP version 5.3.3
+ * PHP version 5.3.0
  *
  * @category Spec
  * @package  DzProjectModule\Entity
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/spec/DzProjectModule/Entity/ProjectSpec.php
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 
 namespace spec\DzProjectModule\Entity;
@@ -18,22 +18,20 @@ use PhpSpec\ObjectBehavior;
 use Zend\Stdlib\Exception;
 
 /**
- * Classe de spécification du comportement
- * de l'entité projet.
+ * Classe de spécification du comportement de l'entité projet.
  *
  * @category Spec
  * @package  DzProjectModule\Entity
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/spec/DzProjectModule/Entity/ProjectSpec.php
- * @see      ObjectBehavior
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 class ProjectSpec extends ObjectBehavior
 {
     /**
      * Le Project doit être initialisable.
      *
-     * @return null
+     * @return void
      */
     public function it_is_initializable()
     {
@@ -44,7 +42,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project doit avoir un attribut displayName
      * disponible en lecture et en écriture.
      *
-     * @return null
+     * @return void
      */
     public function it_has_a_rw_display_name()
     {
@@ -57,7 +55,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project retourne son instance
      * quand on définit son attribut displayName.
      *
-     * @return null
+     * @return void
      */
     public function it_returns_itself_when_setting_display_name()
     {
@@ -69,7 +67,7 @@ class ProjectSpec extends ObjectBehavior
      * une chaine de caractère en
      * valeur d'attribut displayName.
      *
-     * @return null
+     * @return void
      */
     public function it_only_accepts_string_as_display_name()
     {
@@ -106,7 +104,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project doit avoir un attribut beginDate
      * disponible en lecture et en écriture.
      *
-     * @return null
+     * @return void
      */
     public function it_has_a_rw_begin_date()
     {
@@ -119,7 +117,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project doit retourner son instance
      * quand on définit son attribut beginDate.
      *
-     * @return null
+     * @return void
      */
     public function it_returns_itself_when_setting_begin_date()
     {
@@ -130,7 +128,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project accepte uniquement un entier
      * en valeur d'attribut beginDate.
      *
-     * @return null
+     * @return void
      */
     public function it_only_accepts_int_as_begin_date()
     {
@@ -168,7 +166,7 @@ class ProjectSpec extends ObjectBehavior
      * une date de début qui est
      * antérieure à la date de fin.
      *
-     * @return null
+     * @return void
      */
     public function it_only_accepts_begin_date_that_is_before_end_date()
     {
@@ -183,7 +181,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project doit avoir un attribut endDate
      * disponible en lecture et en écriture.
      *
-     * @return null
+     * @return void
      */
     public function it_has_a_rw_end_date()
     {
@@ -196,7 +194,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project retourne son instance quand
      * on définit la valeur de l'attribut endDate.
      *
-     * @return null
+     * @return void
      */
     public function it_returns_itself_when_setting_end_date()
     {
@@ -208,7 +206,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project accepte uniquement un entier
      * en valeur d'attribut endDate.
      *
-     * @return null
+     * @return void
      */
     public function it_only_accepts_int_as_end_date()
     {
@@ -245,7 +243,7 @@ class ProjectSpec extends ObjectBehavior
      * Le Project accepte uniquement une date de fin
      * qui est postérieure à la date de début.
      *
-     * @return null
+     * @return void
      */
     public function it_only_accepts_end_date_that_is_after_begin_date()
     {

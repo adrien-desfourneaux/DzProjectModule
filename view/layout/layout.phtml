@@ -9,9 +9,36 @@
  * @package    DzProjectModule
  * @subpackage View
  * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link       https://github.com/dieze/DzProjectModule/blob/master/view/layout/layout.phtml
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link       https://github.com/dieze/DzProjectModule
  */
+
+?>
+
+<?php
+
+$routeName   = $this->routeName();
+$page = '';
+
+switch ($routeName)
+{
+    case 'dzproject':
+        $page = 'info';
+        break;
+
+    case 'dzproject/add':
+        $page = 'add';
+        break;
+
+    case 'dzproject/delete':
+        $page = 'delete';
+        break;
+
+    case 'dzproject/list':
+        $type = $this->routeParam('type');
+        $page = 'list-' . $type;
+        break;
+}
 
 ?>
 
@@ -28,24 +55,14 @@ echo $this->headMeta()
     ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
 ?>
 
-<!-- Le styles -->
-<?php
-echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-    ->prependStylesheet($this->basePath() . '/css/dzproject.css')
-    ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
-    ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
-    ->prependStylesheet("//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css")
-    
-?>
+<!-- Link -->
+<?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico')); ?>
 
-<!-- Scripts -->
-<?php echo $this->headScript()
-    ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-    ->prependFile($this->basePath() . '/js/jquery.min.js')
-    ->prependFile($this->basePath() . '/js/modernizr.js')
-    ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-    ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',));
-?>
+<!-- Script -->
+<?php echo $this->headScript(); ?>
+
+<!-- Style -->
+<?php echo $this->headStyle(); ?>
 
     </head>
     <body>
@@ -61,18 +78,27 @@ echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.micros
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li<?php if ($this->routeName() == 'dzproject') : ?> class="active"<?php endif ?>>
+                        
+                        <li<?php if ($page == 'info') : ?> class="active"<?php endif ?>>
                             <a href="<?php echo $this->url('dzproject') ?>">Informations du module</a>
                         </li>
-                        <li<?php if ($this->routeName() == 'dzproject/add') : ?> class="active"<?php endif ?>>
+
+                        <li<?php if ($page == 'add') : ?> class="active"<?php endif ?>>
                             <a href="<?php echo $this->url('dzproject/add') ?>">Ajouter un projet</a>
                         </li>
-                        <li<?php if ($this->routeName() == 'dzproject/list' && $this->routeParam('type') == 'all') : ?> class="active"<?php endif ?>>
+
+                        <li<?php if ($page == 'delete') : ?> class="active"<?php endif ?>>
+                            <a href="<?php echo $this->url('dzproject/delete', array('id' => '1')) ?>">Supprimer un projet</a>
+                        </li>
+
+                        <li<?php if ($page == 'list-all') : ?> class="active"<?php endif ?>>
                             <a href="<?php echo $this->url('dzproject/list', array('type' => 'all')) ?>">Lister tous les projets</a>
                         </li>
-                        <li<?php if ($this->routeName() == 'dzproject/list' && $this->routeParam('type') == 'active') : ?> class="active"<?php endif ?>>
+
+                        <li<?php if ($page == 'list-active') : ?> class="active"<?php endif ?>>
                             <a href="<?php echo $this->url('dzproject/list', array('type' => 'active')) ?>">Lister les projets actifs</a>
                         </li>
+
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

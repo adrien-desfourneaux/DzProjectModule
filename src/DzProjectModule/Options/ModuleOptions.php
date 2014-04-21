@@ -3,13 +3,13 @@
 /**
  * Fichier d'options pour le Module DzProjectModule
  *
- * PHP version 5.3.3
+ * PHP version 5.3.0
  *
  * @category Source
  * @package  DzProjectModule\Options
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/src/DzProjectModule/Options/ModuleOptions.php
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 
 namespace DzProjectModule\Options;
@@ -22,8 +22,8 @@ use Zend\Stdlib\AbstractOptions;
  * @category Source
  * @package  DzProjectModule\Options
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/src/DzProjectModule/Options/ModuleOptions.php
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 class ModuleOptions extends AbstractOptions implements
     ProjectControllerOptionsInterface,
@@ -36,7 +36,7 @@ class ModuleOptions extends AbstractOptions implements
      *
      * @var bool
      *
-     * @see \DzProjectModule\Options\ProjectControllerOptionsInterface
+     * @see ProjectControllerOptionsInterface
      */
     protected $useRedirectParameterIfPresent = true;
 

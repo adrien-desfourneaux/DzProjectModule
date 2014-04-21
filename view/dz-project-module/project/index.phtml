@@ -10,8 +10,8 @@
  * @package    DzProjectModule
  * @subpackage View
  * @author     Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license    http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link       https://github.com/dieze/DzProjectModule/blob/master/view/dz-project-module/project/index.phtml
+ * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link       https://github.com/dieze/DzProjectModule
  */
 
 ?>
@@ -25,29 +25,12 @@
 Le module gère :
 <ul>
     <li><a href="<?php echo $this->url('dzproject/add'); ?>">l'ajout de projet (/project/add)</a></li>
-    <li>La suppression de projet (/project/delete/:id)</li>
+    <li><a href="<?php echo $this->url('dzproject/delete', array('id' => 1)); ?>">La suppression de projet (/project/delete/:id)</a></li>
     <li><a href="<?php echo $this->url('dzproject/list'); ?>">le listing de tous les projets (/project/list)</a></li>
     <li><a href="<?php echo $this->url('dzproject/list', array('type' => 'active')); ?>">le listing des projets actifs (/project/list/active)</a>. Un projet est actif quand la date du jour se situe entre la date de début et la date de fin du projet.</li>
 </ul>
 
-<p>L'aide de vue <em>DzProjectModuleListWidget</em> permet d'intégrer le listing de tous les projets, ou des projets actifs, à un template de vue existant. Aussi, l' option <em>hasTitle</em> permet ou non d'afficher le titre. Les options <em>hasAddAction</em> et <em>hasDeleteAction</em> permettent d'afficher ou non respectivement les boutons d'ajout et de suppression de projets.</p>
-
-<style>
-    .widget-examples {
-        list-style-type: none;
-    }
-
-    .widget-examples > li {
-        display: inline-block;
-        vertical-align: top;
-        border: 1px solid black;
-        border-radius: 0 0 5px 5px;
-    }
-
-    .widget-container {
-        padding: 10px;
-    }
-</style>
+<p>L'aide de vue <em>DzProjectListWidget</em> permet d'intégrer le listing de tous les projets, ou des projets actifs, à un template de vue existant. Aussi, l' option <em>hasTitle</em> permet ou non d'afficher le titre. Les options <em>hasAddAction</em> et <em>hasDeleteAction</em> permettent d'afficher ou non respectivement les boutons d'ajout et de suppression de projets.</p>
 
 <ul class="widget-examples">
     <li><pre>&lt;?php
@@ -85,6 +68,18 @@ echo $this->dzProjectListWidget(
         <pre>&lt;?php
 echo $this->dzProjectListWidget(
     array(
+        'hasAddAction' => false
+    )
+);
+?&gt;</pre>
+        <div class="widget-container">
+            <?php echo $this->dzProjectListWidget(array('hasAddAction' => false)); ?>
+        </div>
+    </li>
+    <li>
+        <pre>&lt;?php
+echo $this->dzProjectListWidget(
+    array(
         'hasDeleteAction' => false
     )
 );
@@ -103,9 +98,9 @@ echo $this->dzProjectListWidget(
     $events = $e->getApplication()->getEventManager()->getSharedManager();
 
     // Modification des champs du listing projets (dzproject/list)
-    $events->attach('DzProjectModule\Controller\ProjectController', 'initListFields', function ($e) {
-        $projectController = $e->getTarget();
-        $listFields = $projectController->getListFields();
+    $events->attach('DzProjectModule\View\Model\ListViewModel', 'initListFields', function ($e) {
+        $viewModel  = $e->getTarget();
+        $listFields = $viewModel->getListFields();
         $projects = $e->getParam('projects');
 
         // Ajouter le champ "Chef de projet"
@@ -118,11 +113,11 @@ echo $this->dzProjectListWidget(
         array_splice($listFields, 1, 0, array($projectManagerField));
 
         // Renvoyer les champs modifiés à la target
-        $projectController->setListFields($listFields);
+        $viewModel->setListFields($listFields);
     });
 }</pre>
 
-<p>L'aide de vue <em>DzProjectModuleAddWidget</em> permet d'intégrer l'affichage du formulaire d'ajout de projet à un template de vue existant. Les options <em>redirectSuccess</em> et <em>redirectFailure</em> définissent respectivement l'url de redirection en cas de succès ou d'échec. L'option <em>hasTitle</em> permet d'afficher ou non le titre. Aussi, l'option <em>hasSubmit</em> permet d'afficher ou non le bouton d'envoi du formulaire. Cela peut-être utile si l'on veut mettre le widget dans une fenêtre Modal Bootstrap, avec un bouton en footer de la fenêtre qui activera le submit.</p>
+<p>L'aide de vue <em>DzProjectAddWidget</em> permet d'intégrer l'affichage du formulaire d'ajout de projet à un template de vue existant. Les options <em>redirectSuccess</em> et <em>redirectFailure</em> définissent respectivement l'url de redirection en cas de succès ou d'échec. L'option <em>hasTitle</em> permet d'afficher ou non le titre. Aussi, l'option <em>hasSubmit</em> permet d'afficher ou non le bouton d'envoi du formulaire. Cela peut-être utile si l'on veut mettre le widget dans une fenêtre Modal Bootstrap, avec un bouton en footer de la fenêtre qui activera le submit.</p>
 
 <ul class="widget-examples">
     <li>
@@ -191,56 +186,108 @@ echo $this->dzProjectAddWidget(
     </li>
 </ul>
 
-<p>L'aide de vue <em>DzProjectModuleDeleteWidget</em> permet d'intégrer l'affichage du formulaire de suppression d'un projet à un template de vue existant, avec la possibilité de mettre en place une redirection. Aussi, les options <em>hasTitle</em> et <em>hasSubmit</em> permettent d'afficher ou non respectivement le titre et le bouton d'envoi du formulaire.</p>
+<p>L'aide de vue <em>DzProjectDeleteWidget</em> permet d'intégrer l'affichage du formulaire de suppression d'un projet à un template de vue existant, avec la possibilité de mettre en place une redirection. Aussi, les options <em>hasTitle</em> et <em>hasSubmit</em> permettent d'afficher ou non respectivement le titre et le bouton d'envoi du formulaire.</p>
 
 <ul class="widget-examples">
     <li>
         <pre>&lt;?php
-echo $this->dzProjectDeleteWidget(1); // Id Projet 1
+echo $this->dzProjectDeleteWidget(
+    array(
+        'id' => 1, // Id Projet 1
+    )
+);
 ?&gt;</pre>
         <div class="widget-container">
-            <?php echo $this->dzProjectDeleteWidget(1); ?>
+            <?php
+            echo $this->dzProjectDeleteWidget(
+                array(
+                    'id' => 1,
+                )
+            );
+            ?>
         </div>
     </li>
     <li>
         <pre>&lt;?php
-echo $this->dzProjectDeleteWidget(2,
+echo $this->dzProjectDeleteWidget(
     array(
+        'id' => 3,
+    )
+);
+?&gt;</pre>
+        <div class="widget-container">
+            <?php
+            echo $this->dzProjectDeleteWidget(
+                array(
+                    'id' => 3,
+                )
+            );
+            ?>
+        </div>
+    </li>
+    <li>
+        <pre>&lt;?php
+echo $this->dzProjectDeleteWidget(
+    array(
+        'id' => 2,
         'redirect' => $this->url()
     )
 );
 ?&gt;</pre>
         <div class="widget-container">
-        <?php echo $this->dzProjectDeleteWidget(2, array('redirect' => $this->url())); ?>
+        <?php
+        echo $this->dzProjectDeleteWidget(
+            array(
+                'id' => 2,
+                'redirect' => $this->url()
+            )
+        );
+        ?>
         </div>
     </li>
     <li>
         <pre>&lt;?php
-echo $this->dzProjectDeleteWidget(2,
+echo $this->dzProjectDeleteWidget(
     array(
+        'id'       => 2,
         'hasTitle' => false
     )
 );
 ?&gt;</pre>
         <div class="widget-container">
-            <?php echo $this->dzProjectDeleteWidget(2, array('hasTitle' => false)); ?>
+            <?php
+            echo $this->dzProjectDeleteWidget(
+                array(
+                    'id' => 2,
+                    'hasTitle' => false,
+                )
+            );
+            ?>
         </div>
     </li>
     <li>
         <pre>&lt;?php
-echo $this->dzProjectDeleteWidget(2,
+echo $this->dzProjectDeleteWidget(
     array(
-        'hasSubmit' => false
+        'id' => 2,
+        'hasSubmit' => false,
     )
 );
 ?&gt;</pre>
         <div class="widget-container">
-            <?php echo $this->dzProjectDeleteWidget(2, array('hasSubmit' => false)); ?>
+            <?php
+            echo $this->dzProjectDeleteWidget(
+                array(
+                    'id' => 2,
+                    'hasSubmit' => false,
+                )
+            );
+            ?>
         </div>
     </li>
 </ul>
 
-<p>Il est possible de tester manuellement les fonctionnalités du module, indépendamment du reste de l'application, en copiant le fichier <em>DzProjectModule/dzproject.php</em> dans le dossier <em>public</em> de l'application ZF2 puis en se rendant à l'url <em>http://le-nom-de-votre-domaine/dzproject.php/project</em>.</p>
+<p>Il est possible de tester manuellement les fonctionnalités du module, indépendamment du reste de l'application, en éxécutant la commande <em>qa.sh env dev</em> (voir la section "Qualité du code") et en se rendant à l'url <em>http://le-nom-de-votre-domaine/dzproject.php/project</em>. La commande <em>qa.sh env dev</em> va copier les assets (css, js, img) et les fichiers dzproject.php et dzproject.test.php du dossier <em>public</em> du module vers le dossier <em>public</em> de l'application ZF2.</p>
 
 <h2>Base de données</h2>
 

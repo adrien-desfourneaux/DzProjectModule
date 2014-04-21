@@ -2,22 +2,23 @@
 
 /**
  * Lance l'application de test du module DzProjectModule.
+ *
  * Seuls le module DzProjectModule et ses dépendances seront chargées.
  * Cela permet le test du module DzProjectModule seul, séparé
  * du reste de l'application.
  *
- * Copier ce fichier dans le répertoire public de votre application
+ * Copier ce fichier dans le répertoire public de votre application.
  *
  * Utilisation :
  * http://mydomain/dzproject.test.php/project[/:action]
  *
- * PHP Version 5.3.3
+ * PHP Version 5
  *
  * @category Source
  * @package  DzProjectModule
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/dzproject.test.php
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 
 /**

@@ -1,0 +1,8 @@
+{
+  "name": "dz-project-module",
+  "version": "0.0.1",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-modernizr": "^0.5.2"
+  }
+}

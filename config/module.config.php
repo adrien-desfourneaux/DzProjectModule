@@ -1,24 +1,29 @@
 <?php
 
 /**
- * Configuration du module DzProjectModule
+ * Configuration du module DzProjectModule.
  *
- * PHP version 5.3.3
+ * PHP version 5.3.0
  *
  * @category Config
  * @package  DzProjectModule
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/config/module.config.php
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 
 /**
- * Utiliser différentes base de données selon l'environnement (development ou test)
+ * Utiliser différentes base de données
+ * et différents préfixes d'url d'asset
+ * selon l'environnement (development ou test)
  */
-if (defined('DZPROJECT_ENV') && DZPROJECT_ENV == 'test') {
-    $db_path = __DIR__ . '/../tests/_data/dzproject.sqlite';
-} else {
-    $db_path = __DIR__ . '/../data/dzproject.sqlite';
+$db_path = '';
+if (defined('DZPROJECT_ENV')) {
+    if (DZPROJECT_ENV == 'test') {
+        $db_path = __DIR__ . '/../tests/_data/dzproject.sqlite';
+    } elseif (DZPROJECT_ENV == 'development') {
+        $db_path = __DIR__ . '/../data/dzproject.sqlite';
+    }
 }
 
 return array(
@@ -39,9 +44,9 @@ return array(
             'dzproject' => __DIR__ . '/../view',
         ),
     ),
-    'controllers' => array(
-        'invokables' => array(
-            'dzproject' => 'DzProjectModule\Controller\ProjectController',
+    'assets' => array(
+        'paths' => array(
+            'dzproject' => __DIR__ . '/../public',
         ),
     ),
     'router' => array(
@@ -61,33 +66,6 @@ return array(
                 'may_terminate' => 'true',
                 'child_routes' => array(
 
-                    // Affichage des erreurs
-                    'error' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => 'error',
-                            'defaults' => array(
-                                'controller' => 'dzproject',
-                                'action' => 'error',
-                            ),
-                        ),
-                    ),
-
-                    // Listing des projets
-                    'list' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => 'list[/:type][/]',
-                            'constraints' => array(
-                                'type' => '(all)|(active)',
-                            ),
-                            'defaults' => array(
-                                'action' => 'list',
-                                'type' => 'all',
-                            ),
-                        ),
-                    ),
-
                     // Ajout d'un projet
                     'add' => array(
                         'type' => 'Segment',
@@ -104,11 +82,27 @@ return array(
                         'type' => 'Segment',
                         'options' => array(
                             'route' => 'delete/:id[/]',
-                            /*'contraints' => array(
-                                'id' => '\d',
-                            ),*/
+                            'constraints' => array(
+                                'id' => '\d+',
+                            ),
                             'defaults' => array(
                                 'action' => 'delete',
+                            ),
+                        ),
+                    ),
+
+                    
+                    // Listing des projets
+                    'list' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'list[/:type][/]',
+                            'constraints' => array(
+                                'type' => '(all)|(active)',
+                            ),
+                            'defaults' => array(
+                                'action' => 'list',
+                                'type' => 'all',
                             ),
                         ),
                     ),
@@ -139,8 +133,4 @@ return array(
             )
         )
     ),
-    'dzproject' => array(
-        'project_list_has_add_action' => true,
-        'project_list_has_delete_action' => true,
-    )
 );

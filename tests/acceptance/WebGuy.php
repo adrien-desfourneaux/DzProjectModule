@@ -2901,10 +2901,30 @@ class WebGuy extends \Codeception\AbstractGuy
      * Documentation taken from corresponding module.
      * ----------------------------------------------
      *
-     * Insère les projets par défaut
-     * dans la base de données
+     * Exécute une requête Xpath
      *
-     * @return void
+     * @param string $xpath Requête Xpath
+     *
+     * @return string Résultat de la requête
+     * @see Codeception\Module\WebHelper::queryXpath()
+     * @return \Codeception\Maybe
+     */
+    public function queryXpath($xpath) {
+        $this->scenario->addStep(new \Codeception\Step\Action('queryXpath', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     * {@inheritdoc}
      * @see Codeception\Module\WebHelper::haveDefaultProjectsInDatabase()
      * @return \Codeception\Maybe
      */
@@ -2923,15 +2943,12 @@ class WebGuy extends \Codeception\AbstractGuy
      * Documentation taken from corresponding module.
      * ----------------------------------------------
      *
-     * Définit tout par défaut
-     * dans la base de données
-     *
-     * @return void
-     * @see Codeception\Module\WebHelper::haveAllDefaultsInDatabase()
+     * {@inheritdoc}
+     * @see Codeception\Module\WebHelper::haveAllProjectDefaultsInDatabase()
      * @return \Codeception\Maybe
      */
-    public function haveAllDefaultsInDatabase() {
-        $this->scenario->addStep(new \Codeception\Step\Action('haveAllDefaultsInDatabase', func_get_args()));
+    public function haveAllProjectDefaultsInDatabase() {
+        $this->scenario->addStep(new \Codeception\Step\Action('haveAllProjectDefaultsInDatabase', func_get_args()));
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);

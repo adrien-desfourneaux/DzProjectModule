@@ -1,0 +1,12 @@
+{
+    "name": "dz-project-module",
+    "version": "0.0.1",
+    "main": "css/dzproject.css",
+    "ignore": [
+        "*.php"
+    ],
+    "dependencies": {
+    	"bootstrap" : ">=3.0",
+        "jquery-ui" : "latest"
+    }
+}

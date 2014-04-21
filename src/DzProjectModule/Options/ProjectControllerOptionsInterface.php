@@ -3,13 +3,13 @@
 /**
  * Fichier d'interface pour les options du ProjectController
  *
- * PHP version 5.3.3
+ * PHP version 5.3.0
  *
  * @category Source
  * @package  DzProjectModule\Options
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/src/DzProjectModule/Options/ProjectControllerOptionsInterface.php
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 
 namespace DzProjectModule\Options;
@@ -20,8 +20,8 @@ namespace DzProjectModule\Options;
  * @category Source
  * @package  DzProjectModule\Options
  * @author   Adrien Desfourneaux (aka Dieze) <dieze51@gmail.com>
- * @license  http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2
- * @link     https://github.com/dieze/DzProjectModule/blob/master/src/DzProjectModule/Options/ProjectControllerOptionsInterface.php
+ * @license  http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link     https://github.com/dieze/DzProjectModule
  */
 interface ProjectControllerOptionsInterface
 {
